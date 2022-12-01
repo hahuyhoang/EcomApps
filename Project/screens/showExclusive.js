@@ -59,7 +59,7 @@ const AllExclusive = ({ }) => {
                                                 <Image
                                                     style={{
                                                         width: "100%",
-                                                        height: "100%",
+                                                        height: "80%",
                                                         resizeMode: "contain",
                                                     }}
                                                     source={{ uri: `${userData.url}/${item.media.url}` }}

@@ -26,7 +26,7 @@ const ProductCart = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.cartReducer);
   // const totalItemPrice = useSelector(cartTotalItem);
-  console.log(data);
+  // console.log(data);
   return (
     <SafeAreaView className="-mt-5">
       {data.map((item) => {
@@ -35,7 +35,7 @@ const ProductCart = () => {
             <View className="flex-row flex-1 h-32 items-center  border-b border-gray-300 ">
               <Image
                 style={styles.Images}
-                source={{ uri: `${userData.url}/${item.media.url}` }}
+                source={{ uri: `${userData.url}/${item.media.url}` }} 
               />
               <View className="pl-6 pt-4 justify-center ">
                 <Text style={{ fontFamily: "Gilroy-Bold", fontSize: 16 }}>
@@ -67,7 +67,7 @@ const ProductCart = () => {
                   </TouchableOpacity>
                 </View>
               </View>
-              <View className="ml-auto  w-12 h-full">
+              <View className="ml-auto  w-14 h-full">
                 <TouchableOpacity
                   onPress={() => {
                     dispatch(removeItem(item.id));
@@ -76,7 +76,7 @@ const ProductCart = () => {
                 >
                   <Ionicons name="close" size={28} />
                 </TouchableOpacity>
-                <Text className="font-semibold">${item.price}</Text>
+                <Text className="font-semibold">${(item.quantity * item.price).toFixed(2)}</Text>
               </View>
             </View>
             <View className=" flex-row justify-center items-center"></View>
