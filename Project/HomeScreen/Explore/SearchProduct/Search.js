@@ -23,10 +23,10 @@ const Search = ({ navigation }) => {
   const [search, setSearch] = useState([]);
   const searchRef = useRef();
   const [olData, setOlaData] = useState(); // master search
-  
+
   const ListProduct = useSelector((state) => state.product.proDuct);
   const items = ListProduct.list_product.data;
-  // console.log("object moi", data);
+  console.log("object moi", data.name);
 
   useEffect(() => {
     try {
@@ -39,9 +39,10 @@ const Search = ({ navigation }) => {
   }, []);
   const onSearch = (text) => {
     if (text == "") {
-      setData(data);
+      setData(olData);
     } else {
       let tempList = data.filter((item) => {
+        console.log("ddddddddddddddddd", item);
         return item.name.toLowerCase().indexOf(text.toLowerCase()) > -1;
       });
       setData(tempList);
@@ -128,7 +129,7 @@ const Search = ({ navigation }) => {
                     </View>
                     <TouchableOpacity
                       style={styles.btn}
-                    // onPress={() => selectItem(item)}
+                      // onPress={() => selectItem(item)}
                     >
                       <Ionicons size={25} color={"#fff"} name="add" />
                     </TouchableOpacity>

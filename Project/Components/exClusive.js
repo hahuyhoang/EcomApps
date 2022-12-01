@@ -56,7 +56,7 @@ const ExclusiveProDucts = ({ }) => {
                                     });
                                 }}
                             >
-                                <View className="justify-center h-28  items-center ">
+                                <View className="justify-center h-28 items-center ">
                                     <Image
                                         style={{
                                             width: "100%",

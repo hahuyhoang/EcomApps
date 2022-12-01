@@ -7,8 +7,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCartFavorite(state, { payload }) {
-      console.log(payload);
-
+      // console.log(payload);
       const { id } = payload;
       const find = state.find((item) => item.id === id);
       if (find) {
