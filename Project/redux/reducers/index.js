@@ -6,6 +6,8 @@ import cartReducer from "./cartReducer";
 import categories from "./categoties"
 import brand from "./brand";
 import cartFavorite from './cartFavorites';
+import bestselling from './bestselling'
+import exclusive from './exclusive'
 const appReducer = combineReducers({
     auth,
     product,
@@ -13,6 +15,8 @@ const appReducer = combineReducers({
     categories,
     brand,
     cartFavorite,
+    bestselling,
+    exclusive,
 })
 
 const rootReducer = (state, action) => {
