@@ -122,8 +122,11 @@ const Filter = ({ navigation }) => {
             />
           </View>
         </View>
-        <View style={{backgroundColor: "#F2F3F2",}} className="items-center">
+        <View style={{ backgroundColor: "#F2F3F2" }} className="items-center">
           <Button
+            onPress={() => {
+              navigation.goBack();
+            }}
             title={"Apply Filter"}
             buttonStyle={styles.Button}
             textStyle={styles.Textbtn}

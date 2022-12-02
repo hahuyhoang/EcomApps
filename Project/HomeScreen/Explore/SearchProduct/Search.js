@@ -7,51 +7,58 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
-  FlatList,
+  ActivityIndicator,
   Text,
 } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import { Ionicons, AntDesign } from "react-native-vector-icons";
 import { colors } from "../../../theme/colors";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 const { width } = Dimensions.get("window");
 const cardWidth = width / 2.3;
-
+import actions from "../../../redux/actions";
+import { addToCart } from "../../../redux/reducers/cartReducer";
+import { showMessage } from "react-native-flash-message";
 const Search = ({ navigation }) => {
   const [data, setData] = useState([]);
   const userData = useSelector((state) => state.auth.userData);
   const [search, setSearch] = useState([]);
   const searchRef = useRef();
   const [olData, setOlaData] = useState(); // master search
-
-  const ListProduct = useSelector((state) => state.product.proDuct);
-  const items = ListProduct.list_product.data;
-  console.log("object moi", data.name);
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    try {
-      items.forEach((element) => {
-        setData(element);
-      });
-    } catch (error) {
-      console.log("error", error);
-    }
+    (async () => {
+      setIsLoading(true);
+      try {
+        let res = await actions.filter();
+        // const items = res.list_product.data;
+        console.log('data filter',res.list_product)
+        setData(items);
+        setIsLoading(false);
+        setOlaData(items);
+      } catch (error) {
+        setIsLoading(true);
+        console.log("error", error);
+      }
+    })();
   }, []);
   const onSearch = (text) => {
     if (text == "") {
       setData(olData);
     } else {
       let tempList = data.filter((item) => {
-        console.log("ddddddddddddddddd", item);
         return item.name.toLowerCase().indexOf(text.toLowerCase()) > -1;
       });
       setData(tempList);
     }
   };
+
   return (
-    <SafeAreaView className="flex-1 ">
+    <SafeAreaView className="flex-1 bg-white ">
       <View className="flex-1  pl-5 pr-5">
-        <View className="flex-row">
+        <View className="flex-row justify-center items-center">
           <TextInput
             ref={searchRef}
             style={styles.Input}
@@ -62,6 +69,7 @@ const Search = ({ navigation }) => {
               setSearch(text);
             }}
           ></TextInput>
+
           <TouchableOpacity className="absolute left-3 top-9 w-6 ">
             <AntDesign size={20} name="search1" />
           </TouchableOpacity>
@@ -69,7 +77,7 @@ const Search = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => {
                 searchRef.current.clear();
-                setSearch = "";
+                setSearch("");
               }}
               className="absolute right-11 top-8"
             >
@@ -80,7 +88,7 @@ const Search = ({ navigation }) => {
             onPress={() => {
               navigation.navigate("Filter");
             }}
-            className="justify-center items-center pl-2"
+            className="justify-center items-center pl-2 pt-2"
           >
             <Image
               style={{ resizeMode: "contain" }}
@@ -88,11 +96,13 @@ const Search = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
+        {isLoading ? <ActivityIndicator /> : null}
         <ScrollView showsVerticalScrollIndicator={false}>
+        
           <View style={styles.warp}>
-            {items.map((item) => {
+            {data.map((item) => {
               return (
-                <View style={styles.container}>
+                <View style={styles.container}>               
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate("ProductDetail", {
@@ -129,7 +139,20 @@ const Search = ({ navigation }) => {
                     </View>
                     <TouchableOpacity
                       style={styles.btn}
-                      // onPress={() => selectItem(item)}
+                      onPress={() => {
+                        dispatch(addToCart(item));
+                        showMessage({
+                          message: "Add to cart successfully",
+                          description: "Go to check Cart",
+                          icon: (props) => (
+                            <Image
+                              source={require("../../../accsets/images/iconn.png")}
+                              {...props}
+                            />
+                          ),
+                          type: "success",
+                        });
+                      }}
                     >
                       <Ionicons size={25} color={"#fff"} name="add" />
                     </TouchableOpacity>
@@ -155,7 +178,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 35,
     borderColor: colors.global,
     backgroundColor: colors.global,
-    marginVertical: 20,
+    marginTop:20,
+    marginBottom:10,
+    position: "relative",
   },
   warp: {
     flexDirection: "row",

@@ -14,7 +14,9 @@ import { useSelector } from "react-redux";
 
 const { width } = Dimensions.get("window");
 const cardWidth = width / 2.3 ;
+
 const Beverages = ({ navigation }) => {
+  
   const [data, setData] = useState([]);
   const userData = useSelector((state) => state.auth.userData);
   const [search, setSearch] = useState("");

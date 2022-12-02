@@ -18,8 +18,9 @@ const cardWidth = width / 2.4 - 4;
 import actions from "../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/reducers/cartReducer";
+import { showMessage } from "react-native-flash-message";
 
-const Product = ({ }) => {
+const Product = ({}) => {
   const userData = useSelector((state) => state.auth.userData);
   const navigation = useNavigation();
   const [data, setData] = useState([]);
@@ -28,14 +29,14 @@ const Product = ({ }) => {
 
   useEffect(() => {
     (async () => {
-      setIsLoading(true)
+      setIsLoading(true);
       try {
         let res = await actions.product();
         const items = res.list_product.data;
         setData(items);
-        setIsLoading(false)
+        setIsLoading(false);
       } catch (error) {
-        setIsLoading(true)
+        setIsLoading(true);
         console.log("error", error);
       }
     })();
@@ -45,7 +46,6 @@ const Product = ({ }) => {
       <SafeAreaView className="flex-row">
         {data.map((item) => {
           return (
-
             <View style={styles.container}>
               <TouchableOpacity
                 onPress={() => {
@@ -73,11 +73,26 @@ const Product = ({ }) => {
               </TouchableOpacity>
               <View className="pb-4 pt-4 flex-row justify-between">
                 <View className="justify-center items-center">
-                  <Text style={{ fontFamily: "Gilroy-Semi" }}>${item.price}</Text>
+                  <Text style={{ fontFamily: "Gilroy-Semi" }}>
+                    ${item.price}
+                  </Text>
                 </View>
                 <TouchableOpacity
                   style={styles.btn}
-                  onPress={() => dispatch(addToCart(item))}
+                  onPress={() => {
+                    dispatch(addToCart(item));
+                    showMessage({
+                      message: "Add to cart successfully",
+                      description: "Go to check Cart",
+                      icon: (props) => (
+                        <Image
+                          source={require("../accsets/images/iconn.png")}
+                          {...props}
+                        />
+                      ),
+                      type: "success",
+                    });
+                  }}
                 >
                   <Ionicons size={25} color={"#fff"} name="add" />
                 </TouchableOpacity>

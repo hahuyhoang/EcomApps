@@ -178,6 +178,17 @@ export async function getExclusive() {
     });
   });
 }
+export function setFilter(data) {
+  data = JSON.stringify(data);
+  return AsyncStorage.setItem("exclusive", data);
+}
+export async function getFilter() {
+  return new Promise((resolve, reject) => {
+    AsyncStorage.getItem("exclusive").then((data) => {
+      resolve(JSON.parse(data));
+    });
+  });
+}
 export async function clearUserData() {
   return AsyncStorage.removeItem("userData");
 }

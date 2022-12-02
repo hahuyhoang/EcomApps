@@ -9,18 +9,20 @@ import {
   Dimensions,
   Image,
 } from "react-native";
-import React,{useState,} from "react";
+import React, { useState } from "react";
 import { Ionicons, AntDesign } from "react-native-vector-icons";
 import { colors } from "../../../theme/colors";
-import Product from "../../../Components/Products";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../../redux/reducers/cartReducer";
+import { showMessage } from "react-native-flash-message";
 const { width } = Dimensions.get("window");
 const cardWidth = width / 2.3 - 4;
 
 const AllProduct = ({ navigation }) => {
   const [data, setData] = useState([]);
   const userData = useSelector((state) => state.auth.userData);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
   const ListProduct = useSelector((state) => state.product.proDuct);
   const items = ListProduct.list_product.data;
   return (
@@ -28,9 +30,7 @@ const AllProduct = ({ navigation }) => {
       <View className="flex-1 pl-5 pr-5">
         <View className=" pt-4 pb-4  justify-center ">
           <View className="justify-center items-center ">
-            <Text className="font-semibold text-base">
-              All Products
-            </Text>
+            <Text className="font-semibold text-base">All Products</Text>
           </View>
           <TouchableOpacity
             className="absolute left-0 p-3"
@@ -41,20 +41,7 @@ const AllProduct = ({ navigation }) => {
             <Ionicons name="chevron-back" size={25} />
           </TouchableOpacity>
         </View>
-        <View className="flex-row ml-1 mr-1">
-          <TextInput
-            style={styles.Input}
-            placeholder="Search Store"
-          ></TextInput>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Search");
-            }}
-            className="absolute left-3 top-9  w-6  "
-          >
-            <AntDesign size={20} name="search1" />
-          </TouchableOpacity>
-        </View>
+        {isLoading ? <ActivityIndicator /> : null}
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.warp}>
             {items.map((item) => {
@@ -96,7 +83,20 @@ const AllProduct = ({ navigation }) => {
                     </View>
                     <TouchableOpacity
                       style={styles.btn}
-                      onPress={() => selectItem(item)}
+                      onPress={() => {
+                        dispatch(addToCart(item));
+                        showMessage({
+                          message: "Add to cart successfully",
+                          description: "Go to check Cart",
+                          icon: (props) => (
+                            <Image
+                              source={require("../../../accsets/images/iconn.png")}
+                              {...props}
+                            />
+                          ),
+                          type: "success",
+                        });
+                      }}
                     >
                       <Ionicons size={25} color={"#fff"} name="add" />
                     </TouchableOpacity>

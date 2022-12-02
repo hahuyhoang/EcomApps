@@ -18,6 +18,7 @@ import actions from "../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/reducers/cartReducer";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { showMessage } from "react-native-flash-message";
 
 const AllBestSell = ({}) => {
   const userData = useSelector((state) => state.auth.userData);
@@ -47,6 +48,21 @@ const AllBestSell = ({}) => {
     <>
       <SafeAreaView className="flex-1 ">
         <View className="flex-1  pl-5 pr-5">
+          <View className=" pt-4 pb-4  justify-center ">
+            <View className="justify-center items-center ">
+              <Text className="font-semibold text-base">All Best Selling</Text>
+            </View>
+            <TouchableOpacity
+              className="absolute left-0 p-1"
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
+              <Ionicons name="chevron-back" size={25} />
+            </TouchableOpacity>
+          </View>
+          {isLoading ? <ActivityIndicator /> : null}
+
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.warp}>
               {data.map((dataProDuct) => {
@@ -89,7 +105,20 @@ const AllBestSell = ({}) => {
                       </View>
                       <TouchableOpacity
                         style={styles.btn}
-                        onPress={() => dispatch(addToCart(item))}
+                        onPress={() => {
+                          dispatch(addToCart(item));
+                          showMessage({
+                            message: "Add to cart successfully",
+                            description: "Go to check Cart",
+                            icon: (props) => (
+                              <Image
+                                source={require("../accsets/images/iconn.png")}
+                                {...props}
+                              />
+                            ),
+                            type: "success",
+                          });
+                        }}
                       >
                         <Ionicons size={25} color={"#fff"} name="add" />
                       </TouchableOpacity>
@@ -101,7 +130,6 @@ const AllBestSell = ({}) => {
           </ScrollView>
         </View>
       </SafeAreaView>
-      {isLoading ? <ActivityIndicator /> : null}
     </>
   );
 };

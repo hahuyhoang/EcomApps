@@ -1,146 +1,176 @@
-import { View, Text, SafeAreaView, ImageBackground, Image, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
-import React, { useContext, useState } from 'react'
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ImageBackground,
+  Image,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  ActivityIndicator,
+} from "react-native";
+import React, { useContext, useState } from "react";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { Feather } from '@expo/vector-icons';
+import { Feather } from "@expo/vector-icons";
 
-import validator from './utils/validation';
-import { showError } from './utils/helperFunction';
-import actions from './redux/actions'
-import AppLoader from './Components/AppLoader';
-import { useSelector } from 'react-redux';
-import { showMessage } from 'react-native-flash-message';
+import validator from "./utils/validation";
+import { showError } from "./utils/helperFunction";
+import actions from "./redux/actions";
+import AppLoader from "./Components/AppLoader";
+import { useSelector } from "react-redux";
+import { showMessage } from "react-native-flash-message";
 
 const LogIn = ({ navigation }) => {
-  const [getPasswordVisible, setPasswordVisible] = useState(false)
-  const [remember, setRemember] = useState({})
+  const [getPasswordVisible, setPasswordVisible] = useState(false);
+  const [remember, setRemember] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [state, setState] = useState({
-    email: '',
-    password: ''
-  })
-  const { email, password } = state
-  const updateState = (data) => setState(() => ({ ...state, ...data }))
+    email: "",
+    password: "",
+  });
+  const { email, password } = state;
+  const updateState = (data) => setState(() => ({ ...state, ...data }));
 
   const isValidData = () => {
     const error = validator({
       email,
-      password
-    })
+      password,
+    });
     if (error) {
-      showError(error)
-      return false
+      showError(error);
+      return false;
     }
-    return true
-  }
+    return true;
+  };
 
   const onLogin = async () => {
-    const checkValid = isValidData()
+    const checkValid = isValidData();
     if (checkValid) {
-      setIsLoading(true)
+      setIsLoading(true);
       try {
         const res = await actions.login({
           email,
-          password
-        })
-        setIsLoading(false)
-        showMessage("Login success")
+          password,
+        });
+        setIsLoading(false);
+        showMessage("Login success");
         if (!res.user.email_verified_at) {
-          navigation.navigate("CheckCode")
+          navigation.navigate("CheckCode");
         }
+      } catch (error) {
+        setIsLoading(false);
+        showError(error.message);
       }
-      catch (error) {
-        setIsLoading(false)
-        showError(error.message)
-      }
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
-  
-  return (
+  };
 
+  return (
     <>
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height" }
-        className="flex-1">
-
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        className="flex-1"
+      >
         <View className="flex-1">
-          <View className="flex-1" >
-            <ImageBackground className="w-screen h-screen" source={require('../assets/images/MaskGroup.png')} resizeMode="cover" />
+          <View className="flex-1">
+            <ImageBackground
+              className="w-screen h-screen"
+              source={require("../assets/images/MaskGroup.png")}
+              resizeMode="cover"
+            />
           </View>
           <View className="flex-1 items-center">
-            <Image className="" source={require('../assets/images/Group.png')} />
+            <Image
+              className=""
+              source={require("../assets/images/Group.png")}
+            />
           </View>
         </View>
         <View className="ml-5 mr-5">
           <View>
-            <Text style={styles.font} className="text-2xl mb-3">Login</Text>
-            <Text style={styles.font} className="text-gray-500">Enter your emails and password</Text>
+            <Text style={styles.font} className="text-2xl mb-3">
+              Login
+            </Text>
+            <Text style={styles.font} className="text-gray-500">
+              Enter your emails and password
+            </Text>
           </View>
         </View>
         <View className=" ml-5 mt-10  mr-5">
           <View>
-            <Text style={styles.font} className="text-gray-500 mb-3">Email</Text>
+            <Text style={styles.font} className="text-gray-500 mb-3">
+              Email
+            </Text>
             <TextInput
               onChangeText={(email) => updateState({ email })}
               className="border-b border-b-gray-300"
               style={styles.font}
-              placeholder='Nhap email cua ban'
+              placeholder="Nhap email cua ban"
             />
           </View>
 
           <View className="mt-8">
-            <Text style={styles.font} className="text-gray-500 mb-3">Password</Text>
+            <Text style={styles.font} className="text-gray-500 mb-3">
+              Password
+            </Text>
             <TextInput
               onChangeText={(password) => updateState({ password })}
               className="border-b border-b-gray-300 "
               style={styles.font}
-              placeholder='Nhap password cua ban'
+              placeholder="Nhap password cua ban"
               secureTextEntry={getPasswordVisible ? false : true}
             />
 
-            <TouchableOpacity className="absolute right-0 bottom-1"
+            <TouchableOpacity
+              className="absolute right-0 bottom-1"
               onPress={() => {
-                setPasswordVisible(!getPasswordVisible)
-              }}>
-              {
-                getPasswordVisible ?
-                  <Feather name="eye" size={24} color="gray" />
-                  :
-                  <Feather name="eye-off" size={24} color="gray" />
-              }
+                setPasswordVisible(!getPasswordVisible);
+              }}
+            >
+              {getPasswordVisible ? (
+                <Feather name="eye" size={24} color="gray" />
+              ) : (
+                <Feather name="eye-off" size={24} color="gray" />
+              )}
             </TouchableOpacity>
-
           </View>
           <View className=" flex-row justify-between items-center mt-3">
-            <TouchableOpacity  className=" p-2">
+            <TouchableOpacity className=" p-2">
               <Text></Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-              navigation.navigate("ForgotEmail");
-            }}>
-              <Text style={styles.font} className=" text-gray-700">Forgot Password?</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("ForgotEmail");
+              }}
+            >
+              <Text style={styles.font} className=" text-gray-700">
+                Forgot Password?
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
 
         <View className="flex-1 items-center">
-
           <TouchableOpacity
             style={styles.green}
             onPress={onLogin}
-            className="items-center h-14 justify-center rounded-2xl mt-5 w-11/12 ">
+            className="items-center h-14 justify-center rounded-2xl mt-5 w-11/12 "
+          >
             <View>
-              <Text style={styles.font} className="text-white text-lg">Log In</Text>
+              <Text style={styles.font} className="text-white text-lg">
+                Log In
+              </Text>
             </View>
           </TouchableOpacity>
 
           <View className="flex-row mt-3">
-            <Text style={styles.font}>
-              Don’t have an account?
-            </Text>
-            <TouchableOpacity onPress={() => {
-              navigation.navigate("Register");
-            }}>
+            <Text style={styles.font}>Don’t have an account?</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Register");
+              }}
+            >
               <Text style={styles.font} className="ml-1 text-green-500">
                 Signup
               </Text>
@@ -150,25 +180,24 @@ const LogIn = ({ navigation }) => {
       </KeyboardAvoidingView>
       {isLoading ? <AppLoader /> : null}
     </>
+  );
+};
 
-  )
-}
-
-export default LogIn
+export default LogIn;
 const styles = StyleSheet.create({
   font: {
-    fontFamily: 'Gilroy-Semi'
+    fontFamily: "Gilroy-Semi",
   },
   green: {
-    backgroundColor: '#53b175'
+    backgroundColor: "#53b175",
   },
   textFailed: {
-    alignSelf: 'flex-end',
-    color: 'red',
-    fontFamily: 'Gilroy-Semi'
+    alignSelf: "flex-end",
+    color: "red",
+    fontFamily: "Gilroy-Semi",
   },
   errors: {
-    color: 'red',
-    fontFamily: 'Gilroy-Regula'
-  }
-})
+    color: "red",
+    fontFamily: "Gilroy-Regula",
+  },
+});
