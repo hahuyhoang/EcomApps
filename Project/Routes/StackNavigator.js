@@ -7,7 +7,7 @@ import MyTabs from "./TabarScreen";
 import ProductDetail from "../HomeScreen/Home/Productdetail";
 import Add from "../screens";
 import Accepted from "../screens/DoneCheckOut";
-import Profile from "../screens/Profile";
+import Profile from "../HomeScreen/Account/Profile/index";
 import LogIn from "../Login";
 import AuthStack from "./AuthStack";
 import MainStack from "./MainStack";
@@ -20,7 +20,6 @@ const Stack = createNativeStackNavigator();
 
 function MyStack() {
   const userData = useSelector((state) => state.auth.userData)
-  // console.log("user datasss", userData.token);
   return (
     <NavigationContainer>
       <Stack.Navigator

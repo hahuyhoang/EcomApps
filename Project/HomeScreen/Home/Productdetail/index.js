@@ -5,7 +5,7 @@ import {
   Image,
   StyleSheet,
   Text,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
 import Button from "../../../Components/button";
 import { colors } from "../../../theme/colors";
@@ -18,9 +18,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   increment,
   decrement,
-  clear,
   removeItem,
 } from "../../../redux/reducers/cartReducer";
+import { showMessage } from "react-native-flash-message";
 import { addToCartFavorite } from "../../../redux/reducers/cartFavorites";
 const ProductDetail = ({ route, navigation }) => {
   const userData = useSelector((state) => state.auth.userData);
@@ -43,11 +43,10 @@ const ProductDetail = ({ route, navigation }) => {
         // console.log(res);
         setItem(res.data.data_product);
         setImg(res.data.data_product.media.url);
-        let metaValue = res.data.data_product
+        let metaValue = res.data.data_product;
         // metaValue.forEach((element) => {
         //   // console.log(element);
         //   setWeight(element);
-        console.log(metaValue);
         // });
       })
       .catch((error) => {
@@ -101,16 +100,18 @@ const ProductDetail = ({ route, navigation }) => {
               {item.title}
             </Text>
           </View>
-          <TouchableOpacity onPress={() => dispatch(addToCartFavorite(item))}>
-            <Ionicons name="ios-heart-outline" size={25} />
-            {/* {
+          <TouchableOpacity>
+            {
               <Ionicons
-                onPress={() => [setHideHeart(!hideHeart)]}
+                onPress={() => [
+                  setHideHeart(!hideHeart),
+                  dispatch(addToCartFavorite(item)),
+                ]}
                 name={hideHeart ? "heart" : "ios-heart-outline"}
                 size={25}
                 color={hideHeart ? "red" : "black"}
               />
-            } */}
+            }
           </TouchableOpacity>
         </View>
         <View
@@ -131,7 +132,7 @@ const ProductDetail = ({ route, navigation }) => {
               <AntDesign name="minus" size={24} />
             </TouchableOpacity>
             <View style={styles.btn}>
-              <Text>{item.quantity}</Text>
+              <Text>{1}</Text>
             </View>
             <TouchableOpacity
               onPress={() => {
@@ -162,7 +163,7 @@ const ProductDetail = ({ route, navigation }) => {
               style={{ borderRadius: 8 }}
               className="justify-center items-center w-14 bg-slate-200"
             >
-              <Text className="font-semibold"></Text>
+              <Text className="font-semibold">100gr</Text>
             </View>
             <TouchableOpacity>
               <Entypo name="chevron-right" size={25} />
@@ -186,7 +187,20 @@ const ProductDetail = ({ route, navigation }) => {
         </View>
         <View className="mt-2 mb-10">
           <Button
-            onPress={() => dispatch(addToCart(item))}
+            onPress={() => {
+              dispatch(addToCart(item));
+              showMessage({
+                message: "Add to cart successfully",
+                description: "Go to check Cart",
+                icon: (props) => (
+                  <Image
+                    source={require("../../../accsets/images/iconn.png")}
+                    {...props}
+                  />
+                ),
+                type: "success",
+              });
+            }}
             title={"Add to Basket"}
             textStyle={styles.title}
             buttonStyle={[styles.addBtn]}

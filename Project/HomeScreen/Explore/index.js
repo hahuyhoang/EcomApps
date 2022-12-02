@@ -6,9 +6,11 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
-  Image
+  Image,
+  ActivityIndicator,
+  Modal,
 } from "react-native";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Ionicons, AntDesign } from "react-native-vector-icons";
 import { colors } from "../../theme/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,11 +18,11 @@ const width = Dimensions.get("window").width;
 const cardWidth = width / 2 - 30;
 import actions from "../../redux/actions";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 
 const Explore = ({ navigation }) => {
   const userData = useSelector((state) => state.auth.userData);
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -51,21 +53,21 @@ const Explore = ({ navigation }) => {
         </View>
         <View className="flex-row ml-1 mr-1">
           <TouchableOpacity
-            style={styles.Input}
             className="w-full"
-            onPress={() => {
-              navigation.navigate("Search");
-            }}
           >
-            {/* <TextInput
+            <TextInput
+              onPressIn={() => {
+                navigation.navigate("Search");
+              }}
               style={styles.Input}
               placeholder="Search Store"
-            ></TextInput> */}
+            ></TextInput>
           </TouchableOpacity>
           <TouchableOpacity className="absolute left-3 top-9  w-6  ">
             <AntDesign size={20} name="search1" />
           </TouchableOpacity>
         </View>
+        {isLoading ? <ActivityIndicator /> : null}
         <ScrollView className="-mt-4 " showsVerticalScrollIndicator={false}>
           <View style={styles.warp}>
             {data.map((item) => {
@@ -141,7 +143,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   warp: {
-    marginTop:20,
+    marginTop: 20,
     flexDirection: "row",
     flexWrap: "wrap",
     width: "100%",

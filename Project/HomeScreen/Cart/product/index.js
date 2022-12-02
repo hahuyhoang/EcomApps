@@ -16,73 +16,84 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   increment,
   decrement,
-  clear,
   removeItem,
 } from "../../../redux/reducers/cartReducer";
-// import { cartTotalItem } from "../../../redux/reducers/selectorTotal";
 
 const ProductCart = () => {
   const userData = useSelector((state) => state.auth.userData);
   const dispatch = useDispatch();
   const data = useSelector((state) => state.cartReducer);
-  // const totalItemPrice = useSelector(cartTotalItem);
-  // console.log(data);
+
   return (
     <SafeAreaView className="-mt-5">
-      {data.map((item) => {
-        return (
-          <View style={styles.horizon} className="flex-row  items-center">
-            <View className="flex-row flex-1 h-32 items-center  border-b border-gray-300 ">
-              <Image
-                style={styles.Images}
-                source={{ uri: `${userData.url}/${item.media.url}` }} 
-              />
-              <View className="pl-6 pt-4 justify-center ">
-                <Text style={{ fontFamily: "Gilroy-Bold", fontSize: 16 }}>
-                  {item.name}
-                </Text>
-                <Text style={styles.Text}>{item.title}</Text>
-                <View className="flex-row mt-3 mb-3 items-center">
-                  <TouchableOpacity
-                    onPress={() => {
-                      if (item.quantity === 1) {
+      {data.length == 0 ? (
+        <View style={{height:500}} className=" flex-1 justify-center items-center">
+          <Image
+            style={{ width: "100%", resizeMode: "contain" ,}}
+            source={require("../../../accsets/images/nocart.jpg")}
+          />
+          <Text className="text-sm font-medium ">Your Cart is Empty</Text>
+        </View>
+      ) : (
+        <View>
+          {data.map((item) => {
+            return (
+              <View style={styles.horizon} className="flex-row  items-center">
+                <View className="flex-row flex-1 h-32 items-center  border-b border-gray-300 ">
+                  <Image
+                    style={styles.Images}
+                    source={{ uri: `${userData.url}/${item.media.url}` }}
+                  />
+                  <View className="pl-6 pt-4 justify-center ">
+                    <Text style={{ fontFamily: "Gilroy-Bold", fontSize: 16 }}>
+                      {item.name}
+                    </Text>
+                    <Text style={styles.Text}>{item.title}</Text>
+                    <View className="flex-row mt-3 mb-3 items-center">
+                      <TouchableOpacity
+                        onPress={() => {
+                          if (item.quantity === 1) {
+                            dispatch(removeItem(item.id));
+                            return;
+                          } else {
+                            dispatch(decrement(item.id));
+                          }
+                        }}
+                        style={styles.btn}
+                      >
+                        <AntDesign name="minus" size={24} />
+                      </TouchableOpacity>
+                      <Text className="font-semibold">{item.quantity}</Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          dispatch(increment(item.id));
+                        }}
+                        style={styles.btn}
+                      >
+                        <AntDesign name="plus" size={24} />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  <View className="ml-auto  w-14 h-full">
+                    <TouchableOpacity
+                      onPress={() => {
                         dispatch(removeItem(item.id));
-                        return;
-                      } else {
-                        dispatch(decrement(item.id));
-                      }
-                    }}
-                    style={styles.btn}
-                  >
-                    <AntDesign name="minus" size={24} />
-                  </TouchableOpacity>
-                  <Text className="font-semibold">{item.quantity}</Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      dispatch(increment(item.id));
-                    }}
-                    style={styles.btn}
-                  >
-                    <AntDesign name="plus" size={24} />
-                  </TouchableOpacity>
+                      }}
+                      className="mb-12 ml-2"
+                    >
+                      <Ionicons name="close" size={28} />
+                    </TouchableOpacity>
+                    <Text className="font-semibold">
+                      ${(item.quantity * item.price).toFixed(2)}
+                    </Text>
+                  </View>
                 </View>
+                <View className=" flex-row justify-center items-center"></View>
               </View>
-              <View className="ml-auto  w-14 h-full">
-                <TouchableOpacity
-                  onPress={() => {
-                    dispatch(removeItem(item.id));
-                  }}
-                  className="mb-12 ml-2"
-                >
-                  <Ionicons name="close" size={28} />
-                </TouchableOpacity>
-                <Text className="font-semibold">${(item.quantity * item.price).toFixed(2)}</Text>
-              </View>
-            </View>
-            <View className=" flex-row justify-center items-center"></View>
-          </View>
-        );
-      })}
+            );
+          })}
+        </View>
+      )}
     </SafeAreaView>
   );
 };

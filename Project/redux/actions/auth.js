@@ -1,11 +1,11 @@
-import { CATEGORIES, LOGIN, PRODUCT, SIGNUP, VERIFY, BRAND, BESTSELLING, EXCLUSIVE } from "../../IPA/Conect";
+import { CATEGORIES, LOGIN, PRODUCT, SIGNUP, VERIFY, BRAND, BESTSELLING, EXCLUSIVE,FILTER } from "../../IPA/Conect";
 import {
   apiGet,
   apiPost,
   clearUserData,
   setBestselling,
   setCategory,
-  setItem,
+  setFilter,
   setProduct,
   setUserData,
   setUserVeri,
@@ -32,7 +32,12 @@ export const saveProDuct = (data) => {
     payload: data,
   });
 };
-
+export const saveFilter = (data) => {
+  dispatch({
+    type: types.FILTER,
+    payload: data,
+  });
+};
 export const saveCategory = (data) => {
   dispatch({
     type: types.CATEGORIES,
@@ -190,6 +195,33 @@ export function exclusive(data) {
       .catch((error) => {
         console.log("loi", error);
         reject(error);
+      });
+  });
+}
+
+export function filter(data) {
+  return new Promise((resolve, reject) => {
+    return apiGet(FILTER, data)
+      .then((res) => {
+        const items = res.list_product.data
+        items.forEach(element => {
+          // console.log('aaaaaaaaasaa', element);
+        });
+
+        if (res.list_product) {
+          setFilter(res).then(() => {
+            resolve(res);
+            saveFilter(res);
+          });
+          return;
+        }
+        resolve(res);
+        // console.log(res);
+      })
+      .catch((error) => {
+        console.log("loi", error);
+        reject(error);
+        console.log("aaaaaaaaasaa", element);
       });
   });
 }

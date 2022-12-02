@@ -14,7 +14,6 @@ import { cartTotalPriceSelector } from "../../redux/reducers/selectorTotal";
 
 const MyCart = ({ navigation }) => {
   const totalPrice = useSelector(cartTotalPriceSelector);
-
   return (
     <SafeAreaView className="flex-1 mb-16  bg-white">
       <View className="border-b border-gray-300 items-center h-14 justify-center">
@@ -23,15 +22,20 @@ const MyCart = ({ navigation }) => {
       <ScrollView showsVerticalScrollIndicator={false} className="flex-1 ">
         <ProductCart />
       </ScrollView>
+
       <View className="justify-center items-center mt-2">
-        <TouchableOpacity style={styles.Button} onPress={() => navigation.navigate("Add")}>
+        <TouchableOpacity
+          style={styles.Button}
+          onPress={() => navigation.navigate("Add")}
+        >
           <Text style={styles.Textbtn}>Go To Checkout</Text>
           <View style={styles.price} className="right-8 top-4">
-            <Text style={{ color: colors.white, fontWeight: '600' }}>${totalPrice.toFixed(2)}</Text>
+            <Text style={{ color: colors.white, fontWeight: "600" }}>
+              ${totalPrice.toFixed(2)}
+            </Text>
           </View>
         </TouchableOpacity>
       </View>
-
     </SafeAreaView>
   );
 };
@@ -77,6 +81,4 @@ const styles = StyleSheet.create({
     backgroundColor: "#489E67",
     borderRadius: 4,
   },
-
-
 });
