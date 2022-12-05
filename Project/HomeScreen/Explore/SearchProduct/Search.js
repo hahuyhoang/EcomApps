@@ -32,9 +32,9 @@ const Search = ({ navigation }) => {
     (async () => {
       setIsLoading(true);
       try {
-        let res = await actions.filter();
-        // const items = res.list_product.data;
-        console.log('data filter',res.list_product)
+        let res = await actions.product();
+        const items = res.list_product.data;
+        // console.log('data filter',res.list_product)
         setData(items);
         setIsLoading(false);
         setOlaData(items);

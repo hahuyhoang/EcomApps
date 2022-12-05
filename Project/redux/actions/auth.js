@@ -1,4 +1,4 @@
-import { CATEGORIES, LOGIN, PRODUCT, SIGNUP, VERIFY, BRAND, BESTSELLING, EXCLUSIVE,FILTER } from "../../IPA/Conect";
+import { CATEGORIES, LOGIN, PRODUCT, SIGNUP, VERIFY, BRAND, BESTSELLING, EXCLUSIVE,FILTER, ORDERS } from "../../IPA/Conect";
 import {
   apiGet,
   apiPost,
@@ -228,4 +228,7 @@ export function filter(data) {
 export function logout() {
   dispatch({ type: types.CLEAR_REDUX_STATE });
   clearUserData();
+}
+export function orders(data) {
+    return apiPost(ORDERS, data)
 }

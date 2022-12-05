@@ -10,5 +10,6 @@ export default {
     BRAND:"BRAND",
     BEST_SELLING: "BEST_SELLING",
     EXCLUSIVE: "EXCLUSIVE",
-    FILTER:"FILTER"
+    FILTER:"FILTER",
+    ORDERS: "ORDERS"
 }

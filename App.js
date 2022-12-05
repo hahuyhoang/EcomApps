@@ -30,7 +30,7 @@ export default function App() {
     "Gilroy-Medium": require("./assets/font/SVN-GilroyMedium.otf"),
   });
   if (!fontsLoaded) {
-    return console.log("loi roi kia");
+    return console.log("");
   }
 
   return (

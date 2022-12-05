@@ -1,15 +1,50 @@
 import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { cartTotalPriceSelector } from "../redux/reducers/selectorTotal";
 import { useDispatch, useSelector } from "react-redux";
+import actions from '../redux/actions';
+import { showMessage } from 'react-native-flash-message';
+import { showError } from '../utils/helperFunction';
 
 const { height } = Dimensions.get('window')
 export default function Add({ navigation }) {
-  const totalPrice = useSelector(cartTotalPriceSelector);
-
+    const totalPrice = useSelector(cartTotalPriceSelector);
+    const itemCart = useSelector((state) => state.cartReducer)
+    const userData = useSelector((state) => state.auth.userData)
+    console.log(itemCart);
+    // const upDateState = (data) => setState(() => ({ ...state, ...data }));  
+    // const [state, setState] = useState({
+    //     user_id: userData.user.id,
+    //     payment_method: 'pay_cash',
+    //     total_payment: totalPrice,
+    //     total_payment_sale: totalPrice,
+    //     description: "abs",
+    //     status: 3,
+    //     list_item: itemCart
+    // })
+    // const [{ user_id, payment_method, total_payment, total_payment_sale, description, status, list_item }] = JSON.stringify(state)
+   
+    // const orders = async () => {
+    //     try {
+    //         const res = await actions.orders({
+    //             user_id,
+    //             payment_method,
+    //             total_payment,
+    //             total_payment_sale,
+    //             description,
+    //             status,
+    //             list_item
+    //         });
+    //         console.log("orders",res);
+    //         showMessage("order success")
+    //     } catch (error) {
+    //         // showError(error.message)
+    //         console.log("error",error.message);
+    //     }
+    // }
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={[styles.flexRow, styles.topheader, { flex: 1 }]}>
@@ -63,7 +98,7 @@ export default function Add({ navigation }) {
                 </View>
             </View>
             <View style={{ flex: 2 }}>
-                <TouchableOpacity style={styles.placeOder} onPress={() => { navigation.navigate('Accepted') }}>
+                <TouchableOpacity style={styles.placeOder}>
                     <Text style={styles.textOder} >Place Order</Text>
                 </TouchableOpacity>
             </View>

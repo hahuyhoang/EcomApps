@@ -37,6 +37,7 @@ const ProductCart = () => {
       ) : (
         <View>
           {data.map((item) => {
+            const totalItemPrice = (item.quantity * item.price).toFixed(2)
             return (
               <View style={styles.horizon} className="flex-row  items-center">
                 <View className="flex-row flex-1 h-32 items-center  border-b border-gray-300 ">
@@ -84,7 +85,7 @@ const ProductCart = () => {
                       <Ionicons name="close" size={28} />
                     </TouchableOpacity>
                     <Text className="font-semibold">
-                      ${(item.quantity * item.price).toFixed(2)}
+                      ${totalItemPrice}
                     </Text>
                   </View>
                 </View>

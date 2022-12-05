@@ -57,7 +57,8 @@ const cartSlice = createSlice({
       return [];
     },
   },
-});
+}
+);
 
 export const { addToCart, increment, decrement, removeItem, clear } =
   cartSlice.actions;

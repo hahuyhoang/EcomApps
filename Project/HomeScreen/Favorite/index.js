@@ -114,6 +114,10 @@ const Favorite = () => {
 
       <View style={[styles.horizon]} className="mb-20">
         <Button
+        onPress={()=>{
+          dispatch(addToCart(item))
+          dispatch(clear())
+        }}
           buttonStyle={{
             alignItems: "center",
             justifyContent: "center",
