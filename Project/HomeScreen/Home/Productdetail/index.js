@@ -27,10 +27,10 @@ const ProductDetail = ({ route, navigation }) => {
   const [hideHeart, setHideHeart] = React.useState("");
   const [item, setItem] = useState([]);
   const [img, setImg] = useState([]);
-  const [weight, setWeight] = useState([]);
   const [isfavorite, setIsFavorite] = useState(false);
   const dispatch = useDispatch();
-
+ 
+  
   //nhan id tu man product,  call api tu key de show thong tin san pham,
   useEffect(() => {
     const infoProDuct = axios

@@ -1,4 +1,15 @@
-import { CATEGORIES, LOGIN, PRODUCT, SIGNUP, VERIFY, BRAND, BESTSELLING, EXCLUSIVE,FILTER } from "../../IPA/Conect";
+import {
+  CATEGORIES,
+  LOGIN,
+  PRODUCT,
+  SIGNUP,
+  VERIFY,
+  BRAND,
+  BESTSELLING,
+  EXCLUSIVE,
+  FILTER,
+  UPDATE_USER,
+} from "../../IPA/Conect";
 import {
   apiGet,
   apiPost,
@@ -9,6 +20,7 @@ import {
   setProduct,
   setUserData,
   setUserVeri,
+  setUpdateUser,
 } from "../../utils/utils";
 import store from "../store";
 import types from "../types";
@@ -47,6 +59,12 @@ export const saveCategory = (data) => {
 export const saveBestSelling = (data) => {
   dispatch({
     type: types.BEST_SELLING,
+    payload: data,
+  });
+};
+export const saveUpdateUser = (data) => {
+  dispatch({
+    type: types.UPDATE_USER,
     payload: data,
   });
 };
@@ -96,8 +114,8 @@ export function product(data) {
   return new Promise((resolve, reject) => {
     return apiGet(PRODUCT, data)
       .then((res) => {
-        const items = res.list_product.data
-        items.forEach(element => {
+        const items = res.list_product.data;
+        items.forEach((element) => {
           // console.log('aaaaaaaaasaa', element);
         });
 
@@ -203,8 +221,8 @@ export function filter(data) {
   return new Promise((resolve, reject) => {
     return apiGet(FILTER, data)
       .then((res) => {
-        const items = res.list_product.data
-        items.forEach(element => {
+        const items = res.list_product.data;
+        items.forEach((element) => {
           // console.log('aaaaaaaaasaa', element);
         });
 
@@ -222,6 +240,24 @@ export function filter(data) {
         console.log("loi", error);
         reject(error);
         console.log("aaaaaaaaasaa", element);
+      });
+  });
+}
+export function update_user(data) {
+  return new Promise((resolve, reject) => {
+    return apiPost(UPDATE_USER, data)
+      .then((res) => {
+        if (res.user) {
+          setUpdateUser(res).then(() => {
+            resolve(res);
+            saveUpdateUser(res);
+          });
+          return;
+        }
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
       });
   });
 }

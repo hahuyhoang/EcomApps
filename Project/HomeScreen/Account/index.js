@@ -37,7 +37,7 @@ const Account = ({ navigation }) => {
       () => {
         actions.logout();
       },
-      2000,
+      3000,
       showMessage("Log out sucess")
     );
   };
@@ -178,7 +178,7 @@ const Account = ({ navigation }) => {
                 alignItems: "center",
                 justifyContent: "center",
                 height: 60,
-                borderRadius: 8,
+                borderRadius: 12,
                 backgroundColor: "#f2f3f2",
               }}
               title={"Log Out"}
@@ -206,7 +206,8 @@ export default Account;
 const styles = StyleSheet.create({
   regula: {
     fontFamily: "Gilroy-Regula",
-    fontSize: 18,
+    fontSize: 15,
+    paddingTop:3
   },
   horizon: {
     // flex: 1,

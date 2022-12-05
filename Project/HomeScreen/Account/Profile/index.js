@@ -1,13 +1,11 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather } from "@expo/vector-icons";
-import { EvilIcons } from "@expo/vector-icons";
+import { Feather,EvilIcons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 
 const Profile = ({ navigation }) => {
   const userData = useSelector((state) => state.auth.userData);
-  // console.log("user data in profile screen", userData);
   const Favorite = useSelector((state) => state.cartFavorite);
 
   return (
@@ -16,7 +14,11 @@ const Profile = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate("Account")}>
           <Feather name="arrow-left" size={24} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity
+        onPress={()=>{
+          navigation.navigate("UpdateUser")
+        }}
+        >
           <EvilIcons name="pencil" size={30} color="green" />
         </TouchableOpacity>
       </View>
@@ -26,7 +28,7 @@ const Profile = ({ navigation }) => {
         </Text>
       </View>
       <View className="items-center">
-        <View className="border items-center rounded-full justify-center w-20 h-20">
+        <View className="border items-center rounded-full justify-center w-24 h-24">
           <Image
             style={{ resizeMode: "cover" }}
             className="items-center rounded-full justify-center w-24 h-24"
@@ -34,10 +36,10 @@ const Profile = ({ navigation }) => {
           />
         </View>
         <View className="items-center mt-4">
-          <Text style={{ fontFamily: "Gilroy-Semi" }}>
+          <Text style={{ fontFamily: "Gilroy-Semi",fontSize:16,paddingBottom:4 }}>
             {userData.user.name}
           </Text>
-          <Text style={{ fontFamily: "Gilroy-Regula", color: "grey" }}>
+          <Text style={{ fontFamily: "Gilroy-Regula", color: "grey" ,fontSize:14}}>
             {userData.user.email}
           </Text>
         </View>

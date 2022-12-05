@@ -70,7 +70,7 @@ const Explore = ({ navigation }) => {
         {isLoading ? <ActivityIndicator /> : null}
         <ScrollView className="-mt-4 " showsVerticalScrollIndicator={false}>
           <View style={styles.warp}>
-            {data.map((item) => {
+            {data.map((item) => {0
               return (
                 <View className="justify-between  ">
                   <View
