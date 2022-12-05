@@ -105,7 +105,7 @@ const LogIn = ({ navigation }) => {
             <TextInput
               onChangeText={(email) => updateState({ email })}
               className="border-b border-b-gray-300"
-              style={styles.font}
+              style={styles.input}
               placeholder="Nhap email cua ban"
             />
           </View>
@@ -117,7 +117,7 @@ const LogIn = ({ navigation }) => {
             <TextInput
               onChangeText={(password) => updateState({ password })}
               className="border-b border-b-gray-300 "
-              style={styles.font}
+              style={styles.input}
               placeholder="Nhap password cua ban"
               secureTextEntry={getPasswordVisible ? false : true}
             />
@@ -187,6 +187,10 @@ export default LogIn;
 const styles = StyleSheet.create({
   font: {
     fontFamily: "Gilroy-Semi",
+  },
+  input: {
+    fontFamily: "Gilroy-Semi",
+    paddingVertical: 5,
   },
   green: {
     backgroundColor: "#53b175",

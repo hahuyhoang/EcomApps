@@ -32,9 +32,8 @@ const Search = ({ navigation }) => {
     (async () => {
       setIsLoading(true);
       try {
-        let res = await actions.filter();
-        // const items = res.list_product.data;
-        console.log('data filter',res.list_product)
+        let res = await actions.product();
+        const items = res.list_product.data;
         setData(items);
         setIsLoading(false);
         setOlaData(items);
@@ -58,7 +57,7 @@ const Search = ({ navigation }) => {
   return (
     <SafeAreaView className="flex-1 bg-white ">
       <View className="flex-1  pl-5 pr-5">
-        <View className="flex-row justify-center items-center">
+        <View className="flex-row  justify-center items-center">
           <TextInput
             ref={searchRef}
             style={styles.Input}
@@ -88,7 +87,7 @@ const Search = ({ navigation }) => {
             onPress={() => {
               navigation.navigate("Filter");
             }}
-            className="justify-center items-center pl-2 pt-2"
+            className="justify-center items-center pl-2 pt2"
           >
             <Image
               style={{ resizeMode: "contain" }}
@@ -171,7 +170,7 @@ export default Search;
 
 const styles = StyleSheet.create({
   Input: {
-    width: "90%",
+    width: "92%",
     borderWidth: 0.5,
     height: 50,
     borderRadius: 10,

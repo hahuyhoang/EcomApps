@@ -14,7 +14,9 @@ import {
   Selling,
   AllBestSell,
   ExclusiveProDucts,
-  AllExclusive
+  AllExclusive,
+  UpdateUser,
+  
 } from "../index";
 
 export default function (Stack) {
@@ -26,6 +28,7 @@ export default function (Stack) {
         component={Add}
         options={{ presentation: "modal" }}
       />
+    
       <Stack.Screen name="Product" component={Product} />
       <Stack.Screen name="ProductDetail" component={ProductDetail} />
       <Stack.Screen name="AllProduct" component={AllProduct} />
@@ -43,6 +46,8 @@ export default function (Stack) {
       <Stack.Screen name="AllBestSell" component={AllBestSell} />
       <Stack.Screen name="ExclusiveProDucts" component={ExclusiveProDucts} />
       <Stack.Screen name="AllExclusive" component={AllExclusive} />
+      <Stack.Screen name="UpdateUser" component={UpdateUser} />
+    
     </>
   );
 }

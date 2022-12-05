@@ -20,6 +20,7 @@ const Favorite = () => {
   const dispatch = useDispatch();
   const [item, setItem] = useState([]);
   const data = useSelector((state) => state.cartFavorite);
+ 
   useEffect(() => {
     try {
       data.forEach((items) => {
@@ -80,6 +81,7 @@ const Favorite = () => {
                     <Image
                       className="p"
                       style={styles.Images}
+                      // onError={this.replaceImage}
                       source={{ uri: `${userData.url}/${item.media.url}` }}
                     />
                     <View className="pl-7">
@@ -114,6 +116,13 @@ const Favorite = () => {
 
       <View style={[styles.horizon]} className="mb-20">
         <Button
+          onPress={() =>
+          {
+            data.forEach(item => 
+              dispatch(addToCart(item)),
+              dispatch(clear())
+            )
+          }}
           buttonStyle={{
             alignItems: "center",
             justifyContent: "center",

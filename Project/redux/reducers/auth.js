@@ -13,6 +13,10 @@ export default function (state = initial_state, action) {
         case types.SIGNUP:
             const datas = action.payload
             return { userData: datas }
+            
+        case types.UPDATE_USER:
+            const dataUser = action.payload
+            return { userData: dataUser }
         default:
             return { ...state }
     }
