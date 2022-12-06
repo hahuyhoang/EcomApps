@@ -32,11 +32,14 @@ const Search = ({ navigation }) => {
     (async () => {
       setIsLoading(true);
       try {
-        let res = await actions.product();
+        let res = await actions.search();
         const items = res.list_product.data;
-        setData(items);
-        setIsLoading(false);
-        setOlaData(items);
+        console.log('====================================');
+        console.log(items);
+        console.log('====================================');
+        // setData(items);
+        // setIsLoading(false);
+        // setOlaData(items);
       } catch (error) {
         setIsLoading(true);
         console.log("error", error);

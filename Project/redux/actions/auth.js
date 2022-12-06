@@ -7,8 +7,9 @@ import {
   BRAND,
   BESTSELLING,
   EXCLUSIVE,
-  FILTER,
+  SEARCH,
   UPDATE_USER,
+  AVATAR_USER,
 } from "../../IPA/Conect";
 import {
   apiGet,
@@ -16,11 +17,12 @@ import {
   clearUserData,
   setBestselling,
   setCategory,
-  setFilter,
+  setSearch,
   setProduct,
   setUserData,
   setUserVeri,
   setUpdateUser,
+  setAvatarUser
 } from "../../utils/utils";
 import store from "../store";
 import types from "../types";
@@ -44,9 +46,9 @@ export const saveProDuct = (data) => {
     payload: data,
   });
 };
-export const saveFilter = (data) => {
+export const saveSearch = (data) => {
   dispatch({
-    type: types.FILTER,
+    type: types.SEARCH,
     payload: data,
   });
 };
@@ -63,6 +65,12 @@ export const saveBestSelling = (data) => {
   });
 };
 export const saveUpdateUser = (data) => {
+  dispatch({
+    type: types.UPDATE_USER,
+    payload: data,
+  });
+};
+export const saveAvatarUser = (data) => {
   dispatch({
     type: types.UPDATE_USER,
     payload: data,
@@ -217,19 +225,21 @@ export function exclusive(data) {
   });
 }
 
-export function filter(data) {
+export function search(data) {
   return new Promise((resolve, reject) => {
-    return apiGet(FILTER, data)
+    return apiGet(SEARCH, data)
       .then((res) => {
-        const items = res.list_product.data;
-        items.forEach((element) => {
-          // console.log('aaaaaaaaasaa', element);
-        });
+        
+        // const items = res.list_product;
+        // console.log('aaaaaaaassssssssssssssasaa', res.list_product);
+        // items.forEach((element) => {
+        //   // console.log('aaaaaaaaasaa', element);
+        // });
 
         if (res.list_product) {
-          setFilter(res).then(() => {
+          saveSearch(res).then(() => {
             resolve(res);
-            saveFilter(res);
+            setSearch(res);
           });
           return;
         }
@@ -251,6 +261,24 @@ export function update_user(data) {
           setUpdateUser(res).then(() => {
             resolve(res);
             saveUpdateUser(res);
+          });
+          return;
+        }
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+export function avatar_user(data) {
+  return new Promise((resolve, reject) => {
+    return apiPost(AVATAR_USER, data)
+      .then((res) => {
+        if (res.user) {
+          setAvatarUser(res).then(() => {
+            resolve(res);
+            saveAvatarUser(res);
           });
           return;
         }

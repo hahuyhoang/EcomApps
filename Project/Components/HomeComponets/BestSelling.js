@@ -16,7 +16,7 @@ const BestSelling = () => {
 
     const navigation = useNavigation();
     return (
-        <SafeAreaView>
+        <View>
             <View className="flex-row pt-5 pb-5 justify-between">
                 <TouchableOpacity className="font-semibold">
                     <Text style={styles.Text}>Best Selling</Text>
@@ -37,7 +37,7 @@ const BestSelling = () => {
                 <Selling />
 
             </ScrollView>
-        </SafeAreaView>
+        </View>
     )
 }
 
