@@ -29,22 +29,25 @@ const Search = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      try {
-        let res = await actions.search();
-        const items = res.list_product.data;
-        console.log('====================================');
-        console.log(items);
-        console.log('====================================');
-        // setData(items);
-        // setIsLoading(false);
-        // setOlaData(items);
-      } catch (error) {
+    const willFocusSubscription = navigation.addListener('focus', () => {
+      (async () => {
         setIsLoading(true);
-        console.log("error", error);
-      }
-    })();
+        try {
+          let res = await actions.product();
+          const items = res.list_product.data;
+          console.log('====================================');
+          console.log(items);
+          console.log('====================================');
+          setData(items);
+          setIsLoading(false);
+          setOlaData(items);
+        } catch (error) {
+          setIsLoading(true);
+          console.log("error", error);
+        }
+      })();
+    });
+    return willFocusSubscription;
   }, []);
   const onSearch = (text) => {
     if (text == "") {
@@ -100,11 +103,11 @@ const Search = ({ navigation }) => {
         </View>
         {isLoading ? <ActivityIndicator /> : null}
         <ScrollView showsVerticalScrollIndicator={false}>
-        
+
           <View style={styles.warp}>
             {data.map((item) => {
               return (
-                <View style={styles.container}>               
+                <View style={styles.container}>
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate("ProductDetail", {
@@ -180,8 +183,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 35,
     borderColor: colors.global,
     backgroundColor: colors.global,
-    marginTop:20,
-    marginBottom:10,
+    marginTop: 20,
+    marginBottom: 10,
     position: "relative",
   },
   warp: {

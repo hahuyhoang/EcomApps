@@ -20,7 +20,7 @@ import { addToCart } from "../redux/reducers/cartReducer";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { showMessage } from "react-native-flash-message";
 
-const AllExclusive = ({}) => {
+const AllExclusive = ({ }) => {
   const userData = useSelector((state) => state.auth.userData);
   const navigation = useNavigation();
   const [data, setData] = useState([]);
@@ -28,19 +28,22 @@ const AllExclusive = ({}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      try {
-        let res = await actions.exclusive();
-        const items = res.data;
-        setData(items);
-        setIsLoading(false);
-      } catch (error) {
+    const willFocusSubscription = navigation.addListener('focus', () => {
+      (async () => {
         setIsLoading(true);
-        console.log("error", error);
-      }
-    })();
-  }, [2000]);
+        try {
+          let res = await actions.exclusive();
+          const items = res.data;
+          setData(items);
+          setIsLoading(false);
+        } catch (error) {
+          setIsLoading(true);
+          console.log("error", error);
+        }
+      })();
+    });
+    return willFocusSubscription;
+  }, []);
   return (
     <>
       <SafeAreaView className="flex-1 ">

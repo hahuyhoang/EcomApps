@@ -151,7 +151,7 @@ const Order = ({ navigation }) => {
           </View>
         </View>
         <View className="justify-center items-center mt-16 flex-1 ">
-          <TouchableOpacity style={styles.Button} onPress={() => navigation.navigate("ItemOrders")}>
+          <TouchableOpacity style={styles.Button} onPress={() => navigation.navigate("PerparingOrder")}>
             <Text style={styles.Textbtn}>Purchase</Text>
             <View style={styles.price} className=" right-8 top-5">
               <Text style={{ color: colors.white, fontWeight: "600" }}>

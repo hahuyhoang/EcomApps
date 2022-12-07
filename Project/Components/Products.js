@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/reducers/cartReducer";
 import { showMessage } from "react-native-flash-message";
 
-const Product = ({}) => {
+const Product = ({ }) => {
   const userData = useSelector((state) => state.auth.userData);
   const navigation = useNavigation();
   const [data, setData] = useState([]);
@@ -28,18 +28,21 @@ const Product = ({}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      try {
-        let res = await actions.product();
-        const items = res.list_product.data;
-        setData(items);
-        setIsLoading(false);
-      } catch (error) {
+    const willFocusSubscription = navigation.addListener('focus', () => {
+      (async () => {
         setIsLoading(true);
-        console.log("error", error);
-      }
-    })();
+        try {
+          let res = await actions.product();
+          const items = res.list_product.data;
+          setData(items);
+          setIsLoading(false);
+        } catch (error) {
+          setIsLoading(true);
+          console.log("error", error);
+        }
+      })();
+    });
+    return willFocusSubscription;
   }, []);
   return (
     <>

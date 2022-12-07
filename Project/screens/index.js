@@ -1,22 +1,22 @@
-import { Dimensions, SafeAreaView, StyleSheet, Text, Image, TouchableOpacity, View } from 'react-native'
+import { Dimensions, SafeAreaView, StyleSheet, Text, Image, TouchableOpacity, View, ImageBackground } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { cartTotalPriceSelector } from "../redux/reducers/selectorTotal";
 import { useDispatch, useSelector } from "react-redux";
-import actions from '../redux/actions';
-import { showMessage } from 'react-native-flash-message';
-import { showError } from '../utils/helperFunction';
 import Input from "../Components/Textinput";
 import { Modal } from 'react-native';
 import { Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Alert } from 'react-native';
-import axios, { Axios } from 'axios';
+import axios from 'axios';
 import { BASE_URL } from '../IPA/Conect';
-import { getProduct } from '../utils/utils';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Animatable from 'react-native-animatable';
+import * as Progress from 'react-native-progress';
+import Button from '../Components/button';
+import LottieView from 'lottie-react-native'
+
 const { height } = Dimensions.get("window");
 export default function Add({ navigation }) {
     const [dataCart, setDataCart] = useState([])
@@ -24,6 +24,8 @@ export default function Add({ navigation }) {
     const totalPrice = useSelector(cartTotalPriceSelector);
     const itemCart = useSelector((state) => state.cartReducer) // cái này là list product đã thêm vào giỏ hàng
     const userData = useSelector((state) => state.auth.userData)
+    const [modalDone, setModalDone] = useState(false);
+
 
     const list_cart = [];
 
@@ -32,25 +34,25 @@ export default function Add({ navigation }) {
             { "product_id": element.id, "quantity": element.quantity, "price": element.price }
         );
     });
-    console.log('====================================');
-    console.log(list_cart);
-    console.log('====================================');
+    // console.log('====================================');
+    // console.log(list_cart);
+    // console.log('====================================');
 
     const bodyFormdata = new FormData()
     bodyFormdata.append('user_id', userData.user.id);
-    bodyFormdata.append('payment_method', 'pay pal');
+    bodyFormdata.append('payment_method', 'Pay_cash');
     bodyFormdata.append('total_payment', totalPrice);
     bodyFormdata.append('total_payment_sale', totalPrice);
-    bodyFormdata.append('description', 'alssd');
-    bodyFormdata.append('status', '444');
+    bodyFormdata.append('description', 'description');
+    bodyFormdata.append('status', 'order');
     bodyFormdata.append('list_item', JSON.stringify(list_cart));
 
     useEffect(() => {
-console.log('====================================');
-console.log();
-console.log('====================================');
+        // setTimeout(() => {
+        //     navigation.navigate("Order")
+        // }, 4000)
     }, [])
-    const order = () => {
+    const order = async () => {
 
         axios({
             url: `${BASE_URL}/orders`,
@@ -59,19 +61,23 @@ console.log('====================================');
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'multipart/form-data',
-                'Authorization': `Bearer ${userData.token}` 
+                'Authorization': `Bearer ${userData.token}`
             }
         })
             .then(function (response) {
                 //handle success
-                console.log(response);
+                // console.log(response);
+                if (totalPrice === 0) {
+                    setModalVisible(true)
+                } else {
+                    setModalDone(true)
+                }
             })
             .catch(function (response) {
                 //handle error
                 console.log(response);
             });
     }
-
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={[styles.flexRow, styles.topheader, { flex: 1 }]}>
@@ -133,7 +139,7 @@ console.log('====================================');
                 </TouchableOpacity>
             </View>
             <Modal
-                animationType="slide"
+                animationType="fade"
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
@@ -175,6 +181,49 @@ console.log('====================================');
                         </View>
                     </View>
                 </View>
+            </Modal>
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalDone}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setModalDone(!modalDone);
+                }}
+            >
+                <ImageBackground source={require('../../assets/images/MaskGroup.png')} resizeMode='stretch' style={{ flex: 1 }}>
+                    <View style={styles.container1}>
+                        {/* <Text>Accepted</Text> */}
+                        <LottieView style={styles.svg} source={require('../../assets/lottie/33886-check-okey-done.json')}
+                            autoPlay
+                        />
+                        <LottieView style={styles.svg1} source={require('../../assets/lottie/88486-well-done.json')}
+                            autoPlay
+                        />
+                    </View>
+                    <View style={styles.container2}>
+                        <View style={styles.TextDone}>
+                            <Text style={styles.done}>Your Order has been </Text>
+                            <Text style={styles.done}>accepted</Text>
+                        </View>
+                        <View style={styles.title}>
+                            <Text style={styles.minititle}>Your items has been placcd and is on</Text>
+                            <Text style={styles.minititle}>is't way to being processed</Text>
+                        </View>
+                    </View>
+                    <View style={styles.container3}>
+                        <TouchableOpacity style={styles.ClickOrder}>
+                            <View>
+                                <Text style={styles.doneOrder}>Track Order</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <View>
+                            <TouchableOpacity onPress={() => { navigation.navigate('Homes') }}>
+                                <Text style={styles.doneOrder1}>Back to home</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </ImageBackground>
             </Modal>
         </SafeAreaView>
     )
@@ -246,6 +295,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: "center",
+        backgroundColor: "rgba(52, 52, 52, 0.4)",
         // marginTop: 22,
         // shadowOpacity: 2
     },
@@ -330,5 +380,66 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         fontSize: 20,
         fontFamily: 'Gilroy-Light'
+    },
+    container1: {
+        flex: 2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: '20%'
+    },
+    svg: {
+        width: 300,
+        height: 300
+    },
+    svg1: {
+        width: 400,
+        height: 400,
+        position: 'absolute'
+    },
+    container2: {
+        flex: 1,
+        // justifyContent: 'center',
+        alignItems: 'center'
+    },
+    TextDone: {
+        alignItems: 'center',
+
+    },
+    done: {
+        fontFamily: 'Gilroy-Semi',
+        fontSize: 25
+    },
+    title: {
+        marginTop: 15,
+        alignItems: 'center'
+    },
+    minititle: {
+        fontFamily: 'Gilroy-Medium',
+        color: '#7c7c7c'
+    },
+    container3: {
+        flex: 2,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    doneOrder: {
+        fontFamily: 'Gilroy-Semi',
+        fontSize: 20,
+        color: '#fff'
+    },
+    ClickOrder: {
+        borderWidth: 1,
+        width: '90%',
+        height: 70,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 20,
+        backgroundColor: '#53b175',
+        borderColor: '#53b175'
+    },
+    doneOrder1: {
+        paddingTop: 20,
+        fontSize: 20,
+        fontFamily: 'Gilroy-Semi'
     }
 })

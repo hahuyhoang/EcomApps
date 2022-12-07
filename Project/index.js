@@ -29,3 +29,4 @@ export { default as splashScreen } from "./screens/SplashScreen";
 export { default as Onbording } from "./Onbording/index";
 export { default as ErrorScreen } from "./screens/ErrorScreen";
 export { default as ItemOrders } from "./Components/itemOrders";
+export { default as PerparingOrder } from "./screens/PerparingOrder";
