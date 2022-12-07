@@ -119,6 +119,11 @@ export function setUserData(data) {
   data = JSON.stringify(data);
   return AsyncStorage.setItem("userData", data);
 }
+export function setUpdateUser(data) {
+  data = JSON.stringify(data);
+  return AsyncStorage.setItem("updateUser", data);
+}
+
 
 export function setUserVeri(data) {
   data = JSON.stringify(data);

@@ -30,7 +30,7 @@ const AllProduct = ({ navigation }) => {
       <View className="flex-1 pl-5 pr-5">
         <View className=" pt-4 pb-4  justify-center ">
           <View className="justify-center items-center ">
-            <Text className="font-semibold text-base">All Products</Text>
+            <Text className="font-semibold text-base">All Groceries</Text>
           </View>
           <TouchableOpacity
             className="absolute left-0 p-3"

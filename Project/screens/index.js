@@ -1,4 +1,4 @@
-import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, SafeAreaView, StyleSheet, Text,Image, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -8,43 +8,96 @@ import { useDispatch, useSelector } from "react-redux";
 import actions from '../redux/actions';
 import { showMessage } from 'react-native-flash-message';
 import { showError } from '../utils/helperFunction';
+import Input from "../Components/Textinput";
+import { Modal } from 'react-native';
+import { Pressable } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { Alert } from 'react-native';
 
 const { height } = Dimensions.get('window')
 export default function Add({ navigation }) {
+    const [modalVisible, setModalVisible] = useState(false);
     const totalPrice = useSelector(cartTotalPriceSelector);
-    const itemCart = useSelector((state) => state.cartReducer)
+    const itemCart = useSelector((state) => state.cartReducer) // cái này là list product đã thêm vào giỏ hàng
     const userData = useSelector((state) => state.auth.userData)
-    console.log(itemCart);
-    // const upDateState = (data) => setState(() => ({ ...state, ...data }));  
-    // const [state, setState] = useState({
-    //     user_id: userData.user.id,
-    //     payment_method: 'pay_cash',
-    //     total_payment: totalPrice,
-    //     total_payment_sale: totalPrice,
-    //     description: "abs",
-    //     status: 3,
-    //     list_item: itemCart
+
+    itemCart.forEach(element => {
+        // element.forEach(e =>{
+        // console.log(e);
+        // }
+        // t
+        // console.log(element);
+
+        const product_id = Object.keys(element)
+            .filter((key) => key.includes("id"))
+            .reduce((obj, key) => {
+                return Object.assign(obj, {
+                    [key]: element[key]
+                });
+            }, {})
+
+        // console.log(product_id);
+        const quantity = Object.keys(element)
+            .filter((key) => key.includes("quantity"))
+            .reduce((obj, key) => {
+                return Object.assign(obj, {
+                    [key]: element[key]
+                });
+            }, {})
+
+        // console.log(quantity);
+        const price = Object.keys(element)
+            .filter((key) => key.includes("price"))
+            .reduce((obj, key) => {
+                return Object.assign(obj, {
+                    [key]: element[key]
+                });
+            }, {})
+
+
+    })
+    // const [itemCarts, setItemCart] = useState([])
+    // useEffect(() => {
+    //     itemCart.forEach(element => {
+    //         // setItemCart(element)
+    //         // console.log(element.id);
+
+    //     });
     // })
-    // const [{ user_id, payment_method, total_payment, total_payment_sale, description, status, list_item }] = JSON.stringify(state)
-   
-    // const orders = async () => {
-    //     try {
-    //         const res = await actions.orders({
-    //             user_id,
-    //             payment_method,
-    //             total_payment,
-    //             total_payment_sale,
-    //             description,
-    //             status,
-    //             list_item
-    //         });
-    //         console.log("orders",res);
-    //         showMessage("order success")
-    //     } catch (error) {
-    //         // showError(error.message)
-    //         console.log("error",error.message);
-    //     }
-    // }
+
+    const upDateState = (data) => setState(() => ({ ...state, ...data }));
+    const [state, setState] = useState({
+        user_id: userData.user.id,
+        payment_method: 'pay_cash',
+        total_payment: totalPrice,
+        total_payment_sale: totalPrice,
+        description: "abs",
+        status: 3,
+        list_item: itemCart
+    })
+    const { user_id, payment_method, total_payment, total_payment_sale, description, status, list_item } = state
+
+    const orders = async () => {
+        try {
+            const res = await actions.orders({
+                user_id,
+                payment_method,
+                total_payment,
+                total_payment_sale,
+                description,
+                status,
+                list_item
+            });
+            console.log("orders", res);
+            showMessage("order success")
+        } catch (error) {
+            setModalVisible(true)
+            showError(error.message)
+            // console.log("error",error.message);
+
+        }
+
+    }
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={[styles.flexRow, styles.topheader, { flex: 1 }]}>
@@ -84,6 +137,9 @@ export default function Add({ navigation }) {
                         <Entypo name="chevron-right" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
+                <View className="border-b border-gray-200">
+                    <Input style={{ fontFamily: 'Gilroy-Semi' }} placeholder="Address" />
+                </View>
                 <View style={{ marginTop: 20 }}>
                     <Text style={styles.textService}>
                         By placing an order you agree to our
@@ -98,10 +154,54 @@ export default function Add({ navigation }) {
                 </View>
             </View>
             <View style={{ flex: 2 }}>
-                <TouchableOpacity style={styles.placeOder}>
+                <TouchableOpacity style={styles.placeOder} onPress={orders}>
                     <Text style={styles.textOder} >Place Order</Text>
                 </TouchableOpacity>
             </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <View style={styles.btnClose} >
+                            <Pressable style={styles.close} onPress={() => setModalVisible(!modalVisible)}>
+                                <Ionicons name="close" size={24} color="black" />
+                            </Pressable>
+                        </View>
+                        <View style={{ alignItems: 'center'}}>
+                            <Image source={require('../../assets/images/image_13.png')} />
+                        </View>
+                        <View style={{ alignItems: 'center', marginTop: 20, height: 50}}>
+                            <View style={{ alignItems: 'center', }}>
+                                <Text style={styles.TextError}>
+                                    Oops! Order Failed
+                                </Text>
+                                <Text style={styles.miniText}>Something went tembly wrong</Text>
+                            </View>
+                        </View>
+                        <View style={{ flex: 1, justifyContent: 'center'}}>
+                            <View style={{ alignItems: 'center'}}>
+                                <TouchableOpacity style={styles.ClickOrder} onPress={() => setModalVisible(!modalVisible)}>
+                                    <View>
+                                        <Text style={styles.doneOrder}>Please Try Again</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                <View>
+                                    <TouchableOpacity onPress={() => { navigation.navigate('HomeScreen') }}>
+                                        <Text style={styles.doneOrder1}>Back to home</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </SafeAreaView>
     )
 }
@@ -167,5 +267,94 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontFamily: 'Gilroy-Semi',
         fontSize: 15
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: "center",
+        // marginTop: 22,
+        // shadowOpacity: 2
+    },
+    modalView: {
+        // flex: 1,
+        // margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        width: '70%',
+        height: '70%',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 1,
+        shadowRadius: 4,
+        elevation: 5,
+        justifyContent: 'center',
+        // position: 'relative',
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+    },
+    buttonOpen: {
+        backgroundColor: "#F194FF",
+    },
+    buttonClose: {
+        backgroundColor: "#2196F3",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+    },
+    close: {
+
+        // flex: 1,
+        top: 0,
+        // marginTop: "-15%",
+        marginLeft: '5%',
+        
+    },
+    btnClose: {
+        // flex: 1,
+        top: '2%',
+        height: 40,
+        // position: 'absolute'
+        // backgroundColor: '#cfcfcf'
+    },
+
+    TextError: {
+        fontFamily: 'Gilroy-Light',
+        fontSize: 25,
+        marginBottom: 5
+    },
+    miniText: {
+        fontFamily: 'Gilroy-Medium'
+    },
+    doneOrder:{
+        fontFamily: 'Gilroy-Light',
+        fontSize: 20,
+        color: '#fff'
+    },
+    ClickOrder:{
+        borderWidth: 1,
+        width: '90%',
+        height: 70,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 20,
+        backgroundColor: '#53b175',
+        borderColor: '#53b175'
+    },
+    doneOrder1: {
+        paddingTop: 20,
+        fontSize: 20,
+        fontFamily: 'Gilroy-Light'
     }
 })
