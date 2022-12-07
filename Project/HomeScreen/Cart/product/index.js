@@ -23,13 +23,15 @@ const ProductCart = () => {
   const userData = useSelector((state) => state.auth.userData);
   const dispatch = useDispatch();
   const data = useSelector((state) => state.cartReducer);
-
   return (
     <SafeAreaView className="-mt-5">
       {data.length == 0 ? (
-        <View style={{height:500}} className=" flex-1 justify-center items-center">
+        <View
+          style={{ height: 500 }}
+          className=" flex-1 justify-center items-center"
+        >
           <Image
-            style={{ width: "100%", resizeMode: "contain" ,}}
+            style={{ width: "100%", resizeMode: "contain" }}
             source={require("../../../accsets/images/nocart.jpg")}
           />
           <Text className="text-sm font-medium ">Your Cart is Empty</Text>
@@ -43,6 +45,7 @@ const ProductCart = () => {
                 <View className="flex-row flex-1 h-32 items-center  border-b border-gray-300 ">
                   <Image
                     style={styles.Images}
+                    defaultSource={require('../../../accsets/images/product_1.png')}
                     source={{ uri: `${userData.url}/${item.media.url}` }}
                   />
                   <View className="pl-6 pt-4 justify-center ">
@@ -80,7 +83,7 @@ const ProductCart = () => {
                       onPress={() => {
                         dispatch(removeItem(item.id));
                       }}
-                      className="mb-12 ml-2"
+                      className="mb-10 mt-2 ml-2"
                     >
                       <Ionicons name="close" size={28} />
                     </TouchableOpacity>

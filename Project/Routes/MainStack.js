@@ -16,7 +16,8 @@ import {
   ExclusiveProDucts,
   AllExclusive,
   UpdateUser,
-  ErrorScreen
+  ErrorScreen,
+  ItemOrders
   
 } from "../index";
 
@@ -49,6 +50,7 @@ export default function (Stack) {
       <Stack.Screen name="AllExclusive" component={AllExclusive} />
       <Stack.Screen name="UpdateUser" component={UpdateUser} />
       <Stack.Screen name="ErrorScreen" component={ErrorScreen} />
+      <Stack.Screen name="ItemOrders" component={ItemOrders} />
     
     </>
   );

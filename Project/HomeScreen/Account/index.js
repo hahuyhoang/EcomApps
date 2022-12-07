@@ -7,7 +7,7 @@ import {
   View,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 import Button from "../../Components/button";
 import { useSelector } from "react-redux";
@@ -19,15 +19,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const Account = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const userData = useSelector((state) => state.auth.userData);
-  // console.log("user data in account screen", userData);
+  const [isError, setError] = useState(false);
+
 
   const onLogoutAlert = () => {
     Alert.alert(
       "Logout",
       "Are you sure, you want to logout from this device",
-
       [{ text: "Yes", onPress: logout }, { text: "No" }],
-
       { cancelable: true }
     );
   };
@@ -47,7 +46,19 @@ const Account = ({ navigation }) => {
         <ScrollView className="pt-2">
           <View style={styles.horizon}>
             <View className="flex-row  pl-5 pr-5  items-center">
-              <Image source={require("../../../assets/images/user_1.png")} />
+              <Image
+                style={styles.avatar}
+                defaultSource={require("../../accsets/images/user.jpg")}
+                onError={() => {
+                  setError(true);
+                }}
+                source={{
+                  uri:
+                    userData.user.media == null
+                      ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFghe9NlnM-gPygO1pbXIp3QDflsCer36gLxnfHQWqVXSamYNUshZe6mbW98mFYAw4Hl0&usqp=CAU"
+                      : `${userData.url}/${userData.user.media.url}`,
+                }}
+              />
               <View className="ml-4">
                 <Text style={styles.bold}>{userData.user.name}</Text>
                 <Text style={styles.regula} className="text-gray-400">
@@ -60,7 +71,7 @@ const Account = ({ navigation }) => {
             onPress={() => {
               navigation.navigate("Order");
             }}
-            className="border-t pl-5 pr-5 mt-8 border-gray-300 border-b flex-row justify-between"
+            className="border-t pl-5 pr-5 mt-4 border-gray-300 border-b flex-row justify-between"
           >
             <View style={styles.horizon} className="flex-row items-center h-14">
               <Image source={require("../../../assets/images/icon_1.png")} />
@@ -207,7 +218,7 @@ const styles = StyleSheet.create({
   regula: {
     fontFamily: "Gilroy-Regula",
     fontSize: 15,
-    paddingTop:3
+    paddingTop: 3,
   },
   horizon: {
     // flex: 1,
@@ -222,5 +233,11 @@ const styles = StyleSheet.create({
   },
   semi: {
     fontFamily: "Gilroy-Semi",
+  },
+  avatar: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    resizeMode: "contain",
   },
 });

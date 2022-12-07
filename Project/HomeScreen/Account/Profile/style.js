@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   buttonContainer: {
-    backgroundColor: "#53b175",
+    backgroundColor: "#fff",
     width:60,
     height:60,
     borderRadius:30,
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#53b175",
     marginBottom: 10,
   },
+
   text: {
     fontFamily: "Gilroy-Semi",
     color: "#fff",
@@ -60,8 +61,14 @@ const styles = StyleSheet.create({
     color: colors.whites,
     paddingVertical: 10,
   },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 60,
+    resizeMode: "cover",
+  },
   centeredView: {
-    // flex: 1,
+    flex: 1,
     backgroundColor: "rgba(52, 52, 52, 0.4)",
   },
   modalView: {
@@ -101,7 +108,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 18,
     fontWeight: "500",
-    marginTop: 15,
   },
   date: {
     width: "90%",
@@ -121,6 +127,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.whites,
   },
+  date:{
+    width:'90%',
+    borderWidth:1,
+    height:55,
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:12,
+    borderColor:"#ccc",
+  },
+  dateTimePicker: {
+    height:'100%',
+   },
 });
 export default styles;
 

@@ -123,7 +123,10 @@ export function setUpdateUser(data) {
   data = JSON.stringify(data);
   return AsyncStorage.setItem("updateUser", data);
 }
-
+export function setAvatarUser(data) {
+  data = JSON.stringify(data);
+  return AsyncStorage.setItem("avatarUser", data);
+}
 
 export function setUserVeri(data) {
   data = JSON.stringify(data);
@@ -183,7 +186,7 @@ export async function getExclusive() {
     });
   });
 }
-export function setFilter(data) {
+export function setSearch(data) {
   data = JSON.stringify(data);
   return AsyncStorage.setItem("exclusive", data);
 }
@@ -196,4 +199,8 @@ export async function getFilter() {
 }
 export async function clearUserData() {
   return AsyncStorage.removeItem("userData");
+}
+export function setListOrders(data) {
+  data = JSON.stringify(data);
+  return AsyncStorage.setItem("bestselling", data);
 }

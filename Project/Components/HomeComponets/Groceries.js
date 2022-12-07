@@ -42,7 +42,7 @@ const Groceries = () => {
   }, []);
   return (
     <>
-      <SafeAreaView>
+      <View>
         <View className="flex-row ml-1 mr-1 pt-5 pb-5 justify-between">
           <TouchableOpacity className="font-semibold">
             <Text style={styles.Text}>Groceries</Text>
@@ -94,7 +94,7 @@ const Groceries = () => {
         >
           <Product />
         </ScrollView>
-      </SafeAreaView>
+      </View>
       {isLoading ? <ActivityIndicator /> : null}
     </>
   );

@@ -1,4 +1,4 @@
-import { Dimensions, SafeAreaView, StyleSheet, Text,Image, TouchableOpacity, View } from 'react-native'
+import { Dimensions, SafeAreaView, StyleSheet, Text, Image, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -13,91 +13,63 @@ import { Modal } from 'react-native';
 import { Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Alert } from 'react-native';
-
-const { height } = Dimensions.get('window')
+import axios, { Axios } from 'axios';
+import { BASE_URL } from '../IPA/Conect';
+import { getProduct } from '../utils/utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const { height } = Dimensions.get("window");
 export default function Add({ navigation }) {
+    const [dataCart, setDataCart] = useState([])
     const [modalVisible, setModalVisible] = useState(false);
     const totalPrice = useSelector(cartTotalPriceSelector);
     const itemCart = useSelector((state) => state.cartReducer) // cái này là list product đã thêm vào giỏ hàng
     const userData = useSelector((state) => state.auth.userData)
 
+    const list_cart = [];
+
     itemCart.forEach(element => {
-        // element.forEach(e =>{
-        // console.log(e);
-        // }
-        // t
-        // console.log(element);
+        list_cart.push(
+            { "product_id": element.id, "quantity": element.quantity, "price": element.price }
+        );
+    });
+    console.log('====================================');
+    console.log(list_cart);
+    console.log('====================================');
 
-        const product_id = Object.keys(element)
-            .filter((key) => key.includes("id"))
-            .reduce((obj, key) => {
-                return Object.assign(obj, {
-                    [key]: element[key]
-                });
-            }, {})
+    const bodyFormdata = new FormData()
+    bodyFormdata.append('user_id', userData.user.id);
+    bodyFormdata.append('payment_method', 'pay pal');
+    bodyFormdata.append('total_payment', totalPrice);
+    bodyFormdata.append('total_payment_sale', totalPrice);
+    bodyFormdata.append('description', 'alssd');
+    bodyFormdata.append('status', '444');
+    bodyFormdata.append('list_item', JSON.stringify(list_cart));
 
-        // console.log(product_id);
-        const quantity = Object.keys(element)
-            .filter((key) => key.includes("quantity"))
-            .reduce((obj, key) => {
-                return Object.assign(obj, {
-                    [key]: element[key]
-                });
-            }, {})
+    useEffect(() => {
 
-        // console.log(quantity);
-        const price = Object.keys(element)
-            .filter((key) => key.includes("price"))
-            .reduce((obj, key) => {
-                return Object.assign(obj, {
-                    [key]: element[key]
-                });
-            }, {})
+    }, [])
+    const order = () => {
 
-
-    })
-    // const [itemCarts, setItemCart] = useState([])
-    // useEffect(() => {
-    //     itemCart.forEach(element => {
-    //         // setItemCart(element)
-    //         // console.log(element.id);
-
-    //     });
-    // })
-
-    const upDateState = (data) => setState(() => ({ ...state, ...data }));
-    const [state, setState] = useState({
-        user_id: userData.user.id,
-        payment_method: 'pay_cash',
-        total_payment: totalPrice,
-        total_payment_sale: totalPrice,
-        description: "abs",
-        status: 3,
-        list_item: itemCart
-    })
-    const { user_id, payment_method, total_payment, total_payment_sale, description, status, list_item } = state
-
-    const orders = async () => {
-        try {
-            const res = await actions.orders({
-                user_id,
-                payment_method,
-                total_payment,
-                total_payment_sale,
-                description,
-                status,
-                list_item
+        axios({
+            url: `${BASE_URL}/orders`,
+            method: 'POST',
+            data: bodyFormdata,
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${userData.token}` 
+            }
+        })
+            .then(function (response) {
+                //handle success
+                console.log(response);
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
             });
-            console.log("orders", res);
-            showMessage("order success")
-        } catch (error) {
-            setModalVisible(true)
-            showError(error.message)
-            // console.log("error",error.message);
-
-        }
-
     }
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={[styles.flexRow, styles.topheader, { flex: 1 }]}>
@@ -110,7 +82,7 @@ export default function Add({ navigation }) {
                 <View style={[styles.flexRow, styles.Body]}>
                     <Text style={styles.textBody}>Delevery</Text>
                     <TouchableOpacity style={styles.leftItem}>
-                        <Text style={styles.text}>Select Method</Text>
+                        <Text style={styles.text}>Pay Cash</Text>
                         <Entypo name="chevron-right" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
@@ -124,7 +96,7 @@ export default function Add({ navigation }) {
                 <View style={[styles.flexRow, styles.Body]}>
                     <Text style={styles.textBody}>Promo Code</Text>
                     <TouchableOpacity style={styles.leftItem}>
-                        <Text style={styles.text}>Pick discount</Text>
+                        <Text style={styles.text}>No discount</Text>
                         <Entypo name="chevron-right" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
@@ -154,7 +126,7 @@ export default function Add({ navigation }) {
                 </View>
             </View>
             <View style={{ flex: 2 }}>
-                <TouchableOpacity style={styles.placeOder} onPress={orders}>
+                <TouchableOpacity style={styles.placeOder} onPress={order}>
                     <Text style={styles.textOder} >Place Order</Text>
                 </TouchableOpacity>
             </View>
@@ -174,10 +146,10 @@ export default function Add({ navigation }) {
                                 <Ionicons name="close" size={24} color="black" />
                             </Pressable>
                         </View>
-                        <View style={{ alignItems: 'center'}}>
+                        <View style={{ alignItems: 'center' }}>
                             <Image source={require('../../assets/images/image_13.png')} />
                         </View>
-                        <View style={{ alignItems: 'center', marginTop: 20, height: 50}}>
+                        <View style={{ alignItems: 'center', marginTop: 20, height: 50 }}>
                             <View style={{ alignItems: 'center', }}>
                                 <Text style={styles.TextError}>
                                     Oops! Order Failed
@@ -185,8 +157,8 @@ export default function Add({ navigation }) {
                                 <Text style={styles.miniText}>Something went tembly wrong</Text>
                             </View>
                         </View>
-                        <View style={{ flex: 1, justifyContent: 'center'}}>
-                            <View style={{ alignItems: 'center'}}>
+                        <View style={{ flex: 1, justifyContent: 'center' }}>
+                            <View style={{ alignItems: 'center' }}>
                                 <TouchableOpacity style={styles.ClickOrder} onPress={() => setModalVisible(!modalVisible)}>
                                     <View>
                                         <Text style={styles.doneOrder}>Please Try Again</Text>
@@ -319,7 +291,7 @@ const styles = StyleSheet.create({
         top: 0,
         // marginTop: "-15%",
         marginLeft: '5%',
-        
+
     },
     btnClose: {
         // flex: 1,
@@ -337,12 +309,12 @@ const styles = StyleSheet.create({
     miniText: {
         fontFamily: 'Gilroy-Medium'
     },
-    doneOrder:{
+    doneOrder: {
         fontFamily: 'Gilroy-Light',
         fontSize: 20,
         color: '#fff'
     },
-    ClickOrder:{
+    ClickOrder: {
         borderWidth: 1,
         width: '90%',
         height: 70,

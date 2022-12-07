@@ -7,9 +7,11 @@ import {
   BRAND,
   BESTSELLING,
   EXCLUSIVE,
-  FILTER,
+  SEARCH,
   UPDATE_USER,
-  ORDERS
+  AVATAR_USER,
+  ORDERS,
+  GETORDERS
 } from "../../IPA/Conect";
 import {
   apiGet,
@@ -17,11 +19,13 @@ import {
   clearUserData,
   setBestselling,
   setCategory,
-  setFilter,
+  setSearch,
   setProduct,
   setUserData,
   setUserVeri,
   setUpdateUser,
+  setAvatarUser,
+  setListOrders
 } from "../../utils/utils";
 import store from "../store";
 import types from "../types";
@@ -45,9 +49,9 @@ export const saveProDuct = (data) => {
     payload: data,
   });
 };
-export const saveFilter = (data) => {
+export const saveSearch = (data) => {
   dispatch({
-    type: types.FILTER,
+    type: types.SEARCH,
     payload: data,
   });
 };
@@ -66,6 +70,18 @@ export const saveBestSelling = (data) => {
 export const saveUpdateUser = (data) => {
   dispatch({
     type: types.UPDATE_USER,
+    payload: data,
+  });
+};
+export const saveAvatarUser = (data) => {
+  dispatch({
+    type: types.UPDATE_USER,
+    payload: data,
+  });
+};
+export const saveListOrder = (data) => {
+  dispatch({
+    type: types.GETORDERS,
     payload: data,
   });
 };
@@ -218,19 +234,21 @@ export function exclusive(data) {
   });
 }
 
-export function filter(data) {
+export function search(data) {
   return new Promise((resolve, reject) => {
-    return apiGet(FILTER, data)
+    return apiGet(SEARCH, data)
       .then((res) => {
-        const items = res.list_product.data;
-        items.forEach((element) => {
-          // console.log('aaaaaaaaasaa', element);
-        });
+
+        // const items = res.list_product;
+        // console.log('aaaaaaaassssssssssssssasaa', res.list_product);
+        // items.forEach((element) => {
+        //   // console.log('aaaaaaaaasaa', element);
+        // });
 
         if (res.list_product) {
-          setFilter(res).then(() => {
+          saveSearch(res).then(() => {
             resolve(res);
-            saveFilter(res);
+            setSearch(res);
           });
           return;
         }
@@ -262,10 +280,52 @@ export function update_user(data) {
       });
   });
 }
+export function avatar_user(data) {
+  return new Promise((resolve, reject) => {
+    return apiPost(AVATAR_USER, data)
+      .then((res) => {
+        if (res.user) {
+          setAvatarUser(res).then(() => {
+            resolve(res);
+            saveAvatarUser(res);
+          });
+          return;
+        }
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
 export function logout() {
   dispatch({ type: types.CLEAR_REDUX_STATE });
   clearUserData();
 }
 export function orders(data) {
-    return apiPost(ORDERS, data)
+  return apiPost(ORDERS, data)
+}
+export function getOrders(data) {
+  return new Promise((resolve, reject) => {
+    return apiGet(GETORDERS, data)
+      .then((res) => {
+        // console.log('list', res.list_order.data);
+        let daataa = res.list_order.data
+        daataa.forEach(element => {
+          console.log(element.order_detail);
+        });
+        if (res.list_order) {
+          setListOrders(res.list_order).then(() => {
+            resolve(res.list_order);
+            saveBestSelling(res.list_order);
+          });
+          return;
+        }
+        resolve(res);
+      })
+      .catch((error) => {
+        console.log("loi", error);
+        reject(error);
+      });
+  });
 }

@@ -6,7 +6,7 @@ import styles from './styles'
 
 const BannerSlide = () => {
   return (
-    <SafeAreaView>
+    <View style={{height:120}}>
         <Swiper
           style={styles.slider}
           autoplayTimeout={5}
@@ -15,13 +15,13 @@ const BannerSlide = () => {
           dot={<View style={styles.dot}></View>}
           activeDot={<View style={styles.active}></View>}
         >
-          <View className="items-center justify-center h-max w-max  ">
+          <View className="items-center justify-center  w-max  ">
             <Image
               style={styles.Image}
               source={require("../../accsets/images/banner.png")}
             />
           </View>
-          <View className="items-center  h-max justify-center w-full ">
+          <View className="items-center  justify-center w-full ">
             <Image
               style={styles.Image}
               source={require("../../accsets/images/banner.png")}
@@ -34,7 +34,7 @@ const BannerSlide = () => {
             />
           </View>
         </Swiper>
-    </SafeAreaView>
+    </View>
   )
 }
 

@@ -1,4 +1,4 @@
-export const BASE_URL = "https://3d1d-2402-800-613e-7abe-91c6-c214-87f6-d1e3.ap.ngrok.io/api";
+export const BASE_URL = "https://f618-14-241-82-32.ap.ngrok.io/api";
 
 export const getApiUrl = (endpoint) => BASE_URL + endpoint;
 
@@ -10,6 +10,8 @@ export const CATEGORIES = getApiUrl('/categories/list')
 export const BRAND = getApiUrl('/brand/list')
 export const BESTSELLING = getApiUrl('/products/best-selling?page=1')
 export const EXCLUSIVE = getApiUrl('/products/exclusive-offer?page=1')
-export const FILTER = getApiUrl('/products/filter-search?textSearch?page=1')
+export const SEARCH = getApiUrl('/products/filter-search?textSearch?page=1')
 export const UPDATE_USER = getApiUrl('/user/update')
+export const AVATAR_USER = getApiUrl('/user/avatar')
 export const ORDERS = getApiUrl('/orders')
+export const GETORDERS = getApiUrl('/orders')
