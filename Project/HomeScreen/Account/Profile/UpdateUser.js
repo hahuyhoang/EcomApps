@@ -150,14 +150,14 @@ export default function UpdateUser({ navigation }) {
                 Choose Your Profile Picture
               </Text>
               <Button
-                onPress={PickerImage}
+                onPress={PickerCamera}
                 buttonStyle={styles.btnCamera}
                 title={"Take Photo"}
                 textStyle={styles.text}
               />
 
               <Button
-                onPress={PickerCamera}
+                onPress={PickerImage}
                 buttonStyle={styles.btnCamera}
                 title={"Choose From Library"}
                 textStyle={styles.text}

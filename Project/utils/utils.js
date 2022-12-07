@@ -200,3 +200,7 @@ export async function getFilter() {
 export async function clearUserData() {
   return AsyncStorage.removeItem("userData");
 }
+export function setListOrders(data) {
+  data = JSON.stringify(data);
+  return AsyncStorage.setItem("bestselling", data);
+}

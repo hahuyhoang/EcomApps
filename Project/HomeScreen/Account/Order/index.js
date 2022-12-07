@@ -17,11 +17,12 @@ import {
 } from "react-native-vector-icons";
 import { colors } from "../../../theme/colors";
 import { Feather } from "@expo/vector-icons";
-import Button from "../../../Components/button";
 
 const Order = ({ navigation }) => {
+
   return (
     <SafeAreaView className="flex-1  bg-white">
+
       <ScrollView className="flex-1 ">
         <View className=" pt-4 pb-4 justify-center ">
           <View className="justify-center items-center ">
@@ -58,54 +59,6 @@ const Order = ({ navigation }) => {
           <View className="  border-b justify-center pl-5 pr-5  border-gray-300">
             <View
               style={styles.horizon}
-              className="flex-row justify-between items-center"
-            >
-              <View className="flex-row h-24 items-center justify-center">
-                <Image
-                  className=" h-full"
-                  style={{ resizeMode: "contain" }}
-                  source={require("../../../accsets/images/product_1.png")}
-                />
-                <View className="pl-7">
-                  <Text style={{ fontFamily: "Gilroy-Bold", fontSize: 15 }}>
-                    Sprite
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: "Gilroy-Medium",
-                      fontSize: 15,
-                      color: "#7c7c7c",
-                    }}
-                  >
-                    325ml, Price
-                  </Text>
-                </View>
-              </View>
-              <View className="h-full items-center">
-                <Text
-                  style={{
-                    fontFamily: "Gilroy-Semi",
-                    fontSize: 15,
-                    marginVertical: 20,
-                  }}
-                >
-                  $5.42
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: "Gilroy-Semi",
-                    fontSize: 15,
-                    marginTop: "20%",
-                  }}
-                >
-                  x1
-                </Text>
-              </View>
-            </View>
-          </View>
-          <View className="  border-b justify-center pl-5 pr-5  border-gray-300">
-            <View
-              style={styles.horizon}
               className="flex-row  justify-between items-center"
             >
               <View className="flex-row h-24 items-center justify-center">
@@ -116,103 +69,6 @@ const Order = ({ navigation }) => {
                 />
                 <View className="pl-7">
                   <Text style={{ fontFamily: "Gilroy-Bold", fontSize: 15 }}>
-                    Sprite
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: "Gilroy-Medium",
-                      fontSize: 15,
-                      color: "#7c7c7c",
-                    }}
-                  >
-                    325ml, Price
-                  </Text>
-                </View>
-              </View>
-              <View className="h-full items-center">
-                <Text
-                  style={{
-                    fontFamily: "Gilroy-Semi",
-                    fontSize: 15,
-                    marginVertical: 20,
-                  }}
-                >
-                  $5.42
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: "Gilroy-Semi",
-                    fontSize: 15,
-                    marginTop: "20%",
-                  }}
-                >
-                  x1
-                </Text>
-              </View>
-            </View>
-          </View>
-          <View className="  border-b justify-center pl-5 pr-5  border-gray-300">
-            <View
-              style={styles.horizon}
-              className="flex-row  justify-between items-center"
-            >
-              <View className="flex-row h-24 items-center justify-center">
-                <Image
-                  className=" h-full"
-                  style={{ resizeMode: "contain" }}
-                  source={require("../../../accsets/images/product_1.png")}
-                />
-                <View className="pl-7">
-                  <Text style={{ fontFamily: "Gilroy-Bold", fontSize: 15 }}>
-                    Sprite
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: "Gilroy-Medium",
-                      fontSize: 15,
-                      color: "#7c7c7c",
-                    }}
-                  >
-                    325ml, Price
-                  </Text>
-                </View>
-              </View>
-              <View className="h-full items-center">
-                <Text
-                  style={{
-                    fontFamily: "Gilroy-Semi",
-                    fontSize: 15,
-                    marginVertical: 20,
-                  }}
-                >
-                  $5.42
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: "Gilroy-Semi",
-                    fontSize: 15,
-                    marginTop: "20%",
-                  }}
-                >
-                  x1
-                </Text>
-              </View>
-            </View>
-          </View>
-          <View className="  border-b justify-center pl-5 pr-5  border-gray-300">
-            <View
-              style={styles.horizon}
-              className="flex-row  justify-between items-center"
-            >
-              <View className="flex-row h-24 items-center justify-center">
-                <Image
-                  className=" h-full"
-                  style={{ resizeMode: "contain" }}
-                  source={require("../../../accsets/images/product_1.png")}
-                />
-                <View className="pl-7">
-                  <Text style={{ fontFamily: "Gilroy-Bold", fontSize: 15 }}>
-                    Sprite
                   </Text>
                   <Text
                     style={{
@@ -248,6 +104,7 @@ const Order = ({ navigation }) => {
             </View>
           </View>
         </ScrollView>
+
         <View className=" flex-1 ">
           <View className=" pt-3 pb-3 flex-row justify-between  border-b border-gray-300 ">
             <View className="pl-5 pr-5 flex-row items-center">
@@ -294,7 +151,7 @@ const Order = ({ navigation }) => {
           </View>
         </View>
         <View className="justify-center items-center mt-16 flex-1 ">
-          <TouchableOpacity style={styles.Button}>
+          <TouchableOpacity style={styles.Button} onPress={() => navigation.navigate("ItemOrders")}>
             <Text style={styles.Textbtn}>Purchase</Text>
             <View style={styles.price} className=" right-8 top-5">
               <Text style={{ color: colors.white, fontWeight: "600" }}>
@@ -304,6 +161,7 @@ const Order = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
+
     </SafeAreaView>
   );
 };
