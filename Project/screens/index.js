@@ -46,7 +46,9 @@ export default function Add({ navigation }) {
     bodyFormdata.append('list_item', JSON.stringify(list_cart));
 
     useEffect(() => {
-
+console.log('====================================');
+console.log();
+console.log('====================================');
     }, [])
     const order = () => {
 
