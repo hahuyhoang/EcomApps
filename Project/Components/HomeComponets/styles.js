@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         fontFamily: "Gilroy-Semi",
     },
     slider: {
-        height: 135
+        // height: "100%"
     },
     dot: {
         width: 5,
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     },
     Image: {
         width: '100%',
-        resizeMode: "contain",
+        resizeMode: "cover",
     },
       warp: {
         flexDirection: "row",

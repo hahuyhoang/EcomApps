@@ -11,52 +11,96 @@ import { Feather, EvilIcons } from "@expo/vector-icons";
 import Inputs from "../../../Components/Textinputs";
 import Button from "../../../Components/button";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import DatePicker from "react-native-datepicker";
-import { Ionicons, Entypo, Octicons ,AntDesign} from "react-native-vector-icons";
+import { Ionicons, Fontisto } from "react-native-vector-icons";
 import styles from "./style";
 import actions from "../../../redux/actions";
-import { showError } from "../../../utils/helperFunction";
-import { Camera, CameraType } from "expo-camera";
-import { shareAsync } from "expo-sharing";
-import * as MediaLibrary from "expo-media-library";
 import { showMessage } from "react-native-flash-message";
 import { useSelector } from "react-redux";
+import * as ImagePicker from "expo-image-picker";
+import { Platform } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+
 
 export default function UpdateUser({ navigation }) {
-  const [showCamera, setShowCamera] = useState(false);
-  let cameraRef = useRef();
-  const [hasCameraPermission, setHasCameraPermission] = useState();
-  const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
-  const [photo, setPhoto] = useState();
   const [image, setImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState("");
+  const [avatar, setAvatar] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
-  const [date, setDate] = useState("13-10-2000");
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState();
   const [isChecked, setChecked] = useState(false);
-  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [imageDefault, setImageDefault] = useState(false);
   const [state, setState] = useState({
     name: "",
     address: "",
-    gender: isChecked,
-    birthday: date,
+    gender: "",
+    birthday: "",
   });
   const { name, gender, address, birthday } = state;
   const updateState = (data) => setState(() => ({ ...state, ...data }));
-
   const userData = useSelector((state) => state.auth.userData);
   const user_id = userData.user.id;
-  // console.log("user data in account screen",userData );
 
+  const onchange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS == "ios");
+    setDate(currentDate);
+  };
+  const showModal = (currentDate) => {
+    setShow(true);
+    setMode(currentDate);
+  };
+  // add thu vien iamge va camera ImagePicker
+  useEffect(() => {
+    const fetch = async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Permisson denied!");
+        }
+      }
+    };
+    fetch();
+  }, []);
+  const PickerCamera = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      base64: true,
+      quality: 0.5,
+    });
+    if (!result.canceled) {
+      setImage("data:image/jpg;base64," + result.assets[0].base64);
+      setModalVisible(!modalVisible);
+    }
+  };
+  const PickerImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      base64: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage("data:image/jpg;base64," + result.assets[0].base64);
+      setModalVisible(!modalVisible);
+    }
+  };
+  // submit info user axios
   const submitInfoUser = async () => {
     setIsLoading(true);
     try {
       const res = await actions.update_user({
         user_id,
         name,
-        gender,
+        gender: isChecked,
         address,
-        birthday,
+        birthday: date,
       });
       setIsLoading(false);
       console.log("=>>>>>>>ssres", res);
@@ -70,84 +114,22 @@ export default function UpdateUser({ navigation }) {
     }
     setIsLoading(false);
   };
-  useEffect(() => {
-    (async () => {
-      const cameraPermission = await Camera.requestCameraPermissionsAsync();
-      const mediaLibraryPermission =
-        await MediaLibrary.requestPermissionsAsync();
-      setHasCameraPermission(cameraPermission.status === "granted");
-      setHasMediaLibraryPermission(mediaLibraryPermission.status === "granted");
-    })();
-  }, []);
-
-  if (hasCameraPermission === undefined) {
-    return <Text>Requesting permissions...</Text>;
-  } else if (!hasCameraPermission) {
-    return (
-      <Text>
-        Permission for camera not granted. Please change this in settings.
-      </Text>
-    );
-  }
-
-  let takePic = async () => {
-    let options = {
-      quality: 1,
-      base64: true,
-      exif: false,
-    };
-
-    let newPhoto = await cameraRef.current.takePictureAsync(options);
-    setPhoto(newPhoto);
+  // submit Avatar user axios
+  const submitAvatarUser = async () => {
+    setIsLoading(true);
+    try {
+      const res = await actions.avatar_user({
+        user_id,
+        avatar: image,
+      });
+      setIsLoading(false);
+      // console.log("=>>>>>>>ImageAvaterr", res);
+      setAvatar(res);
+    } catch (error) {
+      console.log(error.message);
+    }
+    setIsLoading(false);
   };
-
-  if (photo) {
-    let sharePic = () => {
-      shareAsync(photo.uri).then(() => {
-        setPhoto(undefined);
-      });
-    };
-
-    let savePhoto = () => {
-      MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
-        setPhoto(undefined);
-        setImage(photo.uri);
-        setShowCamera(false)
-        setModalVisible(false)
-      });
-    };
-
-    return (
-      <View style={styles.container}>
-        <Image
-          style={styles.preview}
-          source={{ uri: "data:image/jpg;base64," + photo.base64 }}
-        />
-        <View className="justify-between flex-row h-24 bg-black w-full">
-          <TouchableOpacity
-            className="h-full w-20 justify-center items-center"
-            onPress={sharePic}
-          >
-            <Ionicons name="ios-share-outline" size={30} color={"white"} />
-          </TouchableOpacity>
-          {hasMediaLibraryPermission ? (
-            <TouchableOpacity
-              className="h-full w-20 justify-center items-center"
-              onPress={savePhoto}
-            >
-              <Ionicons name="save" size={30} color={"white"} />
-            </TouchableOpacity>
-          ) : undefined}
-          <TouchableOpacity
-            className="h-full w-20 justify-center items-center"
-            onPress={() => setPhoto(undefined)}
-          >
-            <Ionicons name="close-circle-sharp" size={30} color={"white"} />
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -161,61 +143,34 @@ export default function UpdateUser({ navigation }) {
             setModalVisible(!modalVisible);
           }}
         >
-          {showCamera ? (
-            <Camera type={type} style={styles.container} ref={cameraRef}>
-              <TouchableOpacity  className="absolute left-10 bottom-16" onPress={() => setShowCamera(false)}>
-                <AntDesign name="close" size={30} color="white" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={takePic}
-                style={styles.buttonContainer}
-              >
-                <Entypo name="camera" size={30} color="white" />
-              </TouchableOpacity>
-              <TouchableOpacity className="absolute right-10 bottom-16 ">
-                <Octicons
-                  name="sync"
-                  size={26}
-                  color="green"
-                  onPress={() => {
-                    setType(
-                      type === CameraType.back
-                        ? CameraType.front
-                        : CameraType.back
-                    );
-                  }}
-                />
-              </TouchableOpacity>
-            </Camera>
-          ) : (
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>Upload Photo</Text>
-                <Text className="pt-2 pb-2 mb-8 text-slate-400">
-                  Choose Your Profile Picture
-                </Text>
-                <Button
-                  buttonStyle={styles.btnCamera}
-                  title={"Take Photo"}
-                  textStyle={styles.text}
-                />
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Upload Photo</Text>
+              <Text className="pt-2 pb-2 mb-8 text-slate-400">
+                Choose Your Profile Picture
+              </Text>
+              <Button
+                onPress={PickerImage}
+                buttonStyle={styles.btnCamera}
+                title={"Take Photo"}
+                textStyle={styles.text}
+              />
 
-                <Button
-                  onPress={() => setShowCamera(true)}
-                  buttonStyle={styles.btnCamera}
-                  title={"Choose From Library"}
-                  textStyle={styles.text}
-                />
+              <Button
+                onPress={PickerCamera}
+                buttonStyle={styles.btnCamera}
+                title={"Choose From Library"}
+                textStyle={styles.text}
+              />
 
-                <Button
-                  onPress={() => setModalVisible(!modalVisible)}
-                  buttonStyle={styles.btnCamera}
-                  title={"Cancel"}
-                  textStyle={styles.text}
-                />
-              </View>
+              <Button
+                onPress={() => setModalVisible(!modalVisible)}
+                buttonStyle={styles.btnCamera}
+                title={"Cancel"}
+                textStyle={styles.text}
+              />
             </View>
-          )}
+          </View>
         </Modal>
         <View className="">
           <View
@@ -238,14 +193,14 @@ export default function UpdateUser({ navigation }) {
               className="border border-gray-300 items-center rounded-full justify-center w-24 h-24"
             >
               <Image
-                style={styles.image}
-                className="items-center rounded-full justify-center w-24 h-24"
+                style={styles.avatar}
+                defaultSource={require("../../../accsets/images/user.jpg")}
                 source={{ uri: image }}
               />
               <Ionicons
                 className="absolute"
                 size={40}
-                color={"#fff"}
+                color={"#ccc"}
                 name="add"
               />
             </TouchableOpacity>
@@ -269,7 +224,8 @@ export default function UpdateUser({ navigation }) {
                 <BouncyCheckbox
                   size={20}
                   fillColor="#53B175"
-                  text="Female "
+                  text="Female"
+                  value={1}
                   iconStyle={{ borderColor: "#ccc" }}
                   textStyle={{
                     textDecorationLine: "none",
@@ -288,6 +244,7 @@ export default function UpdateUser({ navigation }) {
                   size={20}
                   fillColor="#53B175"
                   text="Male"
+                  value={2}
                   iconStyle={{ borderColor: "#ccc" }}
                   textStyle={{
                     textDecorationLine: "none",
@@ -309,37 +266,31 @@ export default function UpdateUser({ navigation }) {
         </View>
         <Text style={styles.label}>Brithday</Text>
         <View className="justify-center items-center">
-          <DatePicker
+          <TouchableOpacity
+            title="dada"
             style={styles.date}
-            date={date} //initial date from state
-            mode="date"
-            format="DD-MM-YYYY"
-            minDate="01-01-1960"
-            maxDate="01-01-2020"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                position: "absolute",
-                left: 4,
-                top: 4,
-                marginLeft: 0,
-              },
-              dateInput: {
-                height: 50,
-                borderRadius: 12,
-                borderColor: "#ccc",
-              },
-            }}
-            onDateChange={(date) => {
-              console.log(date);
-              setDate(date);
-            }}
-          />
+            onPress={() => showModal("date")}
+          >
+            <Fontisto
+              className="absolute left-2 bottom-4"
+              name="date"
+              size={22}
+              color="green"
+            />
+            <DateTimePicker
+              style={styles.dateTimePicker}
+              testID="dateTimePicker"
+              value={date}
+              mode={mode}
+              onChange={onchange}
+            />
+          </TouchableOpacity>
         </View>
         <View className="justify-center items-center flex-1">
           <Button
-            onPress={submitInfoUser}
+            onPress={() => {
+              submitAvatarUser(), submitInfoUser();
+            }}
             buttonStyle={styles.btn}
             title={"Update Profile"}
             textStyle={styles.text}

@@ -15,7 +15,7 @@ import ExclusiveProDucts from "../exClusive";
 const Exclusive = ({ }) => {
   const navigation = useNavigation();
   return (
-    <SafeAreaView>
+    <View>
       <View className="flex-row pt-5 pb-5 justify-between">
         <TouchableOpacity className="font-semibold">
           <Text style={styles.Text}>Exclusive Offer</Text>
@@ -35,7 +35,7 @@ const Exclusive = ({ }) => {
       >
         <ExclusiveProDucts />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

@@ -73,6 +73,7 @@ const ProductDetail = ({ route, navigation }) => {
           <View className="items-center justify-center ">
             <Image
               style={{ width: "100%", height: "80%", resizeMode: "contain" }}
+              defaultSource={require('../../../accsets/images/product_1.png')}
               source={{ uri: `${userData.url}/${img}` }}
             />
           </View>
