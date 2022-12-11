@@ -16,28 +16,26 @@ const ItemOrders = () => {
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const [odersData, setOrdersData] = useState([])
-        useEffect(() => {
-            (async () => {
-                setIsLoading(true);
-                try {
-                    let res = await actions.getOrders();
-                    console.log(res.data);
-                    // const data = res.data
-                    // data.forEach(element => {
-                    //     // console.log(element.order_detail);
-                    //     const listdata = element.order_detail
-                    //     listdata.forEach(dataorderss => {
-                    //         // console.log(dataorderss);
-                    //     });
-                    // });
-                    setData(data)
-                } catch (error) {
+    const itemOrder = []
+    useEffect(() => {
+        (async () => {
+            setIsLoading(true);
+            try {
+                let res = await actions.getOrders();
+                // console.log(res.data);
+                let dataOrders = res.data
+                dataOrders.forEach(element => {
+                    console.log("dataorder", element);
+                    // itemOrder.push(element.order_detail)
+                });
+                setData(data)
+            } catch (error) {
 
-                    console.log("error", error);
-                }
-            })();
-        }, []);
-
+                console.log("error", error);
+            }
+        })();
+    }, []);
+    // console.log("data", itemOrder);
     const renderItems = ({ item, index }) => {
         return (
             <View className="  border-b justify-center pl-5 pr-5  border-gray-300">
@@ -53,7 +51,7 @@ const ItemOrders = () => {
                         />
                         <View className="pl-7">
                             <Text style={{ fontFamily: "Gilroy-Bold", fontSize: 15 }}>
-                            aaaaaa
+                                aaaaaa
                             </Text>
                             <Text
                                 style={{

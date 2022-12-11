@@ -5,18 +5,18 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
-  Image,Dimensions
+  Image, Dimensions
 } from "react-native";
-import React,{useState,} from "react";
+import React, { useState, } from "react";
 import { Ionicons } from "react-native-vector-icons";
 import { colors } from "../../../theme/colors";
 import { useSelector } from "react-redux";
 
 const { width } = Dimensions.get("window");
-const cardWidth = width / 2.3 ;
+const cardWidth = width / 2.3;
 
 const Beverages = ({ navigation }) => {
-  
+
   const [data, setData] = useState([]);
   const userData = useSelector((state) => state.auth.userData);
   const [search, setSearch] = useState("");
@@ -53,9 +53,9 @@ const Beverages = ({ navigation }) => {
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.warp}>
-             {items.map((item) => {
+            {items.map((item) => {
               return (
-                <View style={styles.container}>
+                <View style={styles.container} key={item}>
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate("ProductDetail", {
