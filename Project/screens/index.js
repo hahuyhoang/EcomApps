@@ -16,7 +16,7 @@ import * as Animatable from 'react-native-animatable';
 import * as Progress from 'react-native-progress';
 import Button from '../Components/button';
 import LottieView from 'lottie-react-native'
-
+import { clear, removeItem } from "../redux/reducers/cartFavorites";
 const { height } = Dimensions.get("window");
 export default function Add({ navigation }) {
     const [dataCart, setDataCart] = useState([])
@@ -25,7 +25,7 @@ export default function Add({ navigation }) {
     const itemCart = useSelector((state) => state.cartReducer) // cái này là list product đã thêm vào giỏ hàng
     const userData = useSelector((state) => state.auth.userData)
     const [modalDone, setModalDone] = useState(false);
-
+    const dispatch = useDispatch();
 
     const list_cart = [];
 
@@ -69,8 +69,10 @@ export default function Add({ navigation }) {
                 // console.log(response);
                 if (totalPrice === 0) {
                     setModalVisible(true)
+
                 } else {
                     setModalDone(true)
+                    dispatch(clear())
                 }
             })
             .catch(function (response) {
@@ -117,9 +119,6 @@ export default function Add({ navigation }) {
                         <Entypo name="chevron-right" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
-                <View className="border-b border-gray-200">
-                    <Input style={{ fontFamily: 'Gilroy-Semi' }} placeholder="Address" />
-                </View>
                 <View style={{ marginTop: 20 }}>
                     <Text style={styles.textService}>
                         By placing an order you agree to our
@@ -134,7 +133,9 @@ export default function Add({ navigation }) {
                 </View>
             </View>
             <View style={{ flex: 2 }}>
-                <TouchableOpacity style={styles.placeOder} onPress={order}>
+                <TouchableOpacity style={styles.placeOder} onPress={() => {
+                    order()
+                }}>
                     <Text style={styles.textOder} >Place Order</Text>
                 </TouchableOpacity>
             </View>
@@ -173,7 +174,7 @@ export default function Add({ navigation }) {
                                     </View>
                                 </TouchableOpacity>
                                 <View>
-                                    <TouchableOpacity onPress={() => { navigation.navigate('HomeScreen') }}>
+                                    <TouchableOpacity onPress={() => { navigation.navigate('Homes') }}>
                                         <Text style={styles.doneOrder1}>Back to home</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -212,7 +213,7 @@ export default function Add({ navigation }) {
                         </View>
                     </View>
                     <View style={styles.container3}>
-                        <TouchableOpacity style={styles.ClickOrder}>
+                        <TouchableOpacity style={styles.ClickOrder} onPress={() => navigation.navigate('ItemOrders')}>
                             <View>
                                 <Text style={styles.doneOrder}>Track Order</Text>
                             </View>

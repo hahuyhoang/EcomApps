@@ -310,10 +310,10 @@ export function getOrders(data) {
     return apiGet(GETORDERS, data)
       .then((res) => {
         // console.log('list', res.list_order.data);
-        let daataa = res.list_order.data
-        daataa.forEach(element => {
-          console.log(element.order_detail);
-        });
+        // let daataa = res.list_order.data
+        // daataa.forEach(element => {
+        //   console.log(element.order_detail);
+        // });
         if (res.list_order) {
           setListOrders(res.list_order).then(() => {
             resolve(res.list_order);

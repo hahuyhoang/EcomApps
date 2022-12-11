@@ -41,7 +41,7 @@ const ProductCart = () => {
           {data.map((item) => {
             const totalItemPrice = (item.quantity * item.price).toFixed(2)
             return (
-              <View style={styles.horizon} className="flex-row  items-center">
+              <View style={styles.horizon} className="flex-row  items-center" key={item.id}>
                 <View className="flex-row flex-1 h-32 items-center  border-b border-gray-300 ">
                   <Image
                     style={styles.Images}

@@ -107,7 +107,7 @@ const Search = ({ navigation }) => {
           <View style={styles.warp}>
             {data.map((item) => {
               return (
-                <View style={styles.container}>
+                <View style={styles.container} key={item}>
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate("ProductDetail", {
