@@ -34,26 +34,24 @@ export default function Add({ navigation }) {
             { "product_id": element.id, "quantity": element.quantity, "price": element.price }
         );
     });
-    // console.log('====================================');
-    // console.log(list_cart);
-    // console.log('====================================');
+    
 
     const bodyFormdata = new FormData()
     bodyFormdata.append('user_id', userData.user.id);
-    bodyFormdata.append('payment_method', 'Pay_cash');
-    bodyFormdata.append('total_payment', totalPrice);
-    bodyFormdata.append('total_payment_sale', totalPrice);
+    bodyFormdata.append('payment_method', 'Pay cash');
+    bodyFormdata.append('total_payment', totalPrice.toFixed(2));
+    bodyFormdata.append('total_payment_sale', totalPrice.toFixed(2));
     bodyFormdata.append('description', 'description');
     bodyFormdata.append('status', 'order');
     bodyFormdata.append('list_item', JSON.stringify(list_cart));
-
+    
     useEffect(() => {
         // setTimeout(() => {
         //     navigation.navigate("Order")
         // }, 4000)
     }, [])
     const order = async () => {
-
+        
         axios({
             url: `${BASE_URL}/orders`,
             method: 'POST',
@@ -66,10 +64,11 @@ export default function Add({ navigation }) {
         })
             .then(function (response) {
                 //handle success
-                // console.log(response);
+                console.log('send',response);
+                
                 if (totalPrice === 0) {
                     setModalVisible(true)
-
+                
                 } else {
                     setModalDone(true)
                     dispatch(clear())
