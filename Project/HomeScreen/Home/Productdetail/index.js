@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   SafeAreaView,
+  useWindowDimensions,
 } from "react-native";
 import Button from "../../../Components/button";
 import { colors } from "../../../theme/colors";
@@ -22,6 +23,7 @@ import {
 } from "../../../redux/reducers/cartReducer";
 import { showMessage } from "react-native-flash-message";
 import { addToCartFavorite } from "../../../redux/reducers/cartFavorites";
+import RenderHTML from "react-native-render-html";
 const ProductDetail = ({ route, navigation }) => {
   const userData = useSelector((state) => state.auth.userData);
   const [hideHeart, setHideHeart] = React.useState("");
@@ -29,8 +31,12 @@ const ProductDetail = ({ route, navigation }) => {
   const [img, setImg] = useState([]);
   const [isfavorite, setIsFavorite] = useState(false);
   const dispatch = useDispatch();
- 
-  
+  const [deTail, setDeTail] = useState([])
+  const { width } = useWindowDimensions();
+
+  const source = {
+    html: `${deTail}`
+  };
   //nhan id tu man product,  call api tu key de show thong tin san pham,
   useEffect(() => {
     const infoProDuct = axios
@@ -40,14 +46,11 @@ const ProductDetail = ({ route, navigation }) => {
         },
       })
       .then((res) => {
-        // console.log(res);
         setItem(res.data.data_product);
         setImg(res.data.data_product.media.url);
         let metaValue = res.data.data_product;
-        // metaValue.forEach((element) => {
-        //   // console.log(element);
-        //   setWeight(element);
-        // });
+        setDeTail(res.data.data_product.description)
+        console.log(res.data.data_product);
       })
       .catch((error) => {
         console.log(error);
@@ -154,8 +157,8 @@ const ProductDetail = ({ route, navigation }) => {
             </Text>
             <Ionicons name="chevron-down" size={25} />
           </View>
-
-          <Text style={styles.text}>{item.description}</Text>
+          <RenderHTML source={source} contentWidth={width} />
+          {/* <Text style={styles.text}>{deTail}</Text> */}
         </View>
         <View className="border-b border-zinc-300 flex-row justify-between pt-4 pb-4">
           <Text className="font-semibold">Nutritions</Text>
