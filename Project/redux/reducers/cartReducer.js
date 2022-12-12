@@ -15,9 +15,9 @@ const cartSlice = createSlice({
         return state.map((item) =>
           item.id === id
             ? {
-                ...item,
-                quantity: item.quantity + 1,
-              }
+              ...item,
+              quantity: item.quantity + 1,
+            }
             : item
         );
       } else {
@@ -31,9 +31,9 @@ const cartSlice = createSlice({
       return state.map((item) =>
         item.id === payload
           ? {
-              ...item,
-              quantity: item.quantity + 1,
-            }
+            ...item,
+            quantity: item.quantity + 1,
+          }
           : item
       );
     },
@@ -41,9 +41,9 @@ const cartSlice = createSlice({
       return state.map((item) =>
         item.id === payload
           ? {
-              ...item,
-              quantity: item.quantity - 1,
-            }
+            ...item,
+            quantity: item.quantity - 1,
+          }
           : item
       );
     },

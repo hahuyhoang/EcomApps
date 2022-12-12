@@ -56,6 +56,7 @@ const ProductDetail = ({ route, navigation }) => {
         console.log(error);
       });
   }, []);
+  let quantity = item.status
   return (
     <SafeAreaView className="flex-1 ">
       <View style={styles.itemImage} className="pl-2 pr-2 flex-1 ">
@@ -125,18 +126,14 @@ const ProductDetail = ({ route, navigation }) => {
           <View className="flex-row justify-between mt-5 mb-5 items-center">
             <TouchableOpacity
               onPress={() => {
-                if (item.quantity === 1) {
-                  dispatch(removeItem(item.id));
-                  return;
-                } else {
-                  dispatch(decrement(item.id));
-                }
-              }}
+                dispatch(decrement(item.id));
+              }
+              }
             >
               <AntDesign name="minus" size={24} />
             </TouchableOpacity>
             <View style={styles.btn}>
-              <Text>{1}</Text>
+              <Text>{quantity}</Text>
             </View>
             <TouchableOpacity
               onPress={() => {

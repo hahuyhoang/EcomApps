@@ -51,7 +51,7 @@ const Product = ({ }) => {
         {data.map((dataProDuct) => {
           const item = dataProDuct.product;
           return (
-            <View style={styles.container}>
+            <View style={styles.container} key={item.id}>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("ProductDetail", {

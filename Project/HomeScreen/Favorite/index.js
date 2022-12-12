@@ -15,12 +15,13 @@ import { useSelector } from "react-redux";
 import { addToCart } from "../../redux/reducers/cartReducer";
 import { useDispatch } from "react-redux";
 import { clear, removeItem } from "../../redux/reducers/cartFavorites";
+import { showMessage } from "react-native-flash-message";
 const Favorite = () => {
   const userData = useSelector((state) => state.auth.userData);
   const dispatch = useDispatch();
   const [item, setItem] = useState([]);
   const data = useSelector((state) => state.cartFavorite);
- 
+
   useEffect(() => {
     try {
       data.forEach((items) => {
@@ -60,68 +61,69 @@ const Favorite = () => {
         </TouchableOpacity>
       </View>
       <ScrollView showsVerticalScrollIndicator={false} className="ml-5 mr-5">
-      {data.length == 0 ? (
-        <View  style={{height:500}}  className="flex-1 justify-center items-center">
-          <Image
-            style={{ resizeMode: "contain" ,width:180 ,height:180}}
-            source={require("../../accsets/images/favorites.png")}
-          />
-          <Text className="text-sm font-medium ">Your Cart Favorite is Empty</Text>
-        </View>
-      ) : (
-        <View>
-          {data.map((item) => {
-            return (
-              <View className="border-b w-full  h-32 border-gray-300">
-                <View
-                  style={styles.horizon}
-                  className="flex-row w-full h-full items-center"
-                >
-                  <View className="flex-row h-full w-full items-center ">
-                    <Image
-                      className="p"
-                      style={styles.Images}
-                      // onError={this.replaceImage}
-                      source={{ uri: `${userData.url}/${item.media.url}` }}
-                    />
-                    <View className="pl-7">
-                      <Text style={{ fontFamily: "Gilroy-Bold", fontSize: 15 }}>
-                        {item.name}
+        {data.length == 0 ? (
+          <View style={{ height: 500 }} className="flex-1 justify-center items-center">
+            <Image
+              style={{ resizeMode: "contain", width: 180, height: 180 }}
+              source={require("../../accsets/images/favorites.png")}
+            />
+            <Text className="text-sm font-medium ">Your Cart Favorite is Empty</Text>
+          </View>
+        ) : (
+          <View>
+            {data.map((item) => {
+              return (
+                <View className="border-b w-full  h-32 border-gray-300">
+                  <View
+                    style={styles.horizon}
+                    className="flex-row w-full h-full items-center"
+                  >
+                    <View className="flex-row h-full w-full items-center ">
+                      <Image
+                        className="p"
+                        style={styles.Images}
+                        // onError={this.replaceImage}
+                        source={{ uri: `${userData.url}/${item.media.url}` }}
+                      />
+                      <View className="pl-7">
+                        <Text style={{ fontFamily: "Gilroy-Bold", fontSize: 15 }}>
+                          {item.name}
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: "Gilroy-Medium",
+                            fontSize: 15,
+                            color: "#7c7c7c",
+                            paddingTop: 4,
+                          }}
+                        >
+                          {item.title}
+                        </Text>
+                      </View>
+                    </View>
+                    <View className="ml-auto flex-row items-center">
+                      <Text style={{ fontFamily: "Gilroy-Semi", fontSize: 15 }}>
+                        ${item.price}
                       </Text>
-                      <Text
-                        style={{
-                          fontFamily: "Gilroy-Medium",
-                          fontSize: 15,
-                          color: "#7c7c7c",
-                          paddingTop: 4,
-                        }}
-                      >
-                        {item.title}
-                      </Text>
+                      <Feather name="chevron-right" size={24} color="black" />
                     </View>
                   </View>
-                  <View className="ml-auto flex-row items-center">
-                    <Text style={{ fontFamily: "Gilroy-Semi", fontSize: 15 }}>
-                      ${item.price}
-                    </Text>
-                    <Feather name="chevron-right" size={24} color="black" />
-                  </View>
                 </View>
-              </View>
-            );
-          })}
-        </View>
-      )}
+              );
+            })}
+          </View>
+        )}
       </ScrollView>
 
       <View style={[styles.horizon]} className="mb-20">
         <Button
-          onPress={() =>
-          {
-            data.forEach(item => 
+          onPress={() => {
+            data.forEach(item =>
               dispatch(addToCart(item)),
-              dispatch(clear())
+              dispatch(clear()),
+
             )
+
           }}
           buttonStyle={{
             alignItems: "center",
