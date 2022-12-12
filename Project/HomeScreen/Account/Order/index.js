@@ -22,6 +22,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import actions from "../../../redux/actions";
 import { useEffect } from "react";
+import AppLoader from "../../../Components/AppLoader";
 
 const Order = ({ navigation }) => {
   const userData = useSelector((state) => state.auth.userData);
@@ -32,15 +33,14 @@ const Order = ({ navigation }) => {
   useEffect(() => {
     const willFocusSubscription = navigation.addListener('focus', () => {
       (async () => {
-        // setIsLoading(true);
+        setIsLoading(true);
         try {
           let res = await actions.getOrders();
-          // console.log(res.data);
           const items = res.data;
           setData(items);
-          // setIsLoading(false);
+          setIsLoading(false);
         } catch (error) {
-          // setIsLoading(true);
+          setIsLoading(true);
           console.log("error", error);
         }
       })();
@@ -49,46 +49,54 @@ const Order = ({ navigation }) => {
   }, []);
   return (
     <>
-      {/* {data.map((item) => {
-        console.log("itemSS,", item);
-        return ( */}
-      <SafeAreaView className="flex-1 bg-slate-400">
+      <SafeAreaView className="flex-1 bg-white">
 
-        <View className=" bg-white items-center">
-          <Text className="text-2xl" style={{ fontFamily: 'Gilroy-Semi' }}>
-            Header
+        <View className=" bg-[#53b175] items-center border-b mb-2">
+          <Text className="text-2xl mb-3 text-white" style={{ fontFamily: 'Gilroy-Semi' }}>
+            Orders
           </Text>
         </View>
-        <ScrollView className="">
-          <View className=" flex-1 flex-row justify-around">
-            <View className="bg-slate-100">
-              <Text>
-                ID
-              </Text>
-              <Text>
-                TIme
-              </Text>
-              <View>
-                <Text>
-                  Quantity
-                </Text>
-                <Text>
-                  Payment
-                </Text>
-              </View>
-            </View>
-            <View className="bg-red-500 right-3">
-              <Text>
-                $Total
-              </Text>
-            </View>
+        {data.length == 0 ? (
+          <View style={{ height: 500 }} className="flex-1 justify-center items-center">
+            <Image
+              style={{ resizeMode: "contain", width: 180, height: 180 }}
+              source={require("../../../accsets/images/favorites.png")}
+            />
+            <Text className="text-sm font-medium ">Your Order is Empty</Text>
           </View>
-
-        </ScrollView>
-
+        ) : (
+          <ScrollView className=" ">
+            {data.map((item) => {
+              return (
+                <View className=" flex-1 flex-row justify-around mb-3 ml-3 border-b mr-3 ">
+                  <View className=" flex-1">
+                    <Text style={styles.text} >
+                      ID: # {item.id}
+                    </Text>
+                    <Text style={styles.text}>
+                      Time Create: {item.created_at}
+                    </Text>
+                    <View>
+                      <Text style={styles.text}>
+                        Quantity: {item.order_detail.length}
+                      </Text>
+                      <Text style={styles.text}>
+                        Payment: {item.payment_method}
+                      </Text>
+                    </View>
+                  </View>
+                  <View className=" right-3 justify-center">
+                    <Text style={styles.text}>
+                      <Text className="text-red-600">$</Text> {item.total_payment.toFixed(2)}
+                    </Text>
+                  </View>
+                </View>
+              );
+            })}
+          </ScrollView>
+        )}
+        {!!isLoading ? <AppLoader /> : null}
       </SafeAreaView>
-      {/* );
-      })} */}
     </>
   );
 };
@@ -113,7 +121,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-  text: { fontFamily: "Gilroy-Semi" },
+  text: {
+    fontFamily: "Gilroy-Semi",
+    marginBottom: 3
+  },
   Button: {
     width: "90%",
     height: 60,
