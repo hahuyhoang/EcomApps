@@ -70,7 +70,10 @@ const Explore = ({ navigation }) => {
         {isLoading ? <ActivityIndicator /> : null}
         <ScrollView className="-mt-4 " showsVerticalScrollIndicator={false}>
           <View style={styles.warp}>
-            {data.map((item) => {0
+            {data.map((item) => {
+              console.log('====================================');
+              console.log(item);
+              console.log('====================================');
               return (
                 <View className="justify-between" key={item.id}>
                   <View
@@ -79,8 +82,10 @@ const Explore = ({ navigation }) => {
                     borderColor={item.border_color}
                   >
                     <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate("Beverages");
+                       onPress={() => {
+                        navigation.navigate("Beverages",{
+                          paramKey : item,
+                        });
                       }}
                     >
                       <View className="justify-center items-center">
