@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   Image: {
     width: 40,
     height: 40,
-    resizeMode: "contai",
+    resizeMode: "contain",
     marginHorizontal: 5,
   },
   btnIamge: {

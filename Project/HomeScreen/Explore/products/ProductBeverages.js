@@ -11,6 +11,9 @@ import React, { useState, } from "react";
 import { Ionicons } from "react-native-vector-icons";
 import { colors } from "../../../theme/colors";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../../redux/reducers/cartReducer";
+import { showMessage } from "react-native-flash-message";
 
 const { width } = Dimensions.get("window");
 const cardWidth = width / 2.3;
@@ -20,6 +23,7 @@ const Beverages = ({ navigation }) => {
   const [data, setData] = useState([]);
   const userData = useSelector((state) => state.auth.userData);
   const [search, setSearch] = useState("");
+  const dispatch = useDispatch()
 
   const ListProduct = useSelector((state) => state.product.proDuct);
   const items = ListProduct.list_product.data;
@@ -92,7 +96,20 @@ const Beverages = ({ navigation }) => {
                     </View>
                     <TouchableOpacity
                       style={styles.btn}
-                      onPress={() => selectItem(item)}
+                      onPress={() => {
+                        dispatch(addToCart(item));
+                        showMessage({
+                          message: "Add to cart successfully",
+                          description: "Go to check Cart",
+                          icon: (props) => (
+                            <Image
+                              source={require("../../../accsets/images/iconn.png")}
+                              {...props}
+                            />
+                          ),
+                          type: "success",
+                        });
+                      }}
                     >
                       <Ionicons size={25} color={"#fff"} name="add" />
                     </TouchableOpacity>
