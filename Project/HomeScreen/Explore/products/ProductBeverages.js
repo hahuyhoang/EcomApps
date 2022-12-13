@@ -18,15 +18,19 @@ import { showMessage } from "react-native-flash-message";
 const { width } = Dimensions.get("window");
 const cardWidth = width / 2.3;
 
-const Beverages = ({ navigation }) => {
-
-  const [data, setData] = useState([]);
+const Beverages = ({ navigation,route }) => {
   const userData = useSelector((state) => state.auth.userData);
-  const [search, setSearch] = useState("");
   const dispatch = useDispatch()
-
-  const ListProduct = useSelector((state) => state.product.proDuct);
-  const items = ListProduct.list_product.data;
+  const categoryID = route.params.paramKey.id
+  const [isLoading, setIsLoading] = useState(false);
+  const ListProduct = useSelector((state) => {
+    return state.product.proDuct;
+  });
+  const data = ListProduct.list_product.data.filter((item) => {
+    if (item['product_category'][0]['id'] == categoryID) {
+      return item;
+    }
+  });
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -41,7 +45,7 @@ const Beverages = ({ navigation }) => {
             <Ionicons name="chevron-back" size={28} />
           </TouchableOpacity>
           <View>
-            <Text style={{ fontSize: 18, fontWeight: "600" }}>Beverages</Text>
+            <Text style={{ fontSize: 18, fontWeight: "600" }}>{route.params.paramKey.name}</Text>
           </View>
           <TouchableOpacity
             onPress={() => {
@@ -55,11 +59,13 @@ const Beverages = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
+        {isLoading ? <ActivityIndicator /> : null}
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.warp}>
-            {items.map((item) => {
+            {data.map((item) => {
+
               return (
-                <View style={styles.container} key={item}>
+                <View style={styles.container} key={item.id}>
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate("ProductDetail", {

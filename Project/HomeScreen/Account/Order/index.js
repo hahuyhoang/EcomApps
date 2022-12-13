@@ -50,9 +50,14 @@ const Order = ({ navigation }) => {
   return (
     <>
       <SafeAreaView className="flex-1 bg-white">
-
-        <View className=" bg-[#53b175] items-center border-b mb-2">
-          <Text className="text-2xl mb-3 text-white" style={{ fontFamily: 'Gilroy-Semi' }}>
+        <TouchableOpacity className="p-3" onPress={() => navigation.goBack()}>
+          <Feather name="arrow-left" size={24} color="black" />
+        </TouchableOpacity>
+        <View className=" h-16 bg-[#53b175] items-center justify-center ">
+          <Text
+            className="text-2xl text-white"
+            style={{ fontFamily: "Gilroy-Semi" }}
+          >
             Orders
           </Text>
         </View>
