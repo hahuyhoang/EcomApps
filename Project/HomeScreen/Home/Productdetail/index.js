@@ -33,6 +33,7 @@ const ProductDetail = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const [deTail, setDeTail] = useState([])
   const { width } = useWindowDimensions();
+  const arr = []
 
   const source = {
     html: `${deTail}`
@@ -48,9 +49,15 @@ const ProductDetail = ({ route, navigation }) => {
       .then((res) => {
         setItem(res.data.data_product);
         setImg(res.data.data_product.media.url);
-        let metaValue = res.data.data_product;
+        let metaValue = res.data.data_product.product_meta;
         setDeTail(res.data.data_product.description)
-        console.log(res.data.data_product);
+        metaValue.forEach(element => {
+          console.log('====================================');
+          console.log(element.meta_value);
+          console.log('====================================');
+
+        
+        });
       })
       .catch((error) => {
         console.log(error);

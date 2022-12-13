@@ -72,7 +72,7 @@ const Explore = ({ navigation }) => {
           <View style={styles.warp}>
             {data.map((item) => {0
               return (
-                <View className="justify-between  ">
+                <View className="justify-between" key={item.id}>
                   <View
                     style={styles.container}
                     backgroundColor={item.background}

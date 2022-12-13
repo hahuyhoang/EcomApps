@@ -46,7 +46,7 @@ const AllProduct = ({ navigation }) => {
           <View style={styles.warp}>
             {items.map((item) => {
               return (
-                <View style={styles.container}>
+                <View style={styles.container} key={item.id}>
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate("ProductDetail", {
