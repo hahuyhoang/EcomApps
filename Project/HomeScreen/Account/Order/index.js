@@ -68,7 +68,7 @@ const Order = ({ navigation }) => {
           <ScrollView className=" ">
             {data.map((item) => {
               return (
-                <View className=" flex-1 flex-row justify-around mb-3 ml-3 border-b mr-3 ">
+                <View className=" flex-1 flex-row justify-around mb-3 ml-3 border-b mr-3 " key={item.id}>
                   <View className=" flex-1">
                     <Text style={styles.text} >
                       ID: # {item.id}
