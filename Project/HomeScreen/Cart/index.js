@@ -13,11 +13,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { cartTotalPriceSelector } from "../../redux/reducers/selectorTotal";
 
 const MyCart = ({ navigation }) => {
-  const dataCart = useSelector((state) => state.cartReducer)
+  const dataCart = useSelector((state) => state.cartReducer);
   const totalPrice = useSelector(cartTotalPriceSelector);
-  // console.log(dataCart);
-  // const arrDataCart = Object.entries(dataCart)
-  console.log(dataCart);
+
   return (
     <SafeAreaView className="flex-1 mb-16  bg-white">
       <View className="border-b border-gray-300 items-center h-14 justify-center">

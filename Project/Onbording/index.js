@@ -61,10 +61,10 @@ const styles = StyleSheet.create({
   logo: {
     width: 50,
     height: 60,
-    resizeMode:'contain'
+    resizeMode: "contain",
   },
   body: {
-    width:"100%",
+    width: "100%",
     flex: 1,
     alignItems: "center",
     marginBottom: 60,
@@ -98,6 +98,6 @@ const styles = StyleSheet.create({
   text: {
     color: "#fff",
     fontSize: 18,
-    fontWeight:'600'
+    fontWeight: "600",
   },
 });

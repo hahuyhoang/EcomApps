@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/reducers/cartReducer";
 import { showMessage } from "react-native-flash-message";
 
-const Product = ({ }) => {
+const Product = ({}) => {
   const userData = useSelector((state) => state.auth.userData);
   const navigation = useNavigation();
   const [data, setData] = useState([]);
@@ -28,12 +28,13 @@ const Product = ({ }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const willFocusSubscription = navigation.addListener('focus', () => {
+    const willFocusSubscription = navigation.addListener("focus", () => {
       (async () => {
         setIsLoading(true);
         try {
           let res = await actions.product();
           const items = res.list_product.data;
+          // console.log(items);
           setData(items);
           setIsLoading(false);
         } catch (error) {
@@ -49,7 +50,7 @@ const Product = ({ }) => {
       <SafeAreaView className="flex-row">
         {data.map((item) => {
           return (
-            <View style={styles.container}>
+            <View style={styles.container} key={item.id}>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("ProductDetail", {
@@ -77,7 +78,7 @@ const Product = ({ }) => {
               <View className="pb-4 pt-4 flex-row justify-between">
                 <View className="justify-center items-center">
                   <Text style={{ fontFamily: "Gilroy-Semi" }}>
-                    ${item.price}
+                    ${item.price.toFixed(2)}
                   </Text>
                 </View>
                 <TouchableOpacity

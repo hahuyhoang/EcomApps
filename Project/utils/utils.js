@@ -1,3 +1,4 @@
+// screen nay de giup su dung cac func call api vao redux
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import store from "../redux/store";
@@ -7,7 +8,6 @@ const { dispatch, getState } = store;
 
 export async function getHeaders() {
   let userData = await AsyncStorage.getItem("userData");
-  // console.log("user ne =>>", token);
   if (userData) {
     userData = JSON.parse(userData);
     return {

@@ -12,7 +12,7 @@ import Product from "../Products";
 import { useNavigation } from "@react-navigation/native";
 import ExclusiveProDucts from "../exClusive";
 
-const Exclusive = ({ }) => {
+const Exclusive = ({}) => {
   const navigation = useNavigation();
   return (
     <View>

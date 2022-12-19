@@ -1,7 +1,7 @@
 import types from "../types";
 
 const initial_State = {
-  list_orders: []
+  list_orders: [],
 };
 export default function (state = initial_State, action) {
   switch (action.type) {

@@ -9,7 +9,7 @@ export default function Input({
   error,
   password,
   styleIcon,
-  onForcus = () => { },
+  onForcus = () => {},
   ...props
 }) {
   const [isFocused, setIsFocused] = React.useState(false);
@@ -25,8 +25,8 @@ export default function Input({
             borderColor: error
               ? colors.red
               : isFocused
-                ? colors.darkBlue
-                : colors.light,
+              ? colors.darkBlue
+              : colors.light,
           },
         ]}
       >
@@ -50,7 +50,6 @@ export default function Input({
             style={styles.icon}
           />
         )}
-
       </View>
       {error && (
         <Text style={{ color: colors.red, fontSize: 12 }}>{error}</Text>

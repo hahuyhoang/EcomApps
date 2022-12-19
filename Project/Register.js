@@ -19,37 +19,36 @@ import { showMessage } from "react-native-flash-message";
 import AppLoader from "./Components/AppLoader";
 
 const Register = ({ navigation }) => {
-  const [getPasswordVisible, setPasswordVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [getPasswordVisible, setPasswordVisible] = useState(false); // an hien password
+  const [isLoading, setIsLoading] = useState(false); // set loading cho app
 
   const [state, setState] = useState({
     name: "",
     email: "",
     password: "",
     password_confirmation: "",
-  });
+  }); // nhan vao state cua {name, email, password, pass_confirm}
   const { name, email, password, password_confirmation } = state;
-  const updateState = (data) => setState(() => ({ ...state, ...data }));
+  const updateState = (data) => setState(() => ({ ...state, ...data })); // update state cua 4 gia tri do
 
+  // {start check valid}
   const isValidData = () => {
-
     const error = validator({
       name,
       email,
       password,
       password_confirmation,
     });
-
     if (error) {
-
       showError(error);
       return false;
     }
     return true;
   };
-
+  // {end checkvalid}
+  // {state register}
   const onSignup = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     const checkValid = isValidData();
     if (checkValid) {
       try {
@@ -59,17 +58,16 @@ const Register = ({ navigation }) => {
           password,
           password_confirmation,
         });
-        setIsLoading(false)
-        console.log("=>>>>>>>ssres", res.user);
+        setIsLoading(false);
         showMessage("Register successfully..! Please verify your email");
         navigation.navigate("CheckCode");
       } catch (error) {
-        console.log("loi roi");
         showError(error.message);
       }
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
+  // {end register}
   return (
     <>
       <KeyboardAvoidingView
@@ -85,7 +83,10 @@ const Register = ({ navigation }) => {
             />
           </View>
           <View className="flex-1 items-center">
-            <Image className="" source={require("../assets/images/Group.png")} />
+            <Image
+              className=""
+              source={require("../assets/images/Group.png")}
+            />
           </View>
         </View>
         <View className="ml-5 mr-5">

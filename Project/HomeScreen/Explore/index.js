@@ -71,9 +71,6 @@ const Explore = ({ navigation }) => {
         <ScrollView className="-mt-4 " showsVerticalScrollIndicator={false}>
           <View style={styles.warp}>
             {data.map((item) => {
-              console.log('====================================');
-              console.log(item);
-              console.log('====================================');
               return (
                 <View className="justify-between" key={item.id}>
                   <View

@@ -35,9 +35,6 @@ const Search = ({ navigation }) => {
         try {
           let res = await actions.product();
           const items = res.list_product.data;
-          console.log('====================================');
-          console.log(items);
-          console.log('====================================');
           setData(items);
           setIsLoading(false);
           setOlaData(items);

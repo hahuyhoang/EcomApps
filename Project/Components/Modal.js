@@ -1,10 +1,4 @@
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  Modal,
-} from "react-native";
+import { Text, View, TouchableOpacity, Image, Modal } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import Button from "./button";
 import { Ionicons, Entypo, Octicons } from "react-native-vector-icons";

@@ -37,7 +37,7 @@ export default function ForgotPassword({ navigation }) {
         </View>
         <View className="pl-5 pr-5 mt-10 ">
           <Input
-          label={"Enter Verification Code"}
+            label={"Enter Verification Code"}
             autoFocus
             password
             placeholder="Enter Your Password"
@@ -45,7 +45,7 @@ export default function ForgotPassword({ navigation }) {
           />
           <Text className="pt-1 pb-1"></Text>
           <Input
-          label={"Comfirm Password"}
+            label={"Comfirm Password"}
             autoFocus
             placeholder="Enter Your Password"
             style={styles.input}

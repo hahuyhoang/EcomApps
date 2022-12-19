@@ -7,126 +7,129 @@ import {
   TouchableOpacity,
   Image, Dimensions
 } from "react-native";
-import React, { useState, } from "react";
+import React, { useEffect, useState, } from "react";
 import { Ionicons } from "react-native-vector-icons";
 import { colors } from "../../../theme/colors";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../redux/reducers/cartReducer";
 import { showMessage } from "react-native-flash-message";
+import AppLoader from "../../../Components/AppLoader";
 
 const { width } = Dimensions.get("window");
 const cardWidth = width / 2.3;
 
-const Beverages = ({ navigation,route }) => {
+const Beverages = ({ navigation, route }) => {
   const userData = useSelector((state) => state.auth.userData);
   const dispatch = useDispatch()
   const categoryID = route.params.paramKey.id
   const [isLoading, setIsLoading] = useState(false);
+
   const ListProduct = useSelector((state) => {
     return state.product.proDuct;
   });
   const data = ListProduct.list_product.data.filter((item) => {
     if (item['product_category'][0]['id'] == categoryID) {
+      
       return item;
     }
-  });
+  })
+
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <View className="flex-1 pl-5 pr-5">
-        <View className="flex-row justify-between pt-4 pb-4 ">
-          <TouchableOpacity
-            className=""
-            onPress={() => {
-              navigation.goBack();
-            }}
-          >
-            <Ionicons name="chevron-back" size={28} />
-          </TouchableOpacity>
-          <View>
-            <Text style={{ fontSize: 18, fontWeight: "600" }}>{route.params.paramKey.name}</Text>
+      <SafeAreaView className="flex-1 bg-white">
+        <View className="flex-1 pl-5 pr-5">
+          <View className="flex-row justify-between pt-4 pb-4 ">
+            <TouchableOpacity
+              className=""
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
+              <Ionicons name="chevron-back" size={28} />
+            </TouchableOpacity>
+            <View>
+              <Text style={{ fontSize: 18, fontWeight: "600" }}>{route.params.paramKey.name}</Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Filter");
+              }}
+              className="justify-center items-center pr-3"
+            >
+              <Image
+                style={{ resizeMode: "contain" }}
+                source={require("../../../accsets/images/filter.png")}
+              />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Filter");
-            }}
-            className="justify-center items-center pr-3"
-          >
-            <Image
-              style={{ resizeMode: "contain" }}
-              source={require("../../../accsets/images/filter.png")}
-            />
-          </TouchableOpacity>
-        </View>
-        {isLoading ? <ActivityIndicator /> : null}
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.warp}>
-            {data.map((item) => {
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.warp}>
+              {data.map((item) => {
 
-              return (
-                <View style={styles.container} key={item.id}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate("ProductDetail", {
-                        paramKey: item.id,
-                      });
-                    }}
-                  >
-                    <View className="justify-center h-28  items-center ">
-                      <Image
-                        style={{
-                          width: "100%",
-                          height: "80%",
-                          resizeMode: "contain",
-                        }}
-                        source={{ uri: `${userData.url}/${item.media.url}` }}
-                      />
-                    </View>
-                    <View className="pb-2 pt-2">
-                      <Text style={{ fontFamily: "Gilroy-Bold" }}>
-                        {item.name}
-                      </Text>
-                      <Text
-                        style={{ color: colors.whites, paddingVertical: 4 }}
-                      >
-                        {item.title}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                  <View className="pb-4 pt-4 flex-row justify-between">
-                    <View className="justify-center items-center">
-                      <Text style={{ fontFamily: "Gilroy-Semi" }}>
-                        $ {item.price}
-                      </Text>
-                    </View>
+                return (
+                  <View style={styles.container} key={item.id}>
                     <TouchableOpacity
-                      style={styles.btn}
                       onPress={() => {
-                        dispatch(addToCart(item));
-                        showMessage({
-                          message: "Add to cart successfully",
-                          description: "Go to check Cart",
-                          icon: (props) => (
-                            <Image
-                              source={require("../../../accsets/images/iconn.png")}
-                              {...props}
-                            />
-                          ),
-                          type: "success",
+                        navigation.navigate("ProductDetail", {
+                          paramKey: item.id,
                         });
                       }}
                     >
-                      <Ionicons size={25} color={"#fff"} name="add" />
+                      <View className="justify-center h-28  items-center ">
+                        <Image
+                          style={{
+                            width: "100%",
+                            height: "80%",
+                            resizeMode: "contain",
+                          }}
+                          source={{ uri: `${userData.url}/${item.media.url}` }}
+                        />
+                      </View>
+                      <View className="pb-2 pt-2">
+                        <Text style={{ fontFamily: "Gilroy-Bold" }}>
+                          {item.name}
+                        </Text>
+                        <Text
+                          style={{ color: colors.whites, paddingVertical: 4 }}
+                        >
+                          {item.title}
+                        </Text>
+                      </View>
                     </TouchableOpacity>
+                    <View className="pb-4 pt-4 flex-row justify-between">
+                      <View className="justify-center items-center">
+                        <Text style={{ fontFamily: "Gilroy-Semi" }}>
+                          $ {item.price}
+                        </Text>
+                      </View>
+                      <TouchableOpacity
+                        style={styles.btn}
+                        onPress={() => {
+                          dispatch(addToCart(item));
+                          showMessage({
+                            message: "Add to cart successfully",
+                            description: "Go to check Cart",
+                            icon: (props) => (
+                              <Image
+                                source={require("../../../accsets/images/iconn.png")}
+                                {...props}
+                              />
+                            ),
+                            type: "success",
+                          });
+                        }}
+                      >
+                        <Ionicons size={25} color={"#fff"} name="add" />
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
-              );
-            })}
-          </View>
-        </ScrollView>
-      </View>
-    </SafeAreaView>
+                );
+              })}
+            </View>
+          </ScrollView>
+        </View>
+      </SafeAreaView>
   );
 };
 

@@ -1,4 +1,3 @@
 export default images = {
-    baner:require('../accsets/images/baner.png')
-  };
-  
+  baner: require("../accsets/images/baner.png"),
+};

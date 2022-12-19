@@ -19,40 +19,38 @@ import { showMessage } from "react-native-flash-message";
 import AppLoader from "../Components/AppLoader";
 
 export default function CheckCode({ navigation }) {
-  const userData = useSelector((state) => state.auth.userData)
+  const userData = useSelector((state) => state.auth.userData);
   const [isLoading, setIsLoading] = useState(false);
-  // console.log(userData.user);
 
-  const updateState = (data) => setState(() => ({ ...state, ...data }))
+  const updateState = (data) => setState(() => ({ ...state, ...data }));
   const [state, setState] = useState({
     user_id: userData.user.id,
     email: userData.user.email,
-    code: ''
-  })
-  const { email, user_id, code } = state
+    code: "",
+  });
+  const { email, user_id, code } = state;
   const onVeri = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const res = await actions.verify({
         user_id,
         email,
-        code
-      })
-      setIsLoading(false)
-      showMessage("Register successfully..! You can login")
+        code,
+      });
+      setIsLoading(false);
+      showMessage("Register successfully..! You can login");
       navigation.navigate("Login");
-      actions.logout()
+      actions.logout();
+    } catch (error) {
+      showError(error.message);
     }
-    catch (error) {
-      showError(error.message)
-    }
-    setIsLoading(false)
-  }
-
+    setIsLoading(false);
+  };
 
   return (
     <>
-      <KeyboardAvoidingView className="flex-1"
+      <KeyboardAvoidingView
+        className="flex-1"
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <SafeAreaView className="flex-1">
@@ -91,10 +89,7 @@ export default function CheckCode({ navigation }) {
               onChangeText={(code) => updateState({ code })}
             />
           </View>
-          <TouchableOpacity
-            onPress={onVeri}
-            style={styles.btn}
-          >
+          <TouchableOpacity onPress={onVeri} style={styles.btn}>
             <Text style={styles.texBtn}>Ok</Text>
           </TouchableOpacity>
         </SafeAreaView>
@@ -142,7 +137,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "#E9E9E9",
     autoComplete: "",
-    fontFamily: 'Gilroy-Semi'
+    fontFamily: "Gilroy-Semi",
   },
   btn: {
     width: 60,
@@ -153,7 +148,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginVertical: 20,
     marginLeft: "auto",
-    marginRight: 20
+    marginRight: 20,
   },
   texBtn: {
     color: colors.white,

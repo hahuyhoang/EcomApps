@@ -21,7 +21,6 @@ const Account = ({ navigation }) => {
   const userData = useSelector((state) => state.auth.userData);
   const [isError, setError] = useState(false);
 
-
   const onLogoutAlert = () => {
     Alert.alert(
       "Logout",

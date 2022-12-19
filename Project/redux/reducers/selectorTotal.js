@@ -6,13 +6,11 @@ export const cartTotalSelector = createSelector([cartSelector], (cartReducer) =>
   cartReducer.reduce((total, current) => (total += current.quantity), 0)
 );
 
-// export const cartTotalItem = createSelector([cartSelector], (cartReducer) =>
-//   cartReducer.reduce((total, current) => (total += current.price), 0)
-// );
-
-export const cartTotalPriceSelector = createSelector([cartSelector], (cartReducer) =>
-  cartReducer.reduce(
-    (total, current) => (total += current.price * current.quantity),
-    0
-  )
+export const cartTotalPriceSelector = createSelector(
+  [cartSelector],
+  (cartReducer) =>
+    cartReducer.reduce(
+      (total, current) => (total += current.price * current.quantity),
+      0
+    )
 );

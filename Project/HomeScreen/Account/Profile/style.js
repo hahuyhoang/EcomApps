@@ -9,15 +9,15 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     backgroundColor: "#fff",
-    width:60,
-    height:60,
-    borderRadius:30,
-    alignItems:'center',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: "center",
     // marginTop:'140%',
-    justifyContent:'center',
-    alignItems:'center',
-    position:'absolute',
-    bottom:50
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 50,
   },
   preview: {
     alignSelf: "stretch",
@@ -127,18 +127,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.whites,
   },
-  date:{
-    width:'90%',
-    borderWidth:1,
-    height:55,
-    justifyContent:'center',
-    alignItems:'center',
-    borderRadius:12,
-    borderColor:"#ccc",
+  date: {
+    width: "90%",
+    borderWidth: 1,
+    height: 55,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 12,
+    borderColor: "#ccc",
   },
   dateTimePicker: {
-    height:'100%',
-   },
+    height: "100%",
+  },
 });
 export default styles;
-

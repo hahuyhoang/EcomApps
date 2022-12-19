@@ -114,7 +114,7 @@ export default function MyTabs() {
                   justifyContent: "center",
                 }}
               >
-                <Text style={{ color: "white" ,}}>{data.length}</Text>
+                <Text style={{ color: "white" }}>{data.length}</Text>
               </View>
               <Text
                 style={{

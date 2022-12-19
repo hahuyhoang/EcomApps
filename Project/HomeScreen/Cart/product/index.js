@@ -39,13 +39,17 @@ const ProductCart = () => {
       ) : (
         <View>
           {data.map((item) => {
-            const totalItemPrice = (item.quantity * item.price).toFixed(2)
+            const totalItemPrice = (item.quantity * item.price).toFixed(2);
             return (
-              <View style={styles.horizon} className="flex-row  items-center" key={item.id}>
+              <View
+                style={styles.horizon}
+                className="flex-row  items-center"
+                key={item.id}
+              >
                 <View className="flex-row flex-1 h-32 items-center  border-b border-gray-300 ">
                   <Image
                     style={styles.Images}
-                    defaultSource={require('../../../accsets/images/product_1.png')}
+                    defaultSource={require("../../../accsets/images/product_1.png")}
                     source={{ uri: `${userData.url}/${item.media.url}` }}
                   />
                   <View className="pl-6 pt-4 justify-center ">
@@ -87,9 +91,7 @@ const ProductCart = () => {
                     >
                       <Ionicons name="close" size={28} />
                     </TouchableOpacity>
-                    <Text className="font-semibold">
-                      ${totalItemPrice}
-                    </Text>
+                    <Text className="font-semibold">${totalItemPrice}</Text>
                   </View>
                 </View>
                 <View className=" flex-row justify-center items-center"></View>

@@ -45,14 +45,13 @@ export default function Verification({ navigation }) {
             placeholder="Enter Verification Code"
             style={styles.input}
           />
-         
         </View>
         <View className="flex-1 pl-5 pr-5 ">
           <View className="w-full justify-center items-center">
             <Button
-             onPress={() => {
-              navigation.navigate("ForgotPassword");
-            }}
+              onPress={() => {
+                navigation.navigate("ForgotPassword");
+              }}
               title="Send"
               buttonStyle={styles.btn}
               textStyle={styles.texBtn}
