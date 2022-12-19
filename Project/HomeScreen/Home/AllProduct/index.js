@@ -78,7 +78,7 @@ const AllProduct = ({ navigation }) => {
                   <View className="pb-4 pt-4 flex-row justify-between">
                     <View className="justify-center items-center">
                       <Text style={{ fontFamily: "Gilroy-Semi" }}>
-                        $ {item.price}
+                        $ {item.price.toFixed(2)}
                       </Text>
                     </View>
                     <TouchableOpacity

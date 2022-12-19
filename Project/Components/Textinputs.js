@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 12,
     borderColor: "#ccc",
-    paddingLeft: '9%',
+    paddingLeft: "9%",
   },
   icon: {
     fontSize: 20,
@@ -80,8 +80,8 @@ const styles = StyleSheet.create({
     right: 5,
     bottom: 10,
   },
-  icon:{
-    position:'absolute',
-    left:"7%"
-  }
+  icon: {
+    position: "absolute",
+    left: "7%",
+  },
 });

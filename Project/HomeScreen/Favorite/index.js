@@ -62,12 +62,17 @@ const Favorite = () => {
       </View>
       <ScrollView showsVerticalScrollIndicator={false} className="ml-5 mr-5">
         {data.length == 0 ? (
-          <View style={{ height: 500 }} className="flex-1 justify-center items-center">
+          <View
+            style={{ height: 500 }}
+            className="flex-1 justify-center items-center"
+          >
             <Image
               style={{ resizeMode: "contain", width: 180, height: 180 }}
               source={require("../../accsets/images/favorites.png")}
             />
-            <Text className="text-sm font-medium ">Your Cart Favorite is Empty</Text>
+            <Text className="text-sm font-medium ">
+              Your Cart Favorite is Empty
+            </Text>
           </View>
         ) : (
           <View>
@@ -86,7 +91,9 @@ const Favorite = () => {
                         source={{ uri: `${userData.url}/${item.media.url}` }}
                       />
                       <View className="pl-7">
-                        <Text style={{ fontFamily: "Gilroy-Bold", fontSize: 15 }}>
+                        <Text
+                          style={{ fontFamily: "Gilroy-Bold", fontSize: 15 }}
+                        >
                           {item.name}
                         </Text>
                         <Text
@@ -118,12 +125,10 @@ const Favorite = () => {
       <View style={[styles.horizon]} className="mb-20">
         <Button
           onPress={() => {
-            data.forEach(item =>
-              dispatch(addToCart(item)),
-              dispatch(clear()),
-
-            )
-
+            data.forEach(
+              (item) => dispatch(addToCart(item)),
+              dispatch(clear())
+            );
           }}
           buttonStyle={{
             alignItems: "center",

@@ -20,7 +20,6 @@ import * as ImagePicker from "expo-image-picker";
 import { Platform } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-
 export default function UpdateUser({ navigation }) {
   const [image, setImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -103,7 +102,6 @@ export default function UpdateUser({ navigation }) {
         birthday: date,
       });
       setIsLoading(false);
-      console.log("=>>>>>>>ssres", res);
       showMessage({
         message: "Submitted successfullyy",
         type: "success",
@@ -123,7 +121,6 @@ export default function UpdateUser({ navigation }) {
         avatar: image,
       });
       setIsLoading(false);
-      // console.log("=>>>>>>>ImageAvaterr", res);
       setAvatar(res);
     } catch (error) {
       console.log(error.message);

@@ -47,7 +47,7 @@ const ExclusiveProDucts = ({}) => {
         {/* render item */}
         {data.map((item) => {
           return (
-            <View style={styles.container}>
+            <View style={styles.container} key={item.id}>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("ProductDetail", {

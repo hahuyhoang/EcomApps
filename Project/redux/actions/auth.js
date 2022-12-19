@@ -11,7 +11,7 @@ import {
   UPDATE_USER,
   AVATAR_USER,
   ORDERS,
-  GETORDERS
+  GETORDERS,
 } from "../../IPA/Conect";
 import {
   apiGet,
@@ -25,7 +25,7 @@ import {
   setUserVeri,
   setUpdateUser,
   setAvatarUser,
-  setListOrders
+  setListOrders,
 } from "../../utils/utils";
 import store from "../store";
 import types from "../types";
@@ -238,13 +238,6 @@ export function search(data) {
   return new Promise((resolve, reject) => {
     return apiGet(SEARCH, data)
       .then((res) => {
-
-        // const items = res.list_product;
-        // console.log('aaaaaaaassssssssssssssasaa', res.list_product);
-        // items.forEach((element) => {
-        //   // console.log('aaaaaaaaasaa', element);
-        // });
-
         if (res.list_product) {
           saveSearch(res).then(() => {
             resolve(res);
@@ -253,12 +246,10 @@ export function search(data) {
           return;
         }
         resolve(res);
-        // console.log(res);
       })
       .catch((error) => {
         console.log("loi", error);
         reject(error);
-        console.log("aaaaaaaaasaa", element);
       });
   });
 }
@@ -303,17 +294,12 @@ export function logout() {
   clearUserData();
 }
 export function orders(data) {
-  return apiPost(ORDERS, data)
+  return apiPost(ORDERS, data);
 }
 export function getOrders(data) {
   return new Promise((resolve, reject) => {
     return apiGet(GETORDERS, data)
       .then((res) => {
-        // console.log('list', res.list_order.data);
-        // let daataa = res.list_order.data
-        // daataa.forEach(element => {
-        //   console.log(element.order_detail);
-        // });
         if (res.list_order) {
           setListOrders(res.list_order).then(() => {
             resolve(res.list_order);

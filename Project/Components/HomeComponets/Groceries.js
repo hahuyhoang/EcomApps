@@ -29,9 +29,7 @@ const Groceries = () => {
           let res = await actions.brand();
           const items = res.list_brand;
           items.forEach((element) => {
-            // console.log("item day ne", element);
           });
-          //apploading
           setIsLoading(false)
           setData(items);
         } catch (error) {
@@ -65,7 +63,7 @@ const Groceries = () => {
           >
             {data.map((item) => {
               return (
-                <View>
+                <View key={item.id}>
                   <TouchableOpacity
                     style={styles.btnItem}
                     className=" flex-row items-center pt-2 pb-2"

@@ -1,17 +1,14 @@
 import {
   View,
   Text,
-  SafeAreaView,
   ImageBackground,
   Image,
   TextInput,
   StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView,
-  ActivityIndicator,
 } from "react-native";
 import React, { useContext, useState } from "react";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Feather } from "@expo/vector-icons";
 
 import validator from "./utils/validation";
@@ -22,16 +19,15 @@ import { useSelector } from "react-redux";
 import { showMessage } from "react-native-flash-message";
 
 const LogIn = ({ navigation }) => {
-  const [getPasswordVisible, setPasswordVisible] = useState(false);
-  const [remember, setRemember] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [getPasswordVisible, setPasswordVisible] = useState(false); // an hien password
+  const [isLoading, setIsLoading] = useState(false); // loading khi vao app
   const [state, setState] = useState({
     email: "",
     password: "",
-  });
+  }); // nhan vao state cua email, password
   const { email, password } = state;
-  const updateState = (data) => setState(() => ({ ...state, ...data }));
-
+  const updateState = (data) => setState(() => ({ ...state, ...data })); // update state khi nhap vao email moi
+  // {start check valid}
   const isValidData = () => {
     const error = validator({
       email,
@@ -43,7 +39,9 @@ const LogIn = ({ navigation }) => {
     }
     return true;
   };
+  // {end check valid}
 
+  // {start func login}
   const onLogin = async () => {
     const checkValid = isValidData();
     if (checkValid) {
@@ -65,7 +63,7 @@ const LogIn = ({ navigation }) => {
       setIsLoading(false);
     }
   };
-
+  // {end func login}
   return (
     <>
       <KeyboardAvoidingView

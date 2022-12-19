@@ -30,3 +30,5 @@ export { default as Onbording } from "./Onbording/index";
 export { default as ErrorScreen } from "./screens/ErrorScreen";
 export { default as ItemOrders } from "./Components/itemOrders";
 export { default as PerparingOrder } from "./screens/PerparingOrder";
+
+// screen nay de import cac man

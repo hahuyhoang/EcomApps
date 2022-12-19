@@ -13,7 +13,7 @@ import { Feather } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import Button from "../Components/button";
-import Input from "../Components/Textinput"
+import Input from "../Components/Textinput";
 
 export default function ForgotEmail({ navigation }) {
   return (
@@ -58,9 +58,9 @@ export default function ForgotEmail({ navigation }) {
         <View className="flex-1 pl-5 pr-5 ">
           <View className="w-full justify-center items-center">
             <Button
-             onPress={() => {
-              navigation.navigate("Verification");
-            }}
+              onPress={() => {
+                navigation.navigate("Verification");
+              }}
               title="Send"
               buttonStyle={styles.btn}
               textStyle={styles.texBtn}
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.green,
     borderRadius: 16,
-    marginBottom:10
+    marginBottom: 10,
   },
   texBtn: {
     color: colors.white,

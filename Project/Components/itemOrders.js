@@ -22,10 +22,9 @@ const ItemOrders = () => {
             setIsLoading(true);
             try {
                 let res = await actions.getOrders();
-                // console.log(res.data);
+                
                 let dataOrders = res.data
                 dataOrders.forEach(element => {
-                    console.log("dataorder", element);
                     // itemOrder.push(element.order_detail)
                 });
                 setData(data)
@@ -35,7 +34,6 @@ const ItemOrders = () => {
             }
         })();
     }, []);
-    // console.log("data", itemOrder);
     const renderItems = ({ item, index }) => {
         return (
             <View className="  border-b justify-center pl-5 pr-5  border-gray-300">

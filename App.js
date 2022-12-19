@@ -11,16 +11,17 @@ import { useEffect } from "react";
 import { getUserData } from "./Project/utils/utils";
 import { saveUserData } from "./Project/redux/actions/auth";
 export default function App() {
+  // {save token de luu dang nhap}
   useEffect(() => {
     (async () => {
       const userData = await getUserData();
-      // console.log("user data App.js", userData);
       if (!!userData) {
         saveUserData(userData);
       }
     })();
   }, []);
 
+  // tao font cho app
   let [fontsLoaded] = useFonts({
     "Gilroy-Semi": require("./assets/font/Gilroy-SemiBold.ttf"),
     "Gilroy-Bold": require("./assets/font/SVN-GilroyBold.otf"),

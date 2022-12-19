@@ -22,7 +22,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const Home = ({ navigation }) => {
   return (
-    <SafeAreaView className="flex-1 mb-16 bg-white" >
+    <SafeAreaView className="flex-1 mb-16 bg-white">
       <ScrollView
         showsVerticalScrollIndicator={false}
         className="flex-1 pl-5 pr-5 "

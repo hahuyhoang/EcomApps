@@ -31,12 +31,12 @@ const ProductDetail = ({ route, navigation }) => {
   const [img, setImg] = useState([]);
   const [isfavorite, setIsFavorite] = useState(false);
   const dispatch = useDispatch();
-  const [deTail, setDeTail] = useState([])
+  const [deTail, setDeTail] = useState([]);
   const { width } = useWindowDimensions();
-  const arr = []
+  const arr = [];
 
   const source = {
-    html: `${deTail}`
+    html: `${deTail}`,
   };
   //nhan id tu man product,  call api tu key de show thong tin san pham,
   useEffect(() => {
@@ -50,20 +50,14 @@ const ProductDetail = ({ route, navigation }) => {
         setItem(res.data.data_product);
         setImg(res.data.data_product.media.url);
         let metaValue = res.data.data_product.product_meta;
-        setDeTail(res.data.data_product.description)
-        metaValue.forEach(element => {
-          console.log('====================================');
-          console.log(element.meta_value);
-          console.log('====================================');
-
-        
-        });
+        setDeTail(res.data.data_product.description);
+        metaValue.forEach((element) => {});
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-  let quantity = item.status
+  let quantity = item.status;
   return (
     <SafeAreaView className="flex-1 ">
       <View style={styles.itemImage} className="pl-2 pr-2 flex-1 ">
@@ -84,7 +78,7 @@ const ProductDetail = ({ route, navigation }) => {
           <View className="items-center justify-center ">
             <Image
               style={{ width: "100%", height: "80%", resizeMode: "contain" }}
-              defaultSource={require('../../../accsets/images/product_1.png')}
+              defaultSource={require("../../../accsets/images/product_1.png")}
               source={{ uri: `${userData.url}/${img}` }}
             />
           </View>
@@ -134,8 +128,7 @@ const ProductDetail = ({ route, navigation }) => {
             <TouchableOpacity
               onPress={() => {
                 dispatch(decrement(item.id));
-              }
-              }
+              }}
             >
               <AntDesign name="minus" size={24} />
             </TouchableOpacity>

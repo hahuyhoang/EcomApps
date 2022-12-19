@@ -8,7 +8,7 @@ const Profile = ({ navigation }) => {
   const userData = useSelector((state) => state.auth.userData);
   const Favorite = useSelector((state) => state.cartFavorite);
   const [isError, setError] = useState(false);
-
+  // const [ima, setIma]
   return (
     <SafeAreaView className="flex-1 bg-white ">
       <View style={styles.horizon} className=" flex-row justify-between">

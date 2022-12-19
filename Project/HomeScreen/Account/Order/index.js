@@ -31,7 +31,7 @@ const Order = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const willFocusSubscription = navigation.addListener('focus', () => {
+    const willFocusSubscription = navigation.addListener("focus", () => {
       (async () => {
         setIsLoading(true);
         try {
@@ -62,7 +62,10 @@ const Order = ({ navigation }) => {
           </Text>
         </View>
         {data.length == 0 ? (
-          <View style={{ height: 500 }} className="flex-1 justify-center items-center">
+          <View
+            style={{ height: 500 }}
+            className="flex-1 justify-center items-center"
+          >
             <Image
               style={{ resizeMode: "contain", width: 180, height: 180 }}
               source={require("../../../accsets/images/favorites.png")}
@@ -73,11 +76,12 @@ const Order = ({ navigation }) => {
           <ScrollView className=" ">
             {data.map((item) => {
               return (
-                <View className=" flex-1 flex-row justify-around mb-3 ml-3 border-b mr-3 " key={item.id}>
+                <View
+                  className=" flex-1 flex-row justify-around mb-3 ml-3 border-b mr-3 "
+                  key={item.id}
+                >
                   <View className=" flex-1">
-                    <Text style={styles.text} >
-                      ID: # {item.id}
-                    </Text>
+                    <Text style={styles.text}>ID: # {item.id}</Text>
                     <Text style={styles.text}>
                       Time Create: {item.created_at}
                     </Text>
@@ -92,7 +96,8 @@ const Order = ({ navigation }) => {
                   </View>
                   <View className=" right-3 justify-center">
                     <Text style={styles.text}>
-                      <Text className="text-red-600">$</Text> {item.total_payment.toFixed(2)}
+                      <Text className="text-red-600">$</Text>{" "}
+                      {item.total_payment.toFixed(2)}
                     </Text>
                   </View>
                 </View>
@@ -128,7 +133,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "Gilroy-Semi",
-    marginBottom: 3
+    marginBottom: 3,
   },
   Button: {
     width: "90%",
