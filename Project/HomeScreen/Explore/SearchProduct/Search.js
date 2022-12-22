@@ -1,50 +1,62 @@
 import {
-  StyleSheet,
   Image,
   View,
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
   TextInput,
-  Dimensions,
   ActivityIndicator,
   Text,
+  Modal,
 } from "react-native";
-import React, { useState, useRef, useEffect } from "react";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Ionicons, AntDesign } from "react-native-vector-icons";
 import { colors } from "../../../theme/colors";
 import { useSelector, useDispatch } from "react-redux";
-const { width } = Dimensions.get("window");
-const cardWidth = width / 2.3;
-import actions from "../../../redux/actions";
+import axios from "axios";
 import { addToCart } from "../../../redux/reducers/cartReducer";
 import { showMessage } from "react-native-flash-message";
+import { BASE_URL } from "../../../IPA/Conect";
+import Button from "../../../Components/button";
+import styles from "../styles";
+
 const Search = ({ navigation }) => {
   const [data, setData] = useState([]);
   const userData = useSelector((state) => state.auth.userData);
   const [search, setSearch] = useState([]);
   const searchRef = useRef();
-  const [olData, setOlaData] = useState(); // master search
+  const [olData, setOlaData] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [background, setBackground] = useState("");
   const dispatch = useDispatch();
+  const [checked, setChecked] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const dataCate = useSelector((state) => state.categories.categories);
+  const dataCategory = dataCate.list_category;
+  const categoryId = checked.toString();
+
+  console.log('====================================');
+  console.log(categoryId);
+  console.log('====================================');
 
   useEffect(() => {
-    const willFocusSubscription = navigation.addListener('focus', () => {
-      (async () => {
-        setIsLoading(true);
-        try {
-          let res = await actions.product();
-          const items = res.list_product.data;
-          setData(items);
-          setIsLoading(false);
-          setOlaData(items);
-        } catch (error) {
-          setIsLoading(true);
-          console.log("error", error);
+    setIsLoading(true);
+    axios
+      .get(
+        `${BASE_URL}/products/filter-search?textSearch=&category=${categoryId}&brand=&page=1`,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
         }
-      })();
-    });
-    return willFocusSubscription;
+      )
+      .then((res) => {
+        let data = res.data.list_product.data;
+        setData(data);
+        setOlaData(data);
+        setIsLoading(false);
+      });
   }, []);
   const onSearch = (text) => {
     if (text == "") {
@@ -56,11 +68,39 @@ const Search = ({ navigation }) => {
       setData(tempList);
     }
   };
-
+  const onChangeValue = (id) => {
+    let index = checked.findIndex((i) => i === id); 
+    let arr = [...checked];
+    if (index !== -1) {
+      arr.splice(index, 1);
+    } else {
+      arr.push(id)
+;
+    }
+    setChecked(arr);
+  };
+  const submitValue = () => {
+    setIsLoading(true);
+    axios
+      .get(
+        `${BASE_URL}/products/filter-search?textSearch=&category=${categoryId}&brand=&page=1`,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        let data = res.data.list_product.data;
+        setData(data);
+        setOlaData(data);
+        setIsLoading(false);
+      });
+  };
   return (
     <SafeAreaView className="flex-1 bg-white ">
       <View className="flex-1  pl-5 pr-5">
-        <View className="flex-row  justify-center items-center">
+        <View className="flex-row mb-2  justify-center items-center">
           <TextInput
             ref={searchRef}
             style={styles.Input}
@@ -71,7 +111,6 @@ const Search = ({ navigation }) => {
               setSearch(text);
             }}
           ></TextInput>
-
           <TouchableOpacity className="absolute left-3 top-9 w-6 ">
             <AntDesign size={20} name="search1" />
           </TouchableOpacity>
@@ -87,10 +126,8 @@ const Search = ({ navigation }) => {
             </TouchableOpacity>
           )}
           <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Filter");
-            }}
-            className="justify-center items-center pl-2 pt2"
+            onPress={() => setModalVisible(true)}
+            className="justify-center items-center pl-2 pt-2"
           >
             <Image
               style={{ resizeMode: "contain" }}
@@ -98,9 +135,8 @@ const Search = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
-        {isLoading ? <ActivityIndicator /> : null}
+        {isLoading ? <ActivityIndicator size="small" color="#53b175" /> : null}
         <ScrollView showsVerticalScrollIndicator={false}>
-
           <View style={styles.warp}>
             {data.map((item) => {
               return (
@@ -133,10 +169,10 @@ const Search = ({ navigation }) => {
                       </Text>
                     </View>
                   </TouchableOpacity>
-                  <View className="pb-4 pt-4 flex-row justify-between">
+                  <View className="pb-4 pt-1 flex-row justify-between">
                     <View className="justify-center items-center">
                       <Text style={{ fontFamily: "Gilroy-Semi" }}>
-                        $ {item.price}
+                        $ {item.price.toFixed(2)}
                       </Text>
                     </View>
                     <TouchableOpacity
@@ -165,47 +201,64 @@ const Search = ({ navigation }) => {
           </View>
         </ScrollView>
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+        
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <SafeAreaView className="flex-1 bg-white">
+          <View className="flex-1 ">
+            <View className="flex-row justify-center pt-6 pb-6">
+              <TouchableOpacity
+                className="absolute left-4 top-5"
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Ionicons name="close" size={28} />
+              </TouchableOpacity>
+              <View>
+                <Text style={{ fontSize: 18, fontWeight: "600" }}>Filters</Text>
+              </View>
+            </View>
+            <View style={styles.filter}>
+              <Text style={styles.text}>Categories</Text>
+              {dataCategory.map((item) => {
+                return (
+                  <View key={item.id}>
+                    <BouncyCheckbox
+                      size={25}
+                      fillColor="#53B175"
+                      text={item.name}
+                      textStyle={{
+                        textDecorationLine: "none",
+                        paddingVertical: 10,
+                      }}
+                      onPress={() => {
+                        onChangeValue(item.id);
+                      }}
+                    />
+                  </View>
+                );
+              })}
+            </View>
+            <View
+              style={{ backgroundColor: "#F2F3F2" }}
+              className="items-center"
+            >
+              <Button
+                onPress={() => [submitValue(), setModalVisible(!modalVisible)]}
+                title={"Apply Filter"}
+                buttonStyle={styles.Button}
+                textStyle={styles.Textbtn}
+              />
+            </View>
+          </View>
+        </SafeAreaView>
+      </Modal>
     </SafeAreaView>
   );
 };
-
 export default Search;
-
-const styles = StyleSheet.create({
-  Input: {
-    width: "92%",
-    borderWidth: 0.5,
-    height: 50,
-    borderRadius: 10,
-    paddingHorizontal: 35,
-    borderColor: colors.global,
-    backgroundColor: colors.global,
-    marginTop: 20,
-    marginBottom: 10,
-    position: "relative",
-  },
-  warp: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    width: "100%",
-    flex: 1,
-    justifyContent: "space-between",
-  },
-  container: {
-    width: cardWidth,
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    borderColor: colors.global,
-    marginBottom: 10,
-  },
-  btn: {
-    width: 40,
-    height: 40,
-    backgroundColor: colors.green,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 13,
-    fontFamily: "Gilroy-Bold",
-  },
-});
