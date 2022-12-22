@@ -57,10 +57,7 @@ const Beverages = ({ navigation, route }) => {
               }}
               className="justify-center items-center pr-3"
             >
-              <Image
-                style={{ resizeMode: "contain" }}
-                source={require("../../../accsets/images/filter.png")}
-              />
+              
             </TouchableOpacity>
           </View>
           <ScrollView showsVerticalScrollIndicator={false}>
