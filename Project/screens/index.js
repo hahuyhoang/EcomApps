@@ -26,6 +26,7 @@ import * as Progress from "react-native-progress";
 import Button from "../Components/button";
 import LottieView from "lottie-react-native";
 import { clear, removeItem } from "../redux/reducers/cartReducer";
+import { useStripe } from "@stripe/stripe-react-native";
 const { height } = Dimensions.get("window");
 export default function Add({ navigation }) {
   const [dataCart, setDataCart] = useState([]);
@@ -45,7 +46,7 @@ export default function Add({ navigation }) {
       price: element.price,
     });
   });
-// form data de send cac du lieu can thiet
+  // form data de send cac du lieu can thiet
   const bodyFormdata = new FormData();
   bodyFormdata.append("user_id", userData.user.id);
   bodyFormdata.append("payment_method", "Pay cash");
@@ -55,36 +56,66 @@ export default function Add({ navigation }) {
   bodyFormdata.append("status", "order");
   bodyFormdata.append("list_item", JSON.stringify(list_cart));
 
-  useEffect(() => {
-    // setTimeout(() => {
-    //     navigation.navigate("Order")
-    // }, 4000)
-  }, []);
-  const order = async () => {
-    axios({
-      url: `${BASE_URL}/orders`,
-      method: "POST",
-      data: bodyFormdata,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${userData.token}`,
-      },
-    })
-      .then(function (response) {
-        //handle success
-        // console.log('send', response);
+  const name = userData.user.name;
+  const stripe = useStripe();
+  const total = totalPrice;
+  // console.log(userData);
 
-        if (totalPrice === 0) {
-          setModalVisible(true);
-        } else {
-          setModalDone(true);
-        }
-      })
-      .catch(function (response) {
-        //handle error
-        console.log(response);
+  const subscrice = async () => {
+    try {
+      // sending request
+      const response = await fetch("http://192.168.1.41:8080/pay", {
+        method: "POST",
+        body: JSON.stringify({ name, total }),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
+      const data = await response.json();
+      if (!response.ok) return Alert.alert(data.message);
+      const clientSecret = data.clientSecret;
+      const initSheet = await stripe.initPaymentSheet({
+        paymentIntentClientSecret: clientSecret,
+      });
+      if (initSheet.error) return Alert.alert(initSheet.error.message);
+      const presentSheet = await stripe.presentPaymentSheet({
+        clientSecret,
+      });
+      if (presentSheet.error) return Alert.alert(presentSheet.error.message);
+      // Alert.alert("Payment complete, thank you!");
+
+      axios({
+        url: `${BASE_URL}/orders`,
+        method: "POST",
+        data: bodyFormdata,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${userData.token}`,
+        },
+      })
+        .then(function (response) {
+          //handle success
+          // console.log('send', response);
+
+          if (totalPrice === 0) {
+            setModalVisible(true);
+          } else {
+            setModalDone(true);
+            dispatch(clear())
+          }
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+        });
+
+      // navigation.navigate("Homes")
+    } catch (error) {
+      console.log(error);
+      // Alert.alert("Something went wrong, try again later!");
+      setModalVisible(true);
+    }
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -105,7 +136,7 @@ export default function Add({ navigation }) {
         <View style={[styles.flexRow, styles.Body]}>
           <Text style={styles.textBody}>Delevery</Text>
           <TouchableOpacity style={styles.leftItem}>
-            <Text style={styles.text}>Pay Cash</Text>
+            <Text style={styles.text}>Master Card</Text>
             <Entypo name="chevron-right" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -149,7 +180,8 @@ export default function Add({ navigation }) {
         <TouchableOpacity
           style={styles.placeOder}
           onPress={() => {
-            order(), dispatch(clear());
+            // order(), dispatch(clear());
+            subscrice();
           }}
         >
           <Text style={styles.textOder}>Place Order</Text>

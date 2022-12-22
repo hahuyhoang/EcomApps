@@ -45,8 +45,8 @@ const LogIn = ({ navigation }) => {
   const onLogin = async () => {
     const checkValid = isValidData();
     if (checkValid) {
-      setIsLoading(true);
       try {
+        setIsLoading(true);
         const res = await actions.login({
           email,
           password,
@@ -57,10 +57,9 @@ const LogIn = ({ navigation }) => {
           navigation.navigate("CheckCode");
         }
       } catch (error) {
-        setIsLoading(false);
-        showError(error.message);
+        // showError()
+        showMessage("error password")
       }
-      setIsLoading(false);
     }
   };
   // {end func login}

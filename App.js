@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import { useEffect } from "react";
 import { getUserData } from "./Project/utils/utils";
 import { saveUserData } from "./Project/redux/actions/auth";
+import { StripeProvider } from "@stripe/stripe-react-native";
 export default function App() {
   // {save token de luu dang nhap}
   useEffect(() => {
@@ -31,13 +32,15 @@ export default function App() {
     "Gilroy-Medium": require("./assets/font/SVN-GilroyMedium.otf"),
   });
   if (!fontsLoaded) {
-    return console.log("");
+    return null;
   }
 
   return (
     <Provider style={{ flex: 1 }} store={store}>
-      <MyStack />
-      <FlashMessage position="top" />
+      <StripeProvider publishableKey="pk_test_51MFCsgGCXQDGwaNcbB8ZsUdoKYvEz2BxdmnWXmW9qOCzTQhAFPJRGLdtnWcD56tdDOdUztWrHQArvuIVE8AVN6fB008RuXJUrh">
+        <MyStack />
+        <FlashMessage position="top" />
+      </StripeProvider>
     </Provider>
   );
 }

@@ -51,13 +51,17 @@ const ProductDetail = ({ route, navigation }) => {
         setImg(res.data.data_product.media.url);
         let metaValue = res.data.data_product.product_meta;
         setDeTail(res.data.data_product.description);
-        metaValue.forEach((element) => {});
+        metaValue.forEach((element) => {
+          console.log(element.meta_field);
+          
+        });
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
   let quantity = item.status;
+
   return (
     <SafeAreaView className="flex-1 ">
       <View style={styles.itemImage} className="pl-2 pr-2 flex-1 ">

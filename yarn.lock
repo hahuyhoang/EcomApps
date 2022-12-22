@@ -1960,6 +1960,11 @@
   "resolved" "https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.24.51.tgz"
   "version" "0.24.51"
 
+"@stripe/stripe-react-native@^0.22.1":
+  "integrity" "sha512-L4UjvhgZir+jNvXS4lCNv8C8xWYOtH+n1YFAhuKVxA2tuRvWz2lJJ7U4bOpl3cJn1tPvIsvroCWx/Nra5Fgmgw=="
+  "resolved" "https://registry.npmjs.org/@stripe/stripe-react-native/-/stripe-react-native-0.22.1.tgz"
+  "version" "0.22.1"
+
 "@types/hammerjs@^2.0.36":
   "integrity" "sha512-ewXv/ceBaJprikMcxCmWU1FKyMAQ2X7a9Gtmzw8fcg2kIePI1crERDM818W+XYrxqdBBOdlf2rm137bU+BltCA=="
   "resolved" "https://registry.npmjs.org/@types/hammerjs/-/hammerjs-2.0.41.tgz"
@@ -3700,7 +3705,7 @@
     "resolve-from" "^5.0.0"
     "uuid" "^3.4.0"
 
-"expo@*", "expo@~47.0.3":
+"expo@*", "expo@>=46.0.9", "expo@~47.0.3":
   "integrity" "sha512-EpWV8ZljTIEQSVPdZxaWoOrJIAPqpBEF+RDyUoDMchXp4TB40CrAKwRuWo7baMsQLfwKgs7izJyaTp+9DsLqGw=="
   "resolved" "https://registry.npmjs.org/expo/-/expo-47.0.3.tgz"
   "version" "47.0.3"
