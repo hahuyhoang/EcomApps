@@ -74,11 +74,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         margin: 4,
-        borderRadius: 6,
-        borderColor: "green",
+        borderRadius: 8,
+        borderColor: colors.green
       },
       textBox: {
         margin: 7,
+        fontWeight:'500',
+        color:colors.whites,
+        fontSize:15
       },
 })
 export default styles;

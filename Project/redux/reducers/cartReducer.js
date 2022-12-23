@@ -6,7 +6,6 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart(state, { payload }) {
-      //id là id duy nhất của mặt hàng
       const { id } = payload;
       const find = state.find((item) => item.id === id);
       if (find) {

@@ -26,6 +26,7 @@ const Explore = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
+    setIsLoading(true)
       try {
         let res = await actions.Categories();
         const items = res.list_category;
@@ -33,6 +34,7 @@ const Explore = ({ navigation }) => {
           // console.log("search", element);
         });
         setData(items);
+        setIsLoading(false)
       } catch (error) {
         console.log("error", error);
       }
@@ -67,7 +69,7 @@ const Explore = ({ navigation }) => {
             <AntDesign size={20} name="search1" />
           </TouchableOpacity>
         </View>
-        {isLoading ? <ActivityIndicator /> : null}
+        {isLoading ? <ActivityIndicator color="green"/> : null}
         <ScrollView className="-mt-4 " showsVerticalScrollIndicator={false}>
           <View style={styles.warp}>
             {data.map((item) => {

@@ -14,7 +14,6 @@ export { default as Product } from "./Components/Products";
 export { default as AllProduct } from "./HomeScreen/Home/AllProduct/index";
 export { default as ForgotEmail } from "./Forgot/forgotEmail";
 export { default as Beverages } from "./HomeScreen/Explore/products/ProductBeverages";
-export { default as Filter } from "./HomeScreen/Explore/Filter/index";
 export { default as Verification } from "./Forgot/Verification";
 export { default as ForgotPassword } from "./Forgot/ForgotPassword";
 export { default as Order } from "./HomeScreen/Account/Order/index";
@@ -30,6 +29,6 @@ export { default as Onbording } from "./Onbording/index";
 export { default as ErrorScreen } from "./screens/ErrorScreen";
 export { default as ItemOrders } from "./Components/itemOrders";
 export { default as PerparingOrder } from "./screens/PerparingOrder";
-export { default as Allgroceries } from "./screens/allGroceries";
+export { default as  Brand} from "./HomeScreen/Home/Brand/index";
 
 // screen nay de import cac man

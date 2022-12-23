@@ -9,9 +9,8 @@ import {
   Text,
   Modal,
 } from "react-native";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Ionicons, AntDesign } from "react-native-vector-icons";
+import { Ionicons, AntDesign, Entypo } from "react-native-vector-icons";
 import { colors } from "../../../theme/colors";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
@@ -20,6 +19,7 @@ import { showMessage } from "react-native-flash-message";
 import { BASE_URL } from "../../../IPA/Conect";
 import Button from "../../../Components/button";
 import styles from "../styles";
+import actions from "../../../redux/actions";
 
 const Search = ({ navigation }) => {
   const [data, setData] = useState([]);
@@ -28,23 +28,36 @@ const Search = ({ navigation }) => {
   const searchRef = useRef();
   const [olData, setOlaData] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [background, setBackground] = useState("");
   const dispatch = useDispatch();
   const [checked, setChecked] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const dataCate = useSelector((state) => state.categories.categories);
   const dataCategory = dataCate.list_category;
+  const [dataBrand,setDataBrand] = useState([])
+  const [checkBrand,setCheckBrand]=useState([])
   const categoryId = checked.toString();
-
-  console.log('====================================');
-  console.log(categoryId);
-  console.log('====================================');
-
+  const BrandId = checkBrand.toString()
+  useEffect(() => {
+    (async () => {
+        setIsLoading(true)
+        try {
+          let res = await actions.brand();
+          const items = res.list_brand;
+          items.forEach((element) => {
+          });
+          setIsLoading(false)
+          setDataBrand(items);
+        } catch (error) {
+          setIsLoading(true)
+          console.log("error", error);
+        }
+      })();
+  }, []);
   useEffect(() => {
     setIsLoading(true);
     axios
       .get(
-        `${BASE_URL}/products/filter-search?textSearch=&category=${categoryId}&brand=&page=1`,
+        `${BASE_URL}/products/filter-search?textSearch=&category=${categoryId}&brand=${BrandId}&page=1`,
         {
           headers: {
             Authorization: `Bearer ${userData.token}`,
@@ -69,21 +82,30 @@ const Search = ({ navigation }) => {
     }
   };
   const onChangeValue = (id) => {
-    let index = checked.findIndex((i) => i === id); 
+    let index = checked.findIndex((i) => i === id);
     let arr = [...checked];
     if (index !== -1) {
       arr.splice(index, 1);
     } else {
-      arr.push(id)
-;
+      arr.push(id);
     }
     setChecked(arr);
+  };
+  const onChangeValueBrand = (id) => {
+    let index = checkBrand.findIndex((i) => i === id);
+    let arr = [...checkBrand];
+    if (index !== -1) {
+      arr.splice(index, 1);
+    } else {
+      arr.push(id);
+    }
+    setCheckBrand(arr);
   };
   const submitValue = () => {
     setIsLoading(true);
     axios
       .get(
-        `${BASE_URL}/products/filter-search?textSearch=&category=${categoryId}&brand=&page=1`,
+        `${BASE_URL}/products/filter-search?textSearch=&category=${categoryId}&brand=${BrandId}&page=1`,
         {
           headers: {
             Authorization: `Bearer ${userData.token}`,
@@ -97,6 +119,7 @@ const Search = ({ navigation }) => {
         setIsLoading(false);
       });
   };
+
   return (
     <SafeAreaView className="flex-1 bg-white ">
       <View className="flex-1  pl-5 pr-5">
@@ -206,7 +229,6 @@ const Search = ({ navigation }) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-        
           setModalVisible(!modalVisible);
         }}
       >
@@ -228,18 +250,57 @@ const Search = ({ navigation }) => {
               {dataCategory.map((item) => {
                 return (
                   <View key={item.id}>
-                    <BouncyCheckbox
-                      size={25}
-                      fillColor="#53B175"
-                      text={item.name}
-                      textStyle={{
-                        textDecorationLine: "none",
-                        paddingVertical: 10,
-                      }}
-                      onPress={() => {
-                        onChangeValue(item.id);
-                      }}
-                    />
+                    <View className="flex-row">
+                      <TouchableOpacity
+                        style={[
+                          styles.checkbox,
+                          {
+                            backgroundColor:
+                              checked.findIndex((i) => i === item.id) !== -1
+                                ? "#53B175"
+                                : "#fff",
+                          },
+                        ]}
+                        onPress={() => {
+                          onChangeValue(item.id);
+                        }}
+                      >
+                        {checked.findIndex((i) => i === item.id) !== -1 ? (
+                          <Entypo name="check" size={20} color="#fff" />
+                        ) : null}
+                      </TouchableOpacity>
+                      <Text style={styles.textBox}>{item.name}</Text>
+                    </View>
+                  </View>
+                );
+              })}
+            </View>
+            <View style={styles.filter}>
+              <Text style={styles.text}>Brand</Text>
+              {dataBrand.map((item) => {
+                return (
+                  <View key={item.id}>
+                    <View className="flex-row">
+                      <TouchableOpacity
+                        style={[
+                          styles.checkbox,
+                          {
+                            backgroundColor:
+                            checkBrand.findIndex((i) => i === item.id) !== -1
+                                ? "#53B175"
+                                : "#fff",
+                          },
+                        ]}
+                        onPress={() => {
+                          onChangeValueBrand(item.id);
+                        }}
+                      >
+                        {checkBrand.findIndex((i) => i === item.id) !== -1 ? (
+                          <Entypo name="check" size={20} color="#fff" />
+                        ) : null}
+                      </TouchableOpacity>
+                      <Text style={styles.textBox}>{item.name}</Text>
+                    </View>
                   </View>
                 );
               })}
