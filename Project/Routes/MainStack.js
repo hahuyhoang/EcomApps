@@ -18,6 +18,7 @@ import {
   ErrorScreen,
   ItemOrders,
   PerparingOrder,
+  Allgroceries,
 } from "../index";
 
 export default function (Stack) {
@@ -51,6 +52,8 @@ export default function (Stack) {
       <Stack.Screen name="ErrorScreen" component={ErrorScreen} />
       <Stack.Screen name="ItemOrders" component={ItemOrders} />
       <Stack.Screen name="PerparingOrder" component={PerparingOrder} />
+      <Stack.Screen name="Allgroceries" component={Allgroceries} />
+
     </>
   );
 }

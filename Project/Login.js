@@ -58,6 +58,7 @@ const LogIn = ({ navigation }) => {
         }
       } catch (error) {
         // showError()
+        setIsLoading(false)
         showMessage("error password")
       }
     }

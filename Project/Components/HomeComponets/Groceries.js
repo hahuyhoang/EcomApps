@@ -22,6 +22,9 @@ const Groceries = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // const Product = useSelector((state) => state.product.proDuct)
+
+  // console.log(Product.list_product.data);
   useEffect(() => {
     (async () => {
         setIsLoading(true)

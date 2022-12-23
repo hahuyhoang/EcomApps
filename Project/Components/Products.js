@@ -19,6 +19,8 @@ import actions from "../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/reducers/cartReducer";
 import { showMessage } from "react-native-flash-message";
+import { ScrollView } from "react-native";
+
 
 const Product = ({}) => {
   const userData = useSelector((state) => state.auth.userData);
@@ -26,7 +28,7 @@ const Product = ({}) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
     const willFocusSubscription = navigation.addListener("focus", () => {
       (async () => {
@@ -48,62 +50,68 @@ const Product = ({}) => {
   return (
     <>
       <SafeAreaView className="flex-row">
-        {data.map((item) => {
-          return (
-            <View style={styles.container} key={item.id}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("ProductDetail", {
-                    paramKey: item.id,
-                  });
-                }}
-              >
-                <View className="justify-center h-28  items-center ">
-                  <Image
-                    style={{
-                      width: "100%",
-                      height: "80%",
-                      resizeMode: "contain",
-                    }}
-                    source={{ uri: `${userData.url}/${item.media.url}` }}
-                  />
-                </View>
-                <View className="pb-2 pt-2">
-                  <Text style={{ fontFamily: "Gilroy-Bold" }}>{item.name}</Text>
-                  <Text style={{ color: colors.whites, paddingVertical: 4 }}>
-                    {item.title}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <View className="pb-4 pt-4 flex-row justify-between">
-                <View className="justify-center items-center">
-                  <Text style={{ fontFamily: "Gilroy-Semi" }}>
-                    ${item.price.toFixed(2)}
-                  </Text>
-                </View>
-                <TouchableOpacity
-                  style={styles.btn}
-                  onPress={() => {
-                    dispatch(addToCart(item));
-                    showMessage({
-                      message: "Add to cart successfully",
-                      description: "Go to check Cart",
-                      icon: (props) => (
+            <View style={styles.warp}>
+              {data.map((item) => {
+                return (
+                  <View style={styles.container} key={item.id}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate("ProductDetail", {
+                          paramKey: item.id,
+                        });
+                      }}
+                    >
+                      <View className="justify-center h-28  items-center ">
                         <Image
-                          source={require("../accsets/images/iconn.png")}
-                          {...props}
+                          style={{
+                            width: "100%",
+                            height: "80%",
+                            resizeMode: "contain",
+                          }}
+                          source={{ uri: `${userData.url}/${item.media.url}` }}
                         />
-                      ),
-                      type: "success",
-                    });
-                  }}
-                >
-                  <Ionicons size={25} color={"#fff"} name="add" />
-                </TouchableOpacity>
-              </View>
+                      </View>
+                      <View className="pb-2 pt-2">
+                        <Text style={{ fontFamily: "Gilroy-Bold" }}>
+                          {item.name}
+                        </Text>
+                        <Text
+                          style={{ color: colors.whites, paddingVertical: 4 }}
+                        >
+                          {item.title}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                    <View className="pb-4 pt-4 flex-row justify-between">
+                      <View className="justify-center items-center">
+                        <Text style={{ fontFamily: "Gilroy-Semi" }}>
+                          ${item.price.toFixed(2)}
+                        </Text>
+                      </View>
+                      <TouchableOpacity
+                        style={styles.btn}
+                        onPress={() => {
+                          dispatch(addToCart(item));
+                          showMessage({
+                            message: "Add to cart successfully",
+                            description: "Go to check Cart",
+                            icon: (props) => (
+                              <Image
+                                source={require("../accsets/images/iconn.png")}
+                                {...props}
+                              />
+                            ),
+                            type: "success",
+                          });
+                        }}
+                      >
+                        <Ionicons size={25} color={"#fff"} name="add" />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                );
+              })}
             </View>
-          );
-        })}
       </SafeAreaView>
       {isLoading ? <ActivityIndicator /> : null}
     </>
@@ -129,5 +137,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 13,
     fontFamily: "Gilroy-Bold",
+  },
+  warp: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    width: "100%",
+    flex: 1,
+    justifyContent: "space-between",
   },
 });

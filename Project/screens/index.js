@@ -64,7 +64,7 @@ export default function Add({ navigation }) {
   const subscrice = async () => {
     try {
       // sending request
-      const response = await fetch("http://192.168.1.41:8080/pay", {
+      const response = await fetch("http://192.168.1.144:8080/pay", {
         method: "POST",
         body: JSON.stringify({ name, total }),
         headers: {
