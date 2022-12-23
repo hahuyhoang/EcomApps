@@ -5,51 +5,54 @@ import {
   StyleSheet,
   Image,
   Text,
-  SafeAreaView,
   Dimensions,
-  FlatList,
+  ScrollView,
   ActivityIndicator,
 } from "react-native";
 import { colors } from "../theme/colors";
 import { Ionicons } from "react-native-vector-icons";
 import { useNavigation } from "@react-navigation/native";
 const { width } = Dimensions.get("window");
-const cardWidth = width / 2.4 - 4;
+const cardWidth = width / 2.3;
 import actions from "../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/reducers/cartReducer";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { showMessage } from "react-native-flash-message";
-import { ScrollView } from "react-native";
 
-
-const Product = ({}) => {
+const Allgroceries = ({}) => {
   const userData = useSelector((state) => state.auth.userData);
   const navigation = useNavigation();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-  
-  useEffect(() => {
-    const willFocusSubscription = navigation.addListener("focus", () => {
-      (async () => {
-        setIsLoading(true);
-        try {
-          let res = await actions.product();
-          const items = res.list_product.data;
-          // console.log(items);
-          setData(items);
-          setIsLoading(false);
-        } catch (error) {
-          setIsLoading(true);
-          console.log("error", error);
-        }
-      })();
-    });
-    return willFocusSubscription;
-  }, []);
+
+//   useEffect(() => {
+//     const willFocusSubscription = navigation.addListener("focus", () => {
+      
+//     });
+//     return willFocusSubscription;
+//   }, []);
   return (
     <>
-      <SafeAreaView className="flex-row">
+      <SafeAreaView className="flex-1 ">
+        <View className="flex-1  pl-5 pr-5">
+          <View className=" pt-4 pb-4  justify-center ">
+            <View className="justify-center items-center ">
+              <Text className="font-semibold text-base">All Exclusive</Text>
+            </View>
+            <TouchableOpacity
+              className="absolute left-0 p-1"
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
+              <Ionicons name="chevron-back" size={25} />
+            </TouchableOpacity>
+          </View>
+          {isLoading ? <ActivityIndicator /> : null}
+
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.warp}>
               {data.map((item) => {
                 return (
@@ -85,7 +88,7 @@ const Product = ({}) => {
                     <View className="pb-4 pt-4 flex-row justify-between">
                       <View className="justify-center items-center">
                         <Text style={{ fontFamily: "Gilroy-Semi" }}>
-                          ${item.price.toFixed(2)}
+                          $ {item.price}
                         </Text>
                       </View>
                       <TouchableOpacity
@@ -112,13 +115,21 @@ const Product = ({}) => {
                 );
               })}
             </View>
+          </ScrollView>
+        </View>
       </SafeAreaView>
-      {isLoading ? <ActivityIndicator /> : null}
     </>
   );
 };
-export default Product;
+export default Allgroceries;
 const styles = StyleSheet.create({
+  warp: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    width: "100%",
+    flex: 1,
+    justifyContent: "space-between",
+  },
   container: {
     width: cardWidth,
     borderWidth: 1,
@@ -126,8 +137,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderColor: colors.global,
     marginBottom: 10,
-    // marginHorizontal: 5,
-    marginRight: 10,
   },
   btn: {
     width: 40,
@@ -137,12 +146,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 13,
     fontFamily: "Gilroy-Bold",
-  },
-  warp: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    width: "100%",
-    flex: 1,
-    justifyContent: "space-between",
   },
 });
