@@ -16,10 +16,10 @@ import axios from "axios";
 import { BASE_URL } from "../../../IPA/Conect";
 import { addToCart } from "../../../redux/reducers/cartReducer";
 import { useDispatch, useSelector } from "react-redux";
+import Rating from "../../../Components/Rating"
 import {
   increment,
   decrement,
-  removeItem,
 } from "../../../redux/reducers/cartReducer";
 import { showMessage } from "react-native-flash-message";
 import { addToCartFavorite } from "../../../redux/reducers/cartFavorites";
@@ -29,13 +29,11 @@ const ProductDetail = ({ route, navigation }) => {
   const [hideHeart, setHideHeart] = React.useState("");
   const [item, setItem] = useState([]);
   const [img, setImg] = useState([]);
-  const [abc,setAbc] = useState([]);
-  const [isfavorite, setIsFavorite] = useState(false);
+  const [weight, setWeight] = useState([]);
+  const [quantity, setQuantity] = useState([]);
   const dispatch = useDispatch();
   const [deTail, setDeTail] = useState([]);
   const { width } = useWindowDimensions();
-  const arr = [];
-
   const source = {
     html: `${deTail}`,
   };
@@ -50,26 +48,21 @@ const ProductDetail = ({ route, navigation }) => {
       .then((res) => {
         setItem(res.data.data_product);
         setImg(res.data.data_product.media.url);
-        let metaValue = res.data.data_product.product_meta;
         setDeTail(res.data.data_product.description);
-        setAbc(res.data.data_product.product_meta);
-        console.log('==============Check s Bug======================');
-        console.log(res.data.data_product.product_meta);
-        console.log('====================================');
-        metaValue.forEach((element) => {
-          // console.log(element.meta_field);
-          
-        });
+        setWeight( res.data.data_product.product_meta.filter((e) => e.meta_field == 'weight')[0]);
+        setQuantity( res.data.data_product.product_meta.filter((e) => e.meta_field == 'quantity')[0].meta_value);
       })
       .catch((error) => {
-        // console.log(error);
+        console.log(error);
       });
   }, []);
-  let quantity = item.status;
-
   return (
     <SafeAreaView className="flex-1 ">
-      <View style={styles.itemImage} className="pl-2 pr-2 flex-1 ">
+      <View
+        style={styles.itemImage}
+        className="pl-2 pr-2 flex-1 "
+        key={item.id}
+      >
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
@@ -124,7 +117,7 @@ const ProductDetail = ({ route, navigation }) => {
                 ]}
                 name={hideHeart ? "heart" : "ios-heart-outline"}
                 size={25}
-                color={hideHeart ? "red" : "black"}
+                color={hideHeart  ? "red" : "black"}
               />
             }
           </TouchableOpacity>
@@ -164,7 +157,6 @@ const ProductDetail = ({ route, navigation }) => {
             <Ionicons name="chevron-down" size={25} />
           </View>
           <RenderHTML source={source} contentWidth={width} />
-          {/* <Text style={styles.text}>{deTail}</Text> */}
         </View>
         <View className="border-b border-zinc-300 flex-row justify-between pt-4 pb-4">
           <Text className="font-semibold">Nutritions</Text>
@@ -173,7 +165,7 @@ const ProductDetail = ({ route, navigation }) => {
               style={{ borderRadius: 8 }}
               className="justify-center items-center w-14 bg-slate-200"
             >
-              <Text className="font-semibold">{ console.log(abc) }100gr</Text>
+              <Text className="font-semibold">{weight.meta_value}</Text>
             </View>
             <TouchableOpacity>
               <Entypo name="chevron-right" size={25} />
@@ -184,11 +176,7 @@ const ProductDetail = ({ route, navigation }) => {
           <Text className="font-semibold">Review</Text>
           <View className="flex-row">
             <View className="flex-row items-center">
-              <Entypo name="star" color={"#F3603F"} size={18} />
-              <Entypo name="star" color={"#F3603F"} size={18} />
-              <Entypo name="star" color={"#F3603F"} size={18} />
-              <Entypo name="star" color={"#F3603F"} size={18} />
-              <Entypo name="star" color={"#F3603F"} size={18} />
+              <Rating/>
             </View>
             <TouchableOpacity>
               <Entypo name="chevron-right" size={25} />
