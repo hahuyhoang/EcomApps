@@ -27,6 +27,8 @@ import {
   setUpdateUser,
   setAvatarUser,
   setListOrders,
+  getBrand,
+  setBrand
 } from "../../utils/utils";
 import store from "../store";
 import types from "../types";
@@ -177,10 +179,10 @@ export function brand(data) {
   return new Promise((resolve, reject) => {
     return apiGet(BRAND, data)
       .then((res) => {
-        if (res.list_category) {
-          setCategory(res).then(() => {
+        if (res.list_brand) {
+          setBrand(res).then(() => {
             resolve(res);
-            saveCategory(res);
+            getBrand(res);
           });
           return;
         }

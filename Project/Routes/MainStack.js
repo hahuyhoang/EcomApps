@@ -6,7 +6,6 @@ import {
   Accepted,
   Profile,
   AllProduct,
-  Filter,
   Beverages,
   Order,
   Search,
@@ -18,6 +17,7 @@ import {
   ErrorScreen,
   ItemOrders,
   PerparingOrder,
+  Brand
 } from "../index";
 
 export default function (Stack) {
@@ -34,7 +34,6 @@ export default function (Stack) {
       <Stack.Screen name="ProductDetail" component={ProductDetail} />
       <Stack.Screen name="AllProduct" component={AllProduct} />
       <Stack.Screen name="Beverages" component={Beverages} />
-      <Stack.Screen name="Filter" component={Filter} />
       <Stack.Screen name="Order" component={Order} />
       <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="Selling" component={Selling} />
@@ -51,6 +50,7 @@ export default function (Stack) {
       <Stack.Screen name="ErrorScreen" component={ErrorScreen} />
       <Stack.Screen name="ItemOrders" component={ItemOrders} />
       <Stack.Screen name="PerparingOrder" component={PerparingOrder} />
+      <Stack.Screen name="Brand" component={Brand} />
     </>
   );
 }

@@ -67,7 +67,7 @@ const AllExclusive = ({}) => {
             <View style={styles.warp}>
               {data.map((item) => {
                 return (
-                  <View style={styles.container}>
+                  <View style={styles.container} key={item.id}>
                     <TouchableOpacity
                       onPress={() => {
                         navigation.navigate("ProductDetail", {

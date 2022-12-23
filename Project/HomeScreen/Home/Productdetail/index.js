@@ -29,6 +29,7 @@ const ProductDetail = ({ route, navigation }) => {
   const [hideHeart, setHideHeart] = React.useState("");
   const [item, setItem] = useState([]);
   const [img, setImg] = useState([]);
+  const [abc,setAbc] = useState([]);
   const [isfavorite, setIsFavorite] = useState(false);
   const dispatch = useDispatch();
   const [deTail, setDeTail] = useState([]);
@@ -51,13 +52,17 @@ const ProductDetail = ({ route, navigation }) => {
         setImg(res.data.data_product.media.url);
         let metaValue = res.data.data_product.product_meta;
         setDeTail(res.data.data_product.description);
+        setAbc(res.data.data_product.product_meta);
+        console.log('==============Check s Bug======================');
+        console.log(res.data.data_product.product_meta);
+        console.log('====================================');
         metaValue.forEach((element) => {
-          console.log(element.meta_field);
+          // console.log(element.meta_field);
           
         });
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   }, []);
   let quantity = item.status;
@@ -168,7 +173,7 @@ const ProductDetail = ({ route, navigation }) => {
               style={{ borderRadius: 8 }}
               className="justify-center items-center w-14 bg-slate-200"
             >
-              <Text className="font-semibold">100gr</Text>
+              <Text className="font-semibold">{ console.log(abc) }100gr</Text>
             </View>
             <TouchableOpacity>
               <Entypo name="chevron-right" size={25} />
