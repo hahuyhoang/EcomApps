@@ -7,21 +7,19 @@ import {
   ActivityIndicator
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import Product from "../Products";
 import { colors } from "../../theme/colors";
 import styles from "./styles";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import actions from "../../redux/actions";
-import { useDispatch } from "react-redux";
 const Groceries = () => {
 
   const navigation = useNavigation();
   const userData = useSelector((state) => state.auth.userData);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  
   useEffect(() => {
     (async () => {
         setIsLoading(true)
@@ -68,7 +66,9 @@ const Groceries = () => {
                     style={styles.btnItem}
                     className=" flex-row items-center pt-2 pb-2"
                     onPress={() => {
-                      navigation.navigate("Beverages");
+                      navigation.navigate("Brand",{
+                        paramKey : item,
+                      });
                     }}
                   >
                     <Image

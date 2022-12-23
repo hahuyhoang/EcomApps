@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { setCart, setCategory } from "../../utils/utils";
+
 const initialState = [];
 
 const cartSlice = createSlice({
@@ -8,7 +7,6 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart(state, { payload }) {
-      //id là id duy nhất của mặt hàng
       const { id } = payload;
       const find = state.find((item) => item.id === id);
       if (find) {

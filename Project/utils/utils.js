@@ -143,10 +143,20 @@ export function setCategory(data) {
   data = JSON.stringify(data);
   return AsyncStorage.setItem("categories", data);
 }
-
+export function setBrand(data) {
+  data = JSON.stringify(data);
+  return AsyncStorage.setItem("Brand", data);
+}
 export async function getCategory() {
   return new Promise((resolve, reject) => {
     AsyncStorage.getItem("categories").then((data) => {
+      resolve(JSON.parse(data));
+    });
+  });
+}
+export async function getBrand() {
+  return new Promise((resolve, reject) => {
+    AsyncStorage.getItem("Brand").then((data) => {
       resolve(JSON.parse(data));
     });
   });
